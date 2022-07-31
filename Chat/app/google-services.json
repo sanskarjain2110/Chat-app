@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1028897334570",
+    "project_id": "mychat-hello",
+    "storage_bucket": "mychat-hello.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028897334570:android:e3195ffe9f878e0a596a53",
+        "android_client_info": {
+          "package_name": "com.stranger.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028897334570-dbfciee0d0c9ctlivlsc43ik1ba8nfli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACjbKBtZhKUTUA1flHA84zOZdRsl_IVHw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028897334570-dbfciee0d0c9ctlivlsc43ik1ba8nfli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

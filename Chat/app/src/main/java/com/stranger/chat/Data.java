@@ -35,3 +35,7 @@ class Call_Tile_Data {
         this.callTime = callTime;
     }
 }
+
+class UserData{
+
+}

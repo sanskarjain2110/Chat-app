@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
         mainScreen = findViewById(R.id.mainScreen);
         TabAdapter adapter = new TabAdapter(getSupportFragmentManager(), this, tabs.getTabCount());
         mainScreen.setAdapter(adapter);
-
-        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+tabs.setupWithViewPager(mainScreen);        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mainScreen.setCurrentItem(tab.getPosition());
