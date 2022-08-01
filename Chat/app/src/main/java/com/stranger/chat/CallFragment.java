@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.stranger.chat.data.Call_Tile_Data;
+
 
 public class CallFragment extends Fragment {
     RecyclerView callRecyclerView;

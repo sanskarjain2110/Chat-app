@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.stranger.chat.data.Chat_Tile_Data;
+import com.stranger.chat.data.Status_Grid_Data;
+
 
 public class ChatFragment extends Fragment {
     RecyclerView chatRecyclerView, statusRecyclerView;
@@ -158,7 +161,7 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Chat_ViewHolder> {
         holder.getLastChatTime().setText(data[position].lastChatTime);
 
         holder.getChatTile().setOnClickListener(view -> {
-            Intent intent = new Intent(context, ResisterPage.class);
+            Intent intent = new Intent(context, MessagePage.class);
             intent.putExtra("data_pos", position);
             context.startActivity(intent);
         });

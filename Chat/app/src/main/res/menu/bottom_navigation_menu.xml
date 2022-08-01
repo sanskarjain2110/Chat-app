@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/chatNavigationButton"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_message_24"
+        android:title="@string/chats" />
+    <item
+        android:id="@+id/callNavigationButton"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_call_24"
+        android:title="@string/calls" />
+
+</menu>

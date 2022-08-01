@@ -1,4 +1,4 @@
-package com.stranger.chat;
+package com.stranger.chat.data;
 
 class Chat_Tile_Data {
     int profilePicId, seenStatusId;
@@ -36,6 +36,36 @@ class Call_Tile_Data {
     }
 }
 
-class UserData{
+class UserData {
+    private String username, phoneNumber, password;
 
+    public UserData(String username, String phoneNumber, String password) {
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
