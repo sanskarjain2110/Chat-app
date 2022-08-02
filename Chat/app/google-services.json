@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1028897334570",
+    "firebase_url": "https://mychat-hello-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "mychat-hello",
     "storage_bucket": "mychat-hello.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1028897334570-ae26m5l75chb0g0ejnvbug11gemip7k4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stranger.chat",
+            "certificate_hash": "29b54b57eb667866a3f664d417dd20be5356cf43"
+          }
+        },
         {
           "client_id": "1028897334570-dbfciee0d0c9ctlivlsc43ik1ba8nfli.apps.googleusercontent.com",
           "client_type": 3

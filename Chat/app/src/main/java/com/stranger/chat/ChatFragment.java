@@ -102,8 +102,8 @@ class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.Status_ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull Status_ViewHolder holder, int position) {
-        holder.getProfilePic().setImageResource(data[position].profilePicId);
-        holder.getUsername().setText(data[position].username);
+//        holder.getProfilePic().setImageResource(data[position].profilePicId);
+//        holder.getUsername().setText(data[position].username);
 
     }
 
@@ -154,11 +154,11 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Chat_ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull Chat_ViewHolder holder, int position) {
-        holder.getProfilePic().setImageResource(data[position].profilePicId);
-        holder.getSeenStatus().setImageResource(data[position].seenStatusId);
-        holder.getUsername().setText(data[position].username);
-        holder.getLastText().setText(data[position].lastText);
-        holder.getLastChatTime().setText(data[position].lastChatTime);
+//        holder.getProfilePic().setImageResource(data[position].profilePicId);
+//        holder.getSeenStatus().setImageResource(data[position].seenStatusId);
+//        holder.getUsername().setText(data[position].username);
+//        holder.getLastText().setText(data[position].lastText);
+//        holder.getLastChatTime().setText(data[position].lastChatTime);
 
         holder.getChatTile().setOnClickListener(view -> {
             Intent intent = new Intent(context, MessagePage.class);
