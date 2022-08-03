@@ -63,9 +63,9 @@ public class Log_in_page extends AppCompatActivity {
             finish();
         });
 
-        forgotPassword.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "not implemented", LENGTH_SHORT).show();
-        });
+        forgotPassword.setOnClickListener(view ->
+                Toast.makeText(getApplicationContext(), "not implemented", LENGTH_SHORT).show()
+        );
 
     }
 

@@ -31,8 +31,6 @@ public class CallFragment extends Fragment {
             new Call_Tile_Data(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan", "20/07/2022, 07:30 a.m.")
     };
 
-    public CallFragment() {
-    }
 
 
     @Override

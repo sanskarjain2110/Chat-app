@@ -1,9 +1,8 @@
 package com.stranger.chat;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.view.Menu;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MessagePage extends AppCompatActivity {
 

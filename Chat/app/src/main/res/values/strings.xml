@@ -26,6 +26,10 @@
     <string name="confirm_password">Confirm password</string>
     <string name="back">back</string>
     <string name="type_something">Type something....</string>
+    <string name="register">Register</string>
+    <string name="another_account">want to login with another account</string>
+    <string name="enter_received_otp">Enter received otp</string>
+    <string name="verify">verify</string>
 
 
 </resources>
