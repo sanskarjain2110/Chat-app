@@ -35,7 +35,7 @@ public class ChatFragment extends Fragment {
     };
 
     Chat_Tile_Data[] chat_data = {
-            new Chat_Tile_Data(R.drawable.img, R.drawable.ic_launcher_background, "Rohan Sharma", "hi this is rohan", "16/07/2022"),
+            new Chat_Tile_Data(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan Sharma", "hi this is rohan", "16/07/2022"),
             new Chat_Tile_Data(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan Sharma", "hi this is rohan", "16/07/2022"),
             new Chat_Tile_Data(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan Sharma", "hi this is rohan", "16/07/2022"),
             new Chat_Tile_Data(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan Sharma", "hi this is rohan", "16/07/2022"),
@@ -49,8 +49,6 @@ public class ChatFragment extends Fragment {
             new Chat_Tile_Data(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan Sharma", "hi this is rohan", "16/07/2022"),
             new Chat_Tile_Data(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan Sharma", "hi this is rohan", "16/07/2022"),
     };
-
-
 
 
     @Override
