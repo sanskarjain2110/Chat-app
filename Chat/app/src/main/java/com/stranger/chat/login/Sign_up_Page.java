@@ -15,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.stranger.chat.R;
 
 public class Sign_up_Page extends AppCompatActivity {
@@ -105,6 +108,4 @@ public class Sign_up_Page extends AppCompatActivity {
                 .setNegativeButton("Edit email", (dialogInterface, i) -> dialogInterface.cancel())
                 .show();
     }
-
-
 }

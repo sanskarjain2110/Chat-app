@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.stranger.chat.MainActivity;
 import com.stranger.chat.R;
+import com.stranger.chat.data.Firebase;
 
 public class Log_in_page extends AppCompatActivity {
     EditText emailField, passwordField;
@@ -38,7 +39,7 @@ public class Log_in_page extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        login.setOnClickListener(view -> {
+         login.setOnClickListener(view -> {
             String email = emailField.getText().toString();
             String password = passwordField.getText().toString();
 
@@ -51,11 +52,10 @@ public class Log_in_page extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Authentication failed.", LENGTH_SHORT).show();
                     }
                 });
             }
-
         });
 
         signUp.setOnClickListener(view -> {
