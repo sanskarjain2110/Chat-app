@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.stranger.chat.MainActivity;
 import com.stranger.chat.R;
-import com.stranger.chat.data.Firebase;
 
 public class Log_in_page extends AppCompatActivity {
     EditText emailField, passwordField;
@@ -39,8 +38,8 @@ public class Log_in_page extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-         login.setOnClickListener(view -> {
-            String email = emailField.getText().toString();
+        login.setOnClickListener(view -> {
+            String email = emailField.getText().toString().toLowerCase().replaceAll("\\s", "");
             String password = passwordField.getText().toString();
 
             if (isEmpty(email) || isEmpty(password)) {
@@ -66,7 +65,6 @@ public class Log_in_page extends AppCompatActivity {
         forgotPassword.setOnClickListener(view ->
                 Toast.makeText(getApplicationContext(), "not implemented", LENGTH_SHORT).show()
         );
-
     }
 
     @Override
@@ -74,8 +72,10 @@ public class Log_in_page extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
+//            if (currentUser.isEmailVerified()) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
+//            }
         }
     }
 }

@@ -1,0 +1,27 @@
+// sign up page
+  @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null && user.isEmailVerified()) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }
+    }
+
+// AlertDialog
+  private void dialogBox(String email, FirebaseUser user) {
+        builder.setTitle("Please verify your email " + email)
+                .setCancelable(false)
+                .setPositiveButton("Resend email", (dialogInterface, i) -> {
+                    verificationLink(user);
+                    dialogBox(email, user);
+                })
+                .setNegativeButton("Already verified", (dialogInterface, i) -> {
+                    if (user != null && user.isEmailVerified()) {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+
+                    }
+                }).show();
+    }
