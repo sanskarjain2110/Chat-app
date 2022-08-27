@@ -1,56 +1,120 @@
 package com.stranger.chat.data;
 
-public class Userdata {
-    String nameField, emailField, passwordField, confirmPasswordField, phoneNumberField;
+import java.io.Serializable;
+
+public class Userdata implements Serializable {
+    private int profilePicId, callActionId, callTypeId, seenStatusId;
+    private String callTime, username, lastText, lastChatTime, userId, email, phoneNumber;
 
     public Userdata() {
     }
 
-    public Userdata(String nameField, String emailField, String passwordField, String confirmPasswordField, String phoneNumberField) {
-        this.nameField = nameField;
-        this.emailField = emailField;
-        this.passwordField = passwordField;
-        this.confirmPasswordField = confirmPasswordField;
-        this.phoneNumberField = phoneNumberField;
+    public Userdata(int profilePicId, String username) {
+        this.profilePicId = profilePicId;
+        this.username = username;
     }
 
-    public String getNameField() {
-        return nameField;
+    public Userdata(int profilePicId, int callActionId, int callTypeId, String username, String callTime) {
+        this.profilePicId = profilePicId;
+        this.callActionId = callActionId;
+        this.callTypeId = callTypeId;
+        this.username = username;
+        this.callTime = callTime;
     }
 
-    public void setNameField(String nameField) {
-        this.nameField = nameField;
+    public Userdata(int profilePicId, int seenStatusId, String username, String lastText, String lastChatTime) {
+        this.profilePicId = profilePicId;
+        this.seenStatusId = seenStatusId;
+        this.username = username;
+        this.lastText = lastText;
+        this.lastChatTime = lastChatTime;
     }
 
-    public String getEmailField() {
-        return emailField;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmailField(String emailField) {
-        this.emailField = emailField;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getPasswordField() {
-        return passwordField;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPasswordField(String passwordField) {
-        this.passwordField = passwordField;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getConfirmPasswordField() {
-        return confirmPasswordField;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setConfirmPasswordField(String confirmPasswordField) {
-        this.confirmPasswordField = confirmPasswordField;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getPhoneNumberField() {
-        return phoneNumberField;
+    public int getProfilePicId() {
+        return profilePicId;
     }
 
-    public void setPhoneNumberField(String phoneNumberField) {
-        this.phoneNumberField = phoneNumberField;
+    public void setProfilePicId(int profilePicId) {
+        this.profilePicId = profilePicId;
+    }
+
+    public int getCallActionId() {
+        return callActionId;
+    }
+
+    public void setCallActionId(int callActionId) {
+        this.callActionId = callActionId;
+    }
+
+    public int getCallTypeId() {
+        return callTypeId;
+    }
+
+    public void setCallTypeId(int callTypeId) {
+        this.callTypeId = callTypeId;
+    }
+
+    public String getCallTime() {
+        return callTime;
+    }
+
+    public void setCallTime(String callTime) {
+        this.callTime = callTime;
+    }
+
+    public int getSeenStatusId() {
+        return seenStatusId;
+    }
+
+    public void setSeenStatusId(int seenStatusId) {
+        this.seenStatusId = seenStatusId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getLastText() {
+        return lastText;
+    }
+
+    public void setLastText(String lastText) {
+        this.lastText = lastText;
+    }
+
+    public String getLastChatTime() {
+        return lastChatTime;
+    }
+
+    public void setLastChatTime(String lastChatTime) {
+        this.lastChatTime = lastChatTime;
     }
 }

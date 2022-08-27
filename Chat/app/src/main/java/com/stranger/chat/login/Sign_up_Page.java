@@ -43,9 +43,11 @@ public class Sign_up_Page extends AppCompatActivity {
     TextView sign_in;
 
     Userdata data = new Userdata();
+
     String name, email, password, confirmPassword, phoneNumber, otp;
 
     FirebaseAuth mAuth;
+
     FirebaseDatabase database;
     DatabaseReference reference;
 
@@ -120,9 +122,9 @@ public class Sign_up_Page extends AppCompatActivity {
             } else if (!password.equals(confirmPassword)) {
                 Toast.makeText(getApplicationContext(), "Password and Confirm password is not same", LENGTH_SHORT).show();
             } else {
-                data.setNameField(name);
-                data.setEmailField(email);
-                data.setPhoneNumberField(phoneNumber);
+                data.setUsername(name);
+                data.setEmail(email);
+                data.setPhoneNumber(phoneNumber);
 
                 signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(mVerificationId, otp));
             }
@@ -140,7 +142,7 @@ public class Sign_up_Page extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(getApplicationContext(), "otp verified", LENGTH_SHORT).show();
-                        FirebaseUser user = task.getResult().getUser();
+//                        FirebaseUser user = task.getResult().getUser();
                         signInWithEmailAndPassword();
                     } else {
                         Toast.makeText(getApplicationContext(), "otp verified failed", LENGTH_SHORT).show();

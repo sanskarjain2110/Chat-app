@@ -17,12 +17,10 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout mainScreen;
     TextView title;
     BottomNavigationView navigationBarMenu;
+    Button logout;
 
     Fragment chatFragment = new ChatFragment(),
             callFragment = new CallFragment();
-
-    String[] titleText = {"Chat", "Call"};
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +29,14 @@ public class MainActivity extends AppCompatActivity {
 
         title = findViewById(R.id.title);
         mainScreen = findViewById(R.id.mainScreen);
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, chatFragment, null).commit();
-
+        logout = findViewById(R.id.logout);
         navigationBarMenu = findViewById(R.id.bottom_navigation);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.mainScreen, chatFragment, null)
+                .commit();
+
         navigationBarMenu.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.chatNavigationButton:
@@ -49,14 +52,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button logout = findViewById(R.id.logout);
         logout.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
 
-            startActivity(new Intent(getApplicationContext(), Log_in_page.class));
+            Intent pageChanger = new Intent(getApplicationContext(), Log_in_page.class);
+            startActivity(pageChanger);
             finish();
         });
-
-
     }
 }
