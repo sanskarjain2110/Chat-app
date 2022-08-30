@@ -25,3 +25,25 @@
                     }
                 }).show();
     }
+
+// home tool bar
+
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content">-->
+
+    <!--        <androidx.appcompat.widget.Toolbar-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content">-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/title"-->
+    <!--                android:layout_width='wrap_content'-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="@string/chats"-->
+    <!--                android:textAppearance="@style/TextAppearance.AppCompat.Large" />-->
+
+
+    <!--        </androidx.appcompat.widget.Toolbar>-->
+
+    <!--    </com.google.android.material.appbar.AppBarLayout>-->

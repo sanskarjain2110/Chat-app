@@ -1,5 +1,6 @@
 package com.stranger.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.stranger.chat.adappter.ChatAdapter;
@@ -23,10 +28,20 @@ import com.stranger.chat.data.Userdata;
 import java.util.ArrayList;
 
 public class ChatFragment extends Fragment {
-    RecyclerView chatRecyclerView, statusRecyclerView;
     ArrayList<Chat_Tile_Data> chat_tile_data = new ArrayList<>();
+
+    FloatingActionButton addChat;
+
+    RecyclerView chatRecyclerView, statusRecyclerView;
+
     ChatAdapter chatAdapter;
     StatusAdapter statusAdapter;
+
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseDatabase mBase = FirebaseDatabase.getInstance();
+
+    FirebaseUser user = mAuth.getCurrentUser();
+    DatabaseReference database = mBase.getReference();
 
     Userdata[] status_data = {
             new Userdata(R.drawable.ic_launcher_background, "Rohan Sharma"),
@@ -48,7 +63,12 @@ public class ChatFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
+        addChat = view.findViewById(R.id.addPerson);
+//        int chatCount = (int) singleValueDatabase(database.child("users").child("messageCount"));
+
+        addChat.setOnClickListener(view1 -> startActivity(new Intent(getContext(), AddChat.class)));
+
+        database.child("users").child(user.getUid()).child("messageIds").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -75,7 +95,22 @@ public class ChatFragment extends Fragment {
         chatAdapter = new ChatAdapter(chat_tile_data, getContext());
         chatRecyclerView.setAdapter(chatAdapter);
 
-
         return view;
+    }
+
+    Object singleValueDatabase(@NonNull DatabaseReference reference) {
+        final Object[] data = new Object[1];
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                data[0] = snapshot.getValue(Object.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return data[0];
     }
 }

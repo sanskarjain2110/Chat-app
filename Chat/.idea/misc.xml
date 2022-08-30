@@ -19,6 +19,7 @@
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/drawable/send-48px.xml" value="0.18" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/drawable/verified_user_48px.xml" value="0.195" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout-v28/status_tile_sample.xml" value="0.15006412997007268" />
+        <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/activity_add_chat.xml" value="0.1671875" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/activity_forgot_password_page.xml" value="0.15052083333333333" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/activity_log_in_page.xml" value="0.1483539974348012" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/activity_main.xml" value="0.15006412997007268" />
@@ -27,13 +28,17 @@
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/activity_resister_page.xml" value="0.15006412997007268" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/activity_sign_in_page.xml" value="0.1" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/activity_sign_up_page.xml" value="0.2" />
+        <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/add_chat_sample.xml" value="0.8" />
+        <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/add_chat_tile_sample.xml" value="0.15006412997007268" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/call_tile_sample.xml" value="0.264" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/chat_tile_sample.xml" value="0.1" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/fragment_call.xml" value="0.1828125" />
-        <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/fragment_chat.xml" value="0.16614583333333333" />
+        <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/fragment_chat.xml" value="0.1" />
+        <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/layout.xml" value="0.16614583333333333" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/message_tile_sample.xml" value="0.2" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/layout/status_tile_sample.xml" value="0.1828125" />
         <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.18177083333333333" />
+        <entry key="..\:/sanskar/CODING_STUFF/chatAppProject/Chat/app/src/main/res/menu/toolbar_menu.xml" value="0.16979166666666667" />
       </map>
     </option>
   </component>
@@ -46,7 +51,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.2" />
+        <option name="scale" value="0.8" />
       </ProjectState>
     </option>
   </component>

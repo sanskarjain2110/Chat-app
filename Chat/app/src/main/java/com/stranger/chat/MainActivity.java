@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,7 +14,6 @@ import com.stranger.chat.login.Log_in_page;
 
 public class MainActivity extends AppCompatActivity {
     FrameLayout mainScreen;
-    TextView title;
     BottomNavigationView navigationBarMenu;
     Button logout;
 
@@ -27,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        title = findViewById(R.id.title);
         mainScreen = findViewById(R.id.mainScreen);
         logout = findViewById(R.id.logout);
         navigationBarMenu = findViewById(R.id.bottom_navigation);

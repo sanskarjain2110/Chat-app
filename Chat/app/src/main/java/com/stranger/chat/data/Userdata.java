@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Userdata implements Serializable {
     private int profilePicId, callActionId, callTypeId, seenStatusId;
-    private String callTime, username, lastText, lastChatTime, userId, email, phoneNumber;
+    private String callTime, username, lastText, lastChatTime, userId;
 
     public Userdata() {
     }
@@ -28,22 +28,6 @@ public class Userdata implements Serializable {
         this.username = username;
         this.lastText = lastText;
         this.lastChatTime = lastChatTime;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getUserId() {

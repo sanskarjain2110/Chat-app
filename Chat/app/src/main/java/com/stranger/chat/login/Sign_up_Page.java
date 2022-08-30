@@ -23,11 +23,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.stranger.chat.MainActivity;
 import com.stranger.chat.R;
-import com.stranger.chat.data.Userdata;
+import com.stranger.chat.data.Sign_upData;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,14 +41,11 @@ public class Sign_up_Page extends AppCompatActivity {
 
     TextView sign_in;
 
-    Userdata data = new Userdata();
+    Sign_upData data = new Sign_upData();
 
     String name, email, password, confirmPassword, phoneNumber, otp;
 
     FirebaseAuth mAuth;
-
-    FirebaseDatabase database;
-    DatabaseReference reference;
 
     String mVerificationId;
     AlertDialog.Builder builder;
@@ -142,7 +138,7 @@ public class Sign_up_Page extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(getApplicationContext(), "otp verified", LENGTH_SHORT).show();
-//                        FirebaseUser user = task.getResult().getUser();
+
                         signInWithEmailAndPassword();
                     } else {
                         Toast.makeText(getApplicationContext(), "otp verified failed", LENGTH_SHORT).show();
@@ -160,17 +156,13 @@ public class Sign_up_Page extends AppCompatActivity {
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
 
-
                             Toast.makeText(getApplicationContext(), "Request registered", LENGTH_SHORT).show();
                             verificationLink(user);
 
-                            database = FirebaseDatabase.getInstance();
-                            reference = database.getReference("users");
-                            reference.child(user.getUid()).setValue(data);
+                            FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(data);
 
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
-
 
                         } else {
                             Toast.makeText(getApplicationContext(), "Authentication failed.", LENGTH_SHORT).show();
