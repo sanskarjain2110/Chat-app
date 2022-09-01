@@ -1,26 +1,9 @@
 package com.stranger.chat.data;
 
 public class Sign_upData {
-    private String username, email, phoneNumber, messageIds = null;
-    private int messageCount = 0;
+    private String username, email, phoneNumber;
 
     public Sign_upData() {
-    }
-
-    public int getMessageCount() {
-        return messageCount;
-    }
-
-    public void setMessageCount(int messageCount) {
-        this.messageCount = messageCount;
-    }
-
-    public String getMessageIds() {
-        return messageIds;
-    }
-
-    public void setMessageIds(String messageIds) {
-        this.messageIds = messageIds;
     }
 
     public String getUsername() {

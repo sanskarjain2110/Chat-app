@@ -38,9 +38,8 @@ public class ChatFragment extends Fragment {
     StatusAdapter statusAdapter;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseDatabase mBase = FirebaseDatabase.getInstance();
-
     FirebaseUser user = mAuth.getCurrentUser();
+    FirebaseDatabase mBase = FirebaseDatabase.getInstance();
     DatabaseReference database = mBase.getReference();
 
     Userdata[] status_data = {
@@ -59,20 +58,36 @@ public class ChatFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        chatAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
         addChat = view.findViewById(R.id.addPerson);
-//        int chatCount = (int) singleValueDatabase(database.child("users").child("messageCount"));
 
         addChat.setOnClickListener(view1 -> startActivity(new Intent(getContext(), AddChat.class)));
 
-        database.child("users").child(user.getUid()).child("messageIds").addValueEventListener(new ValueEventListener() {
+        database.child("usersMessageIds").child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    chat_tile_data.add(dataSnapshot.getValue(Chat_Tile_Data.class));
+
+                    database.child("messageData").child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
                 chatAdapter.notifyDataSetChanged();
             }
@@ -96,21 +111,5 @@ public class ChatFragment extends Fragment {
         chatRecyclerView.setAdapter(chatAdapter);
 
         return view;
-    }
-
-    Object singleValueDatabase(@NonNull DatabaseReference reference) {
-        final Object[] data = new Object[1];
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                data[0] = snapshot.getValue(Object.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        return data[0];
     }
 }

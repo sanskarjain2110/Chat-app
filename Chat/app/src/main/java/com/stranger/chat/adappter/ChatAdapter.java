@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.stranger.chat.MessagePage;
 import com.stranger.chat.R;
 import com.stranger.chat.data.Chat_Tile_Data;
-import com.stranger.chat.data.Userdata;
 
 import java.util.ArrayList;
 

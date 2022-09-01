@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.stranger.chat.R;
@@ -28,6 +29,7 @@ public class AddChatAdapter extends RecyclerView.Adapter<AddChatAdapter.AddChat_
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user = mAuth.getCurrentUser();
     DatabaseReference myRef = database.getReference();
 
     public AddChatAdapter(ArrayList<AddChat_Tile_Data> data, Context context) {
@@ -53,21 +55,21 @@ public class AddChatAdapter extends RecyclerView.Adapter<AddChatAdapter.AddChat_
 
             String messagekey = myRef.child("messagesData").push().getKey(),
                     reciver = data.get(position).getUserId(),
-                    sender = mAuth.getCurrentUser().getUid();
+                    sender = user.getUid();
 
             Map<String, Object> roots = new HashMap<>();
-            roots.put("key", messagekey);
 
             Map<String, Object> user = new HashMap<>();
             user.put("0", reciver);
             user.put("1", sender);
 
             roots.put("users", user);
-            roots.put("Messages", "");
+            roots.put("messages", "");
 
             myRef.child("messagesData").child(messagekey).setValue(roots);
-            myRef.child("Users").child(reciver).child("messageIds").child(sender).setValue(messagekey);
-            myRef.child("Users").child(sender).child("messageIds").child(reciver).setValue(messagekey);
+
+            FirebaseDatabase.getInstance().getReference().child("usersMessageId").child(reciver).child(sender).setValue(messagekey);
+            FirebaseDatabase.getInstance().getReference().child("usersMessageId").child(sender).child(reciver).setValue(messagekey);
 
             ((Activity) context).finish();
         });
@@ -77,7 +79,6 @@ public class AddChatAdapter extends RecyclerView.Adapter<AddChatAdapter.AddChat_
     public int getItemCount() {
         return data.size();
     }
-
 
     static class AddChat_ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout addChatTile;
