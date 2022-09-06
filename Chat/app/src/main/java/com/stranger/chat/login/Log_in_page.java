@@ -63,8 +63,8 @@ public class Log_in_page extends AppCompatActivity {
         });
 
         forgotPassword.setOnClickListener(view ->
-                Toast.makeText(getApplicationContext(), "not implemented", LENGTH_SHORT).show()
-        );
+                startActivity(new Intent(getApplicationContext(), ForgotPassword_page.class)
+                ));
     }
 
     @Override
@@ -72,10 +72,8 @@ public class Log_in_page extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-//            if (currentUser.isEmailVerified()) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
-//            }
         }
     }
 }

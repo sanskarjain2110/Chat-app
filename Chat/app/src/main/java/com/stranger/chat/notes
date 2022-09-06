@@ -47,3 +47,14 @@
     <!--        </androidx.appcompat.widget.Toolbar>-->
 
     <!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+    -------------recyclerview
+      <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/statusRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+    ---------------divider
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />

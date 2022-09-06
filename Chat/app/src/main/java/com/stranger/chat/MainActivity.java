@@ -29,20 +29,15 @@ public class MainActivity extends AppCompatActivity {
         logout = findViewById(R.id.logout);
         navigationBarMenu = findViewById(R.id.bottom_navigation);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.mainScreen, chatFragment, null)
-                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, chatFragment, null).commit();
 
         navigationBarMenu.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.chatNavigationButton:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.mainScreen, chatFragment, null).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, chatFragment, null).commit();
                     return true;
                 case R.id.callNavigationButton:
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.mainScreen, callFragment, null).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, callFragment, null).commit();
                     return true;
                 default:
                     return false;
@@ -52,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
         logout.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
 
-            Intent pageChanger = new Intent(getApplicationContext(), Log_in_page.class);
-            startActivity(pageChanger);
+            startActivity(new Intent(getApplicationContext(), Log_in_page.class));
             finish();
         });
     }

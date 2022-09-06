@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Chat"
         tools:targetApi="33">
         <activity
-            android:name=".AddChat"
+            android:name=".chat_modules.AddChat"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
@@ -33,7 +33,7 @@
             android:name=".login.Sign_up_Page"
             android:exported="true" />
         <activity
-            android:name=".MessagePage"
+            android:name=".chat_modules.MessagePage"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity

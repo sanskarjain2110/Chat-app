@@ -10,35 +10,34 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.stranger.chat.R;
+import com.stranger.chat.data.MessageData;
 
-import java.text.MessageFormat;
+public class MessagePageAdapter extends FirebaseRecyclerAdapter<MessageData, MessagePageAdapter.MessageViewHolder> {
+    public MessagePageAdapter(FirebaseRecyclerOptions<MessageData> options) {
+        super(options);
+    }
 
-public class MessagePageAdapter extends RecyclerView.Adapter<MessagePageAdapter.MessageViewHolder> {
+    @Override
+    protected void onBindViewHolder(@NonNull MessageViewHolder holder, int position, @NonNull MessageData model) {
+        holder.getUsername().setText(model.getUsername());
+        holder.getMessageArea().setText(model.getMessageArea());
+        holder.getTimeStamp().setText(model.getTimeStamp());
+    }
 
     @NonNull
     @Override
-    public MessagePageAdapter.MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.message_tile_sample, parent, false);
-
+    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_tile_sample, parent, false);
         return new MessagePageAdapter.MessageViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull MessagePageAdapter.MessageViewHolder holder, int position) {
-        holder.getMessageArea().setText(MessageFormat.format("Sample {0}", position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return 15;
     }
 
     static class MessageViewHolder extends RecyclerView.ViewHolder {
         CardView tile;
         ImageView profilePic;
-        TextView messageArea, timeStamp;
+        TextView messageArea, timeStamp, username;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -47,7 +46,8 @@ public class MessagePageAdapter extends RecyclerView.Adapter<MessagePageAdapter.
 
             profilePic = itemView.findViewById(R.id.profilePic);
 
-            messageArea = itemView.findViewById(R.id.messageArea);
+            username = itemView.findViewById(R.id.username);
+            messageArea = itemView.findViewById(R.id.messageTextView);
             timeStamp = itemView.findViewById(R.id.timeStamp);
         }
 
@@ -65,6 +65,10 @@ public class MessagePageAdapter extends RecyclerView.Adapter<MessagePageAdapter.
 
         public TextView getTimeStamp() {
             return timeStamp;
+        }
+
+        public TextView getUsername() {
+            return username;
         }
     }
 }

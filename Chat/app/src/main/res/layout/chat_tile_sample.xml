@@ -50,14 +50,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-                <ImageView
-                    android:id="@+id/seenStatus"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="bottom"
-                    android:contentDescription="@string/seen_status"
-                    android:src="@drawable/ic_launcher_background" />
-
                 <TextView
                     android:id="@+id/lastText"
                     android:layout_width="wrap_content"

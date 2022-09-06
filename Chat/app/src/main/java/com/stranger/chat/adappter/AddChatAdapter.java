@@ -58,6 +58,8 @@ public class AddChatAdapter extends RecyclerView.Adapter<AddChatAdapter.AddChat_
                     sender = user.getUid();
 
             Map<String, Object> roots = new HashMap<>();
+            roots.put("lastText", " ");
+            roots.put("lastSeen", " ");
 
             Map<String, Object> user = new HashMap<>();
             user.put("0", reciver);

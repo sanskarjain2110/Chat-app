@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseException;
@@ -26,29 +25,24 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 import com.stranger.chat.MainActivity;
 import com.stranger.chat.R;
-import com.stranger.chat.data.Sign_upData;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-//logout code
-//FirebaseAuth.getInstance().signOut();
 public class Sign_up_Page extends AppCompatActivity {
     ImageView profilePic;
-
     EditText nameField, emailField, passwordField, confirmPasswordField, phoneNumberField, otpField;
-
     Button sign_upButton, getOtpButton;
-
     TextView sign_in;
 
-    Sign_upData data = new Sign_upData();
+    Map<String, String> data = new HashMap<>();
 
     String name, email, password, confirmPassword, phoneNumber, otp;
 
     FirebaseAuth mAuth;
 
     String mVerificationId;
-    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +64,7 @@ public class Sign_up_Page extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        builder = new AlertDialog.Builder(this);
-
-        profilePic.setOnClickListener(view -> {
-        });
+        profilePic.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "need to implement", LENGTH_SHORT).show());
 
         getOtpButton.setOnClickListener(view -> {
             PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
@@ -118,9 +109,9 @@ public class Sign_up_Page extends AppCompatActivity {
             } else if (!password.equals(confirmPassword)) {
                 Toast.makeText(getApplicationContext(), "Password and Confirm password is not same", LENGTH_SHORT).show();
             } else {
-                data.setUsername(name);
-                data.setEmail(email);
-                data.setPhoneNumber(phoneNumber);
+                data.put("username", name);
+                data.put("email", email);
+                data.put("phoneNumber", phoneNumber);
 
                 signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(mVerificationId, otp));
             }
@@ -138,7 +129,7 @@ public class Sign_up_Page extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(getApplicationContext(), "otp verified", LENGTH_SHORT).show();
-
+                        //after verifying otp it verify email
                         signInWithEmailAndPassword();
                     } else {
                         Toast.makeText(getApplicationContext(), "otp verified failed", LENGTH_SHORT).show();
@@ -152,28 +143,30 @@ public class Sign_up_Page extends AppCompatActivity {
         if (user != null) {
             AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
-            user.linkWithCredential(credential)
-                    .addOnCompleteListener(this, task -> {
-                        if (task.isSuccessful()) {
+            user.linkWithCredential(credential).addOnCompleteListener(this, task -> {
+                if (task.isSuccessful()) {
 
-                            Toast.makeText(getApplicationContext(), "Request registered", LENGTH_SHORT).show();
-                            verificationLink(user);
+                    Toast.makeText(getApplicationContext(), "Request registered", LENGTH_SHORT).show();
 
-                            FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(data);
+                    //verification link sent
+                    verificationLink(user);
 
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
+                    //login data updated
+                    FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(data);
 
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Authentication failed.", LENGTH_SHORT).show();
-                        }
-                    });
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Authentication failed.", LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
     private void verificationLink(@NonNull FirebaseUser user) {
         user.sendEmailVerification().addOnSuccessListener(unused ->
-                Toast.makeText(getApplicationContext(), "A verification email is sent please verify yourself first", LENGTH_SHORT).show()
+                Toast.makeText(getApplicationContext(), "A verification email has been sent on your email", Toast.LENGTH_LONG).show()
         );
     }
 }

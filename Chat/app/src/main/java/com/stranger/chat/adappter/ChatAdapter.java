@@ -1,18 +1,17 @@
 package com.stranger.chat.adappter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.stranger.chat.MessagePage;
 import com.stranger.chat.R;
 import com.stranger.chat.data.Chat_Tile_Data;
 
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Chat_ViewHolder> {
     final ArrayList<Chat_Tile_Data> data;
+
     Context context;
 
     public ChatAdapter(ArrayList<Chat_Tile_Data> data, Context context) {
@@ -38,17 +38,22 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Chat_ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull ChatAdapter.Chat_ViewHolder holder, int position) {
-//        holder.getProfilePic().setImageResource(data.get(position).getProfilePicId());
-//        holder.getSeenStatus().setImageResource(data.get(position).getSeenStatusId());
+        String username = data.get(position).getUsername();
 
-        holder.getUsername().setText(data.get(position).getUsername());
-//        holder.getLastText().setText(data.get(position).getLastText());
-//        holder.getLastChatTime().setText(data.get(position).getLastChatTime());
+
+        holder.getUsername().setText(username);
+        holder.getLastText().setText(data.get(position).getLastText());
+        holder.getLastChatTime().setText(data.get(position).getLastSeen());
 
         holder.getChatTile().setOnClickListener(view -> {
-            Intent intent = new Intent(context, MessagePage.class);
-            intent.putExtra("data_pos", position);
-            context.startActivity(intent);
+            Toast.makeText(context, data.get(position).getMessageId(), Toast.LENGTH_LONG).show();
+//            Intent intent = new Intent(context, MessagePage.class);
+//
+//            Bundle sendData = new Bundle();
+//            sendData.putString("username", username);
+//            sendData.putString("messageId", data.get(position).getMessageId());
+//            intent.putExtra("data", sendData);
+//            context.startActivity(intent);
         });
     }
 
@@ -58,14 +63,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Chat_ViewHolde
     }
 
     public static class Chat_ViewHolder extends RecyclerView.ViewHolder {
-        ImageView profilePic, seenStatus;
+        ImageView profilePic;
         TextView username, lastText, lastChatTime;
         LinearLayout chatTile;
 
         public Chat_ViewHolder(@NonNull View itemView) {
             super(itemView);
             profilePic = itemView.findViewById(R.id.profilePic);
-            seenStatus = itemView.findViewById(R.id.seenStatus);
             username = itemView.findViewById(R.id.username);
             lastChatTime = itemView.findViewById(R.id.lastChatTime);
             lastText = itemView.findViewById(R.id.lastText);
@@ -80,10 +84,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Chat_ViewHolde
             return chatTile;
         }
 
-        public ImageView getSeenStatus() {
-            return seenStatus;
-        }
-
         public TextView getUsername() {
             return username;
         }
@@ -95,6 +95,5 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Chat_ViewHolde
         public TextView getLastChatTime() {
             return lastChatTime;
         }
-
     }
 }

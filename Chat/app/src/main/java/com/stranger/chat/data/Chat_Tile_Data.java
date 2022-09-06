@@ -1,31 +1,18 @@
 package com.stranger.chat.data;
 
 public class Chat_Tile_Data {
-    private int profilePicId, seenStatusId;
-    private String username, lastText, lastChatTime;
+    private String username, lastText, lastSeen, messageId;
 
-    public Chat_Tile_Data(int profilePicId, int seenStatusId, String username, String lastText, String lastChatTime) {
-        this.profilePicId = profilePicId;
-        this.seenStatusId = seenStatusId;
-        this.username = username;
-        this.lastText = lastText;
-        this.lastChatTime = lastChatTime;
+    public Chat_Tile_Data() {
+
     }
 
-    public int getProfilePicId() {
-        return profilePicId;
+    public String getMessageId() {
+        return messageId;
     }
 
-    public void setProfilePicId(int profilePicId) {
-        this.profilePicId = profilePicId;
-    }
-
-    public int getSeenStatusId() {
-        return seenStatusId;
-    }
-
-    public void setSeenStatusId(int seenStatusId) {
-        this.seenStatusId = seenStatusId;
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 
     public String getUsername() {
@@ -44,11 +31,13 @@ public class Chat_Tile_Data {
         this.lastText = lastText;
     }
 
-    public String getLastChatTime() {
-        return lastChatTime;
+    public String getLastSeen() {
+        return lastSeen;
     }
 
-    public void setLastChatTime(String lastChatTime) {
-        this.lastChatTime = lastChatTime;
+    public void setLastSeen(String lastSeen) {
+        this.lastSeen = lastSeen;
     }
+
+
 }
