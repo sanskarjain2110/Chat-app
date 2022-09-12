@@ -1,18 +1,20 @@
 package com.stranger.chat.adappter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.stranger.chat.R;
+import com.stranger.chat.chat_modules.MessagePage;
 import com.stranger.chat.data.Chat_Tile_Data;
 
 import java.util.ArrayList;
@@ -38,22 +40,19 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Chat_ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull ChatAdapter.Chat_ViewHolder holder, int position) {
-        String username = data.get(position).getUsername();
-
-
-        holder.getUsername().setText(username);
+        String reciverUsername = data.get(position).getReciverUsername();
+        holder.getUsername().setText(reciverUsername);
         holder.getLastText().setText(data.get(position).getLastText());
         holder.getLastChatTime().setText(data.get(position).getLastSeen());
 
         holder.getChatTile().setOnClickListener(view -> {
-            Toast.makeText(context, data.get(position).getMessageId(), Toast.LENGTH_LONG).show();
-//            Intent intent = new Intent(context, MessagePage.class);
-//
-//            Bundle sendData = new Bundle();
-//            sendData.putString("username", username);
-//            sendData.putString("messageId", data.get(position).getMessageId());
-//            intent.putExtra("data", sendData);
-//            context.startActivity(intent);
+            Intent intent = new Intent(context, MessagePage.class);
+
+            Bundle sendData = new Bundle();
+            sendData.putString("reciverUsername", reciverUsername);
+            sendData.putString("messageId", data.get(position).getMessageId());
+            intent.putExtra("data", sendData);
+            context.startActivity(intent);
         });
     }
 

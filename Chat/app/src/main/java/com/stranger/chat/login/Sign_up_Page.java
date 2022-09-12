@@ -3,7 +3,9 @@ package com.stranger.chat.login;
 import static android.text.TextUtils.isEmpty;
 import static android.widget.Toast.LENGTH_SHORT;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -152,7 +154,15 @@ public class Sign_up_Page extends AppCompatActivity {
                     verificationLink(user);
 
                     //login data updated
+                    data.put("userId", mAuth.getCurrentUser().getUid());
                     FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(data);
+
+                    //local data
+                    SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("host_username", data.get("username"));
+                    editor.putString("host_phoneNumber", data.get("phoneNumber"));
+                    editor.apply();
 
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();

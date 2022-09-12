@@ -1,17 +1,17 @@
 package com.stranger.chat.data;
 
 public class MessageData {
-    String username, timeStamp, messageArea;
+    String sender, timeStamp, message;
 
     MessageData() {
     }
 
-    public String getUsername() {
-        return username;
+    public String getSender() {
+        return sender;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
     public String getTimeStamp() {
@@ -22,11 +22,11 @@ public class MessageData {
         this.timeStamp = timeStamp;
     }
 
-    public String getMessageArea() {
-        return messageArea;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMessageArea(String messageArea) {
-        this.messageArea = messageArea;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

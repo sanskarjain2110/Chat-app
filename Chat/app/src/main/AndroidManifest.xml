@@ -16,7 +16,7 @@
         <activity
             android:name=".chat_modules.AddChat"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            />
         <activity
             android:name=".login.ForgotPassword_page"
             android:exported="false" />
@@ -34,8 +34,7 @@
             android:exported="true" />
         <activity
             android:name=".chat_modules.MessagePage"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />

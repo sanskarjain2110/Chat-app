@@ -22,8 +22,8 @@ public class MessagePageAdapter extends FirebaseRecyclerAdapter<MessageData, Mes
 
     @Override
     protected void onBindViewHolder(@NonNull MessageViewHolder holder, int position, @NonNull MessageData model) {
-        holder.getUsername().setText(model.getUsername());
-        holder.getMessageArea().setText(model.getMessageArea());
+        holder.getUsername().setText(model.getSender());
+        holder.getMessageArea().setText(model.getMessage());
         holder.getTimeStamp().setText(model.getTimeStamp());
     }
 
