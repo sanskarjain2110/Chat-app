@@ -1,7 +1,5 @@
 package com.stranger.chat;
 
-import static android.widget.Toast.LENGTH_LONG;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,25 +8,24 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.stranger.chat.adappter.ChatAdapter;
 import com.stranger.chat.chat_modules.AddChat;
 import com.stranger.chat.data.Chat_Tile_Data;
 
-import java.util.ArrayList;
-
 public class ChatFragment extends Fragment {
-    ArrayList<Chat_Tile_Data> chat_tile_data = new ArrayList<>();
 
     RecyclerView chatRecyclerView;
 
@@ -55,52 +52,57 @@ public class ChatFragment extends Fragment {
 
         user = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        chatRecyclerView = view.findViewById(R.id.chatRecyclerView);
+
         database = FirebaseDatabase.getInstance();
-        reference = database.getReference().child("messageId");
-        query = reference.equalTo(user);
+        reference = database.getReference().child("messagesId");
+        query = reference.limitToLast(50).orderByChild(user);
 
-        // usersMessageId --> user --> userKey = MessageKey (pairs)
-        FirebaseDatabase.getInstance().getReference().child("usersMessageId").child(user).addValueEventListener(new ValueEventListener() {
+        query.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Chat_Tile_Data info = new Chat_Tile_Data();
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                    String messageId = dataSnapshot.getValue(String.class),
-                            userId = dataSnapshot.getKey();
-                    //messageId --> lastText
-                    //          --> timeStamp
-                    //          --> userid
-                    FirebaseDatabase.getInstance().getReference().child("messageData").child(messageId).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            info.setReciverUsername(snapshot.child(userId).getValue(String.class));
-                            info.setMessageId(messageId);
-                            info.setLastSeen(snapshot.child("lastText").getValue(String.class));
-                            info.setLastText(snapshot.child("lastSeen").getValue(String.class));
-                        }
+            }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(getContext(), error.getMessage(), LENGTH_LONG).show();
-                        }
-                    });
-                    chat_tile_data.add(info);
-                    chatAdapter.notifyDataSetChanged();
-                }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "error", LENGTH_LONG).show();
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
-        chatRecyclerView = view.findViewById(R.id.chatRecyclerView);
-        chatRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        chatAdapter = new ChatAdapter(chat_tile_data, getContext());
-        chatRecyclerView.setAdapter(chatAdapter);
-
         return view;
+    }
+
+    public void onResume() {
+        super.onResume();
+
+        FirebaseRecyclerOptions<Chat_Tile_Data> options = new FirebaseRecyclerOptions.Builder<Chat_Tile_Data>()
+                .setQuery(query, Chat_Tile_Data.class).build();
+
+        chatAdapter = new ChatAdapter(options, getContext());
+        chatRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        chatRecyclerView.setAdapter(chatAdapter);
+        chatAdapter.startListening();
+    }
+
+
+    public void onStop() {
+        super.onStop();
+        chatAdapter.stopListening();
     }
 }

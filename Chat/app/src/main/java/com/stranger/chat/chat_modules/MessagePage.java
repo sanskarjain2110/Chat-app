@@ -150,9 +150,11 @@ public class MessagePage extends AppCompatActivity {
     }
 
     void lastUpdate() {
-        Map<String, Object> lastPush = new HashMap<>();
-        lastPush.put("lastText", lastText);
-        lastPush.put("lastSeen", lastTimeStamp);
-        FirebaseDatabase.getInstance().getReference().child("messagesId").child(messageId).updateChildren(lastPush);
+        if (lastText != null) {
+            Map<String, Object> lastPush = new HashMap<>();
+            lastPush.put("lastText", lastText);
+            lastPush.put("lastSeen", lastTimeStamp);
+            FirebaseDatabase.getInstance().getReference().child("messagesId").child(messageId).updateChildren(lastPush);
+        }
     }
 }

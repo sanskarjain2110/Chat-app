@@ -53,12 +53,16 @@ public class AddChatAdapter extends FirebaseRecyclerAdapter<AddChat_Tile_Data, A
                     reciverKey = model.getUserId(),
                     senderKey = user.getUid();
 
+            Map<String, Object> user = new HashMap<>();
+            user.put(reciverKey, reciver);
+            user.put(senderKey, host_username);
+
 
             Map<String, Object> roots = new HashMap<>();
+            roots.put("messageId", messagekey);
             roots.put("lastText", " ");
             roots.put("lastSeen", " ");
-            roots.put(reciverKey, reciver);
-            roots.put(senderKey, host_username);
+            roots.put("users", user);
 
             FirebaseDatabase.getInstance().getReference().child("messagesId").child(messagekey).setValue(roots);
             FirebaseDatabase.getInstance().getReference().child("userMessageId").child(reciverKey).child(senderKey).setValue(messagekey);

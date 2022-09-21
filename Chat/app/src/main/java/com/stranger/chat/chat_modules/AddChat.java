@@ -21,11 +21,7 @@ import com.stranger.chat.R;
 import com.stranger.chat.adappter.AddChatAdapter;
 import com.stranger.chat.data.AddChat_Tile_Data;
 
-import java.util.ArrayList;
-
 public class AddChat extends AppCompatActivity {
-    ArrayList<AddChat_Tile_Data> data = new ArrayList<>();
-
     AddChatAdapter addChatAdapter;
 
 
@@ -41,7 +37,9 @@ public class AddChat extends AppCompatActivity {
         setContentView(R.layout.activity_add_chat);
 
         SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
-        String host_username = sharedPref.getString("host_username", "");
+        String host_username = sharedPref.getString("host_username", " ");
+
+        addChatRecyclerView = findViewById(R.id.addChatRecyclerView);
 
         database = FirebaseDatabase.getInstance();
         reference = database.getReference().child("users");
@@ -77,7 +75,6 @@ public class AddChat extends AppCompatActivity {
         FirebaseRecyclerOptions<AddChat_Tile_Data> options = new FirebaseRecyclerOptions.Builder<AddChat_Tile_Data>()
                 .setQuery(query, AddChat_Tile_Data.class).build();
 
-        addChatRecyclerView = findViewById(R.id.addChatRecyclerView);
         addChatRecyclerView.setHasFixedSize(true);
         addChatAdapter = new AddChatAdapter(options, this,host_username);
         addChatRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

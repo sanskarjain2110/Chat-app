@@ -1,17 +1,28 @@
 package com.stranger.chat.data;
 
+import java.util.Map;
+
 public class Chat_Tile_Data {
-    private String reciverUsername, lastText, lastSeen, messageId;
+    private String lastText,lastSeen,messageId;
+    private Map<String, Object> users;
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
 
     public Chat_Tile_Data() {
     }
 
-    public String getReciverUsername() {
-        return reciverUsername;
+    public Map<String, Object> getUsers() {
+        return users;
     }
 
-    public void setReciverUsername(String reciverUsername) {
-        this.reciverUsername = reciverUsername;
+    public void setUsers(Map<String, Object> users) {
+        this.users = users;
     }
 
     public String getLastText() {
@@ -30,11 +41,4 @@ public class Chat_Tile_Data {
         this.lastSeen = lastSeen;
     }
 
-    public String getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
-    }
 }

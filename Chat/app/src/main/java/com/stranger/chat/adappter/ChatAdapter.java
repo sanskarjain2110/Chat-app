@@ -13,19 +13,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.MessagePage;
 import com.stranger.chat.data.Chat_Tile_Data;
 
-import java.util.ArrayList;
+import java.util.Objects;
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Chat_ViewHolder> {
-    final ArrayList<Chat_Tile_Data> data;
-
+public class ChatAdapter extends FirebaseRecyclerAdapter<Chat_Tile_Data, ChatAdapter.Chat_ViewHolder> {
     Context context;
 
-    public ChatAdapter(ArrayList<Chat_Tile_Data> data, Context context) {
-        this.data = data;
+
+    public ChatAdapter(FirebaseRecyclerOptions<Chat_Tile_Data> options, Context context) {
+        super(options);
         this.context = context;
     }
 
@@ -39,26 +41,28 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Chat_ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatAdapter.Chat_ViewHolder holder, int position) {
-        String reciverUsername = data.get(position).getReciverUsername();
-        holder.getUsername().setText(reciverUsername);
-        holder.getLastText().setText(data.get(position).getLastText());
-        holder.getLastChatTime().setText(data.get(position).getLastSeen());
+    protected void onBindViewHolder(@NonNull Chat_ViewHolder holder, int position, @NonNull Chat_Tile_Data model) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                reciverUsername = " ";
+        for (String s : model.getUsers().keySet()) {
+            if (!Objects.equals(s, userId) && s != null) {
+                reciverUsername = (String) model.getUsers().get(s);
+                holder.getUsername().setText(reciverUsername);
+            }
+        }
+        holder.getLastText().setText(model.getLastText());
+        holder.getLastChatTime().setText(model.getLastSeen());
 
+        String finalReciverUsername = reciverUsername;
         holder.getChatTile().setOnClickListener(view -> {
             Intent intent = new Intent(context, MessagePage.class);
 
             Bundle sendData = new Bundle();
-            sendData.putString("reciverUsername", reciverUsername);
-            sendData.putString("messageId", data.get(position).getMessageId());
+            sendData.putString("reciverUsername", finalReciverUsername);
+            sendData.putString("messageId", model.getMessageId());
             intent.putExtra("data", sendData);
             context.startActivity(intent);
         });
-    }
-
-    @Override
-    public int getItemCount() {
-        return data.size();
     }
 
     public static class Chat_ViewHolder extends RecyclerView.ViewHolder {

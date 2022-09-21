@@ -17,8 +17,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView navigationBarMenu;
     Button logout;
 
-    Fragment chatFragment = new ChatFragment(),
-            callFragment = new CallFragment();
+    Fragment callFragment = new CallFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +28,12 @@ public class MainActivity extends AppCompatActivity {
         logout = findViewById(R.id.logout);
         navigationBarMenu = findViewById(R.id.bottom_navigation);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, chatFragment, null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, new ChatFragment(), null).commit();
 
         navigationBarMenu.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.chatNavigationButton:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, chatFragment, null).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, new ChatFragment(), null).commit();
                     return true;
                 case R.id.callNavigationButton:
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, callFragment, null).commit();
