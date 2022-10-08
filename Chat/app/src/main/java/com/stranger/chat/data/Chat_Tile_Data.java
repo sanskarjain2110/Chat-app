@@ -3,8 +3,8 @@ package com.stranger.chat.data;
 import java.util.Map;
 
 public class Chat_Tile_Data {
-    private String lastText,lastSeen,messageId;
-    private Map<String, Object> users;
+    private String lastText, lastSeen, messageId;
+    private Map<String, Object> user;
 
     public String getMessageId() {
         return messageId;
@@ -17,12 +17,12 @@ public class Chat_Tile_Data {
     public Chat_Tile_Data() {
     }
 
-    public Map<String, Object> getUsers() {
-        return users;
+    public Map<String, Object> getUser() {
+        return user;
     }
 
-    public void setUsers(Map<String, Object> users) {
-        this.users = users;
+    public void setUsers(Map<String, Object> user) {
+        this.user = user;
     }
 
     public String getLastText() {

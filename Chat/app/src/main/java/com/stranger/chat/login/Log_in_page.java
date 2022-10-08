@@ -12,16 +12,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.stranger.chat.MainActivity;
 import com.stranger.chat.R;
 
@@ -31,16 +26,14 @@ public class Log_in_page extends AppCompatActivity {
     Button login;
 
     FirebaseAuth mAuth;
-    FirebaseDatabase database;
-    DatabaseReference myRef;
+    FirebaseFirestore database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in_page);
 
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
+        database = FirebaseFirestore.getInstance();
 
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
@@ -60,24 +53,19 @@ public class Log_in_page extends AppCompatActivity {
             } else {
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
+                        //fatching data from FirebaseFirestore to local database
                         // local database  --> then change activity
-                        myRef.child("users").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.putString("host_username", snapshot.child("username").getValue(String.class));
-                                editor.putString("host_phoneNumber", snapshot.child("phoneNumber").getValue(String.class));
-                                editor.apply();
+                        database.collection("users").document(mAuth.getCurrentUser().getUid())
+                                .addSnapshotListener(this, (snapshot, error) -> {
+                                    SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putString("host_username", snapshot.getString("username"));
+                                    editor.putString("host_phoneNumber", snapshot.getString("phoneNumber"));
+                                    editor.apply();
 
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                finish();
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                            }
-                        });
+                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    finish();
+                                });
                     } else {
                         Toast.makeText(getApplicationContext(), "Authentication failed.", LENGTH_SHORT).show();
                     }
@@ -90,9 +78,7 @@ public class Log_in_page extends AppCompatActivity {
             finish();
         });
 
-        forgotPassword.setOnClickListener(view ->
-                startActivity(new Intent(getApplicationContext(), ForgotPassword_page.class)
-                ));
+        forgotPassword.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), ForgotPassword_page.class)));
     }
 
     @Override

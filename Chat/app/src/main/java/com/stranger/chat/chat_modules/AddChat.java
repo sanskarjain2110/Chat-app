@@ -4,30 +4,27 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.stranger.chat.R;
 import com.stranger.chat.adappter.AddChatAdapter;
 import com.stranger.chat.data.AddChat_Tile_Data;
 
+import java.util.List;
+
 public class AddChat extends AppCompatActivity {
     AddChatAdapter addChatAdapter;
 
-
-    FirebaseDatabase database;
-    DatabaseReference reference;
+    FirebaseFirestore database;
     Query query;
+
+    SharedPreferences sharedPref;
+    String host_username;
 
     RecyclerView addChatRecyclerView;
 
@@ -36,53 +33,40 @@ public class AddChat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_chat);
 
-        SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
-        String host_username = sharedPref.getString("host_username", " ");
+        sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
+        host_username = sharedPref.getString("host_username", " ");
 
         addChatRecyclerView = findViewById(R.id.addChatRecyclerView);
+    }
 
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference().child("users");
-        query = reference.limitToLast(60);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        query.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+        database = FirebaseFirestore.getInstance();
+        query = database.collection("users");
 
+        query.addSnapshotListener((snapshot, error) -> {
+            if (error != null) {
+                // Handle error
+                //...
+                return;
             }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            // Convert query snapshot to a list of chats
+            List<AddChat_Tile_Data> chats = snapshot.toObjects(AddChat_Tile_Data.class);
 
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            // Update UI
+            // ...
         });
 
-        FirebaseRecyclerOptions<AddChat_Tile_Data> options = new FirebaseRecyclerOptions.Builder<AddChat_Tile_Data>()
+        FirestoreRecyclerOptions<AddChat_Tile_Data> options = new FirestoreRecyclerOptions.Builder<AddChat_Tile_Data>()
                 .setQuery(query, AddChat_Tile_Data.class).build();
 
         addChatRecyclerView.setHasFixedSize(true);
-        addChatAdapter = new AddChatAdapter(options, this,host_username);
+        addChatAdapter = new AddChatAdapter(options, this, host_username);
         addChatRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         addChatRecyclerView.setAdapter(addChatAdapter);
-    }
-
-    protected void onStart() {
-        super.onStart();
         addChatAdapter.startListening();
     }
 

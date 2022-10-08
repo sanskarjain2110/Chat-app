@@ -11,19 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.stranger.chat.R;
 import com.stranger.chat.data.AddChat_Tile_Data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddChatAdapter extends FirebaseRecyclerAdapter<AddChat_Tile_Data, AddChatAdapter.AddChat_ViewHolder> {
+public class AddChatAdapter extends FirestoreRecyclerAdapter<AddChat_Tile_Data, AddChatAdapter.AddChat_ViewHolder> {
     String host_username;
 
     Activity activity;
@@ -31,10 +32,7 @@ public class AddChatAdapter extends FirebaseRecyclerAdapter<AddChat_Tile_Data, A
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference();
-
-    public AddChatAdapter(FirebaseRecyclerOptions<AddChat_Tile_Data> options, Activity activity, String host_username) {
+    public AddChatAdapter(FirestoreRecyclerOptions<AddChat_Tile_Data> options, Activity activity, String host_username) {
         super(options);
         this.activity = activity;
         this.host_username = host_username;
@@ -49,24 +47,43 @@ public class AddChatAdapter extends FirebaseRecyclerAdapter<AddChat_Tile_Data, A
         holder.getPhoneNumberField().setText(phoneNumber);
 
         holder.getAddChatTile().setOnClickListener(view -> {
-            String messagekey = myRef.child("messagesData").push().getKey(),
+            String messagekey = FirebaseFirestore.getInstance().collection("messagesData").document().getId(),
                     reciverKey = model.getUserId(),
                     senderKey = user.getUid();
 
-            Map<String, Object> user = new HashMap<>();
-            user.put(reciverKey, reciver);
-            user.put(senderKey, host_username);
 
+            ArrayList<String> filter = new ArrayList<>();
+            filter.add(reciverKey);
+            filter.add(senderKey);
+
+            Map<String, Object> userCollection = new HashMap<>();
+            userCollection.put(reciverKey, reciver);
+            userCollection.put(senderKey, host_username);
 
             Map<String, Object> roots = new HashMap<>();
             roots.put("messageId", messagekey);
             roots.put("lastText", " ");
             roots.put("lastSeen", " ");
-            roots.put("users", user);
+            roots.put("filter", filter);
+            roots.put("user", userCollection);
 
-            FirebaseDatabase.getInstance().getReference().child("messagesId").child(messagekey).setValue(roots);
-            FirebaseDatabase.getInstance().getReference().child("userMessageId").child(reciverKey).child(senderKey).setValue(messagekey);
-            FirebaseDatabase.getInstance().getReference().child("userMessageId").child(senderKey).child(reciverKey).setValue(messagekey);
+            FirebaseFirestore.getInstance().collection("messages").document(messagekey).set(roots);
+
+            Map<String, Object> senderEnd = new HashMap<>();
+            senderEnd.put(senderKey, messagekey);
+
+            FirebaseFirestore.getInstance()
+                    .collection("userMessageId")
+                    .document(reciverKey)
+                    .set(senderEnd, SetOptions.merge());
+
+            Map<String, Object> reciverEnd = new HashMap<>();
+            reciverEnd.put(reciverKey, messagekey);
+
+            FirebaseFirestore.getInstance()
+                    .collection("userMessageId")
+                    .document(senderKey)
+                    .set(reciverEnd, SetOptions.merge());
 
             activity.finish();
         });

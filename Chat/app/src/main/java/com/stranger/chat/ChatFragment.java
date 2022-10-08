@@ -5,22 +5,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.stranger.chat.adappter.ChatAdapter;
 import com.stranger.chat.chat_modules.AddChat;
 import com.stranger.chat.data.Chat_Tile_Data;
@@ -29,8 +24,8 @@ public class ChatFragment extends Fragment {
 
     RecyclerView chatRecyclerView;
 
-    FirebaseDatabase database;
-    DatabaseReference reference;
+    FirebaseFirestore database;
+    CollectionReference reference;
     Query query;
 
     ChatAdapter chatAdapter;
@@ -54,35 +49,22 @@ public class ChatFragment extends Fragment {
 
         chatRecyclerView = view.findViewById(R.id.chatRecyclerView);
 
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference().child("messagesId");
-        query = reference.limitToLast(50).orderByChild(user);
+        database = FirebaseFirestore.getInstance();
+        reference = database.collection("messages");
+        query = reference.whereArrayContains("filter", user);
 
-        query.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+        query.addSnapshotListener((snapshot, error) -> {
+//            if (error != null) {
+            // Handle error
+            //...
+//                return;
+//            }
 
-            }
+            // Convert query snapshot to a list of chats
+//            List<Chat_Tile_Data> list = snapshot.toObjects(Chat_Tile_Data.class);
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            // Update UI
 
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-            }
         });
 
         return view;
@@ -90,16 +72,15 @@ public class ChatFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-
-        FirebaseRecyclerOptions<Chat_Tile_Data> options = new FirebaseRecyclerOptions.Builder<Chat_Tile_Data>()
+        FirestoreRecyclerOptions<Chat_Tile_Data> options = new FirestoreRecyclerOptions.Builder<Chat_Tile_Data>()
                 .setQuery(query, Chat_Tile_Data.class).build();
 
         chatAdapter = new ChatAdapter(options, getContext());
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         chatRecyclerView.setAdapter(chatAdapter);
+
         chatAdapter.startListening();
     }
-
 
     public void onStop() {
         super.onStop();

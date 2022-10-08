@@ -6,7 +6,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,8 +15,6 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout mainScreen;
     BottomNavigationView navigationBarMenu;
     Button logout;
-
-    Fragment callFragment = new CallFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, new ChatFragment(), null).commit();
                     return true;
                 case R.id.callNavigationButton:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, callFragment, null).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainScreen, new CallFragment(), null).commit();
                     return true;
                 default:
                     return false;

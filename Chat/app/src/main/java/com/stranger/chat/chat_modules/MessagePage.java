@@ -7,19 +7,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.stranger.chat.R;
 import com.stranger.chat.adappter.MessagePageAdapter;
 import com.stranger.chat.data.MessageData;
@@ -43,8 +38,8 @@ public class MessagePage extends AppCompatActivity {
 
     MessagePageAdapter messagePageAdapter;
 
-    FirebaseDatabase database;
-    DatabaseReference reference;
+    FirebaseFirestore database;
+    CollectionReference reference;
     Query query;
 
     @Override
@@ -63,9 +58,9 @@ public class MessagePage extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         sentButton = findViewById(R.id.sentButton);
 
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference().child("messagesData").child(messageId);
-        query = reference.limitToLast(50).orderByChild("timeStamp");
+        database = FirebaseFirestore.getInstance();
+        reference = database.collection("messages").document(messageId).collection("messagesData");
+        query = reference.limitToLast(50).orderBy("timeStamp");
 
         SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
         String host_username = sharedPref.getString("host_username", "");
@@ -86,7 +81,7 @@ public class MessagePage extends AppCompatActivity {
                 pushMessage.put("sender", host_username);
                 pushMessage.put("timeStamp", currentDateandTime);
                 pushMessage.put("message", text);
-                reference.push().setValue(pushMessage);
+                reference.add(pushMessage);
 
                 lastText = text;
                 lastTimeStamp = currentDateandTime;
@@ -94,34 +89,11 @@ public class MessagePage extends AppCompatActivity {
             }
         });
 
-        query.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+        query.addSnapshotListener((snapshot, error) -> {
 
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
         });
 
-        FirebaseRecyclerOptions<MessageData> options = new FirebaseRecyclerOptions.Builder<MessageData>()
+        FirestoreRecyclerOptions<MessageData> options = new FirestoreRecyclerOptions.Builder<MessageData>()
                 .setQuery(query, MessageData.class).build();
 
         messagePageAdapter = new MessagePageAdapter(options);
@@ -154,7 +126,7 @@ public class MessagePage extends AppCompatActivity {
             Map<String, Object> lastPush = new HashMap<>();
             lastPush.put("lastText", lastText);
             lastPush.put("lastSeen", lastTimeStamp);
-            FirebaseDatabase.getInstance().getReference().child("messagesId").child(messageId).updateChildren(lastPush);
+            FirebaseFirestore.getInstance().collection("messages").document(messageId).update(lastPush);
         }
     }
 }

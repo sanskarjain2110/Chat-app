@@ -13,8 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.MessagePage;
@@ -22,11 +22,10 @@ import com.stranger.chat.data.Chat_Tile_Data;
 
 import java.util.Objects;
 
-public class ChatAdapter extends FirebaseRecyclerAdapter<Chat_Tile_Data, ChatAdapter.Chat_ViewHolder> {
+public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAdapter.Chat_ViewHolder> {
     Context context;
 
-
-    public ChatAdapter(FirebaseRecyclerOptions<Chat_Tile_Data> options, Context context) {
+    public ChatAdapter(@NonNull FirestoreRecyclerOptions<Chat_Tile_Data> options, Context context) {
         super(options);
         this.context = context;
     }
@@ -43,13 +42,15 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<Chat_Tile_Data, ChatAda
     @Override
     protected void onBindViewHolder(@NonNull Chat_ViewHolder holder, int position, @NonNull Chat_Tile_Data model) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                reciverUsername = " ";
-        for (String s : model.getUsers().keySet()) {
+                reciverUsername = "Me";
+
+        for (String s : model.getUser().keySet()) {
             if (!Objects.equals(s, userId) && s != null) {
-                reciverUsername = (String) model.getUsers().get(s);
-                holder.getUsername().setText(reciverUsername);
+                reciverUsername = (String) model.getUser().get(s);
             }
         }
+
+        holder.getUsername().setText(reciverUsername);
         holder.getLastText().setText(model.getLastText());
         holder.getLastChatTime().setText(model.getLastSeen());
 

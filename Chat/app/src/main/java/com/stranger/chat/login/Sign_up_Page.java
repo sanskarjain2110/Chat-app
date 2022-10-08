@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.stranger.chat.MainActivity;
 import com.stranger.chat.R;
 
@@ -66,7 +67,11 @@ public class Sign_up_Page extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        profilePic.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "need to implement", LENGTH_SHORT).show());
+        profilePic.setOnClickListener(view -> {
+            // to open gallery
+            Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(openGalleryIntent, 1000);
+        });
 
         getOtpButton.setOnClickListener(view -> {
             PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
@@ -123,7 +128,6 @@ public class Sign_up_Page extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), Log_in_page.class));
             finish();
         });
-
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
@@ -153,9 +157,11 @@ public class Sign_up_Page extends AppCompatActivity {
                     //verification link sent
                     verificationLink(user);
 
+                    //add userId
+                    data.put("userId", user.getUid());
+
                     //login data updated
-                    data.put("userId", mAuth.getCurrentUser().getUid());
-                    FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).setValue(data);
+                    FirebaseFirestore.getInstance().collection("users").document(user.getUid()).set(data);
 
                     //local data
                     SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
