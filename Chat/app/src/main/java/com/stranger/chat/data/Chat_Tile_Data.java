@@ -21,7 +21,7 @@ public class Chat_Tile_Data {
         return user;
     }
 
-    public void setUsers(Map<String, Object> user) {
+    public void setUser(Map<String, Object> user) {
         this.user = user;
     }
 

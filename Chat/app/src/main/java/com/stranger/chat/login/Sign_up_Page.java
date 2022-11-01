@@ -6,8 +6,8 @@ import static android.widget.Toast.LENGTH_SHORT;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,8 +26,12 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.stranger.chat.MainActivity;
 import com.stranger.chat.R;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +42,8 @@ public class Sign_up_Page extends AppCompatActivity {
     EditText nameField, emailField, passwordField, confirmPasswordField, phoneNumberField, otpField;
     Button sign_upButton, getOtpButton;
     TextView sign_in;
+
+    Uri profilePicUri;
 
     Map<String, String> data = new HashMap<>();
 
@@ -53,7 +59,6 @@ public class Sign_up_Page extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up_page);
 
         profilePic = findViewById(R.id.addProfilePic);
-
         nameField = findViewById(R.id.nameField);
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
@@ -69,8 +74,12 @@ public class Sign_up_Page extends AppCompatActivity {
 
         profilePic.setOnClickListener(view -> {
             // to open gallery
-            Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(openGalleryIntent, 1000);
+            // request code is use to identify which inttent is invoking onActicityResult method
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .start(this);
+//            Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            startActivityForResult(openGalleryIntent, 1000);
         });
 
         getOtpButton.setOnClickListener(view -> {
@@ -130,6 +139,31 @@ public class Sign_up_Page extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+    }
+
+//    // use for get result from intent here it use for images
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == Activity.RESULT_OK) {
+//            profilePicUri = data.getData();
+//
+//            // set image to widiget
+//            profilePic.setImageURI(profilePicUri);
+//        }
+//    }
+
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
@@ -151,23 +185,32 @@ public class Sign_up_Page extends AppCompatActivity {
 
             user.linkWithCredential(credential).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
-
-                    Toast.makeText(getApplicationContext(), "Request registered", LENGTH_SHORT).show();
+                    String userId = user.getUid();
+                    StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("users").child(userId).child("profilePic.jpg");
 
                     //verification link sent
                     verificationLink(user);
 
+                    //uplode profile pic in firebaseStorage
+                    storageRef.putFile(profilePicUri);
+
+                    // add profilePic uri to database
+                    storageRef.getDownloadUrl()
+                            .addOnSuccessListener(uri -> data.put("profilePic", uri.toString()))
+                            .addOnFailureListener(exception -> Toast.makeText(getApplicationContext(), "Error", LENGTH_SHORT).show());
+
                     //add userId
-                    data.put("userId", user.getUid());
+                    data.put("userId", userId);
 
                     //login data updated
-                    FirebaseFirestore.getInstance().collection("users").document(user.getUid()).set(data);
+                    FirebaseFirestore.getInstance().collection("users").document(userId).set(data);
 
                     //local data
                     SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString("host_username", data.get("username"));
                     editor.putString("host_phoneNumber", data.get("phoneNumber"));
+                    editor.putString("profilePicUri", profilePicUri.toString());
                     editor.apply();
 
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
