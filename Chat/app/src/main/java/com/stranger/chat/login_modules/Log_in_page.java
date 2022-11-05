@@ -1,4 +1,4 @@
-package com.stranger.chat.login;
+package com.stranger.chat.login_modules;
 
 import static android.text.TextUtils.isEmpty;
 import static android.widget.Toast.LENGTH_SHORT;
@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.stranger.chat.MainActivity;
 import com.stranger.chat.R;
+
+import java.util.Objects;
 
 public class Log_in_page extends AppCompatActivity {
     EditText emailField, passwordField;
@@ -55,8 +57,9 @@ public class Log_in_page extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         //fatching data from FirebaseFirestore to local database
                         // local database  --> then change activity
-                        database.collection("users").document(mAuth.getCurrentUser().getUid())
+                        database.collection("users").document(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
                                 .addSnapshotListener(this, (snapshot, error) -> {
+                                    assert snapshot != null;
                                     SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPref.edit();
                                     editor.putString("host_username", snapshot.getString("username"));

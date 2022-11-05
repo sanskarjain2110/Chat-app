@@ -17,7 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.stranger.chat.R;
 import com.stranger.chat.adappter.MessagePageAdapter;
-import com.stranger.chat.data.MessageData;
+import com.stranger.chat.chat_modules.data.MessageData;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

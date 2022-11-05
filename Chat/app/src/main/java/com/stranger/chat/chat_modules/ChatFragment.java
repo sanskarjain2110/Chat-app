@@ -1,4 +1,4 @@
-package com.stranger.chat;
+package com.stranger.chat.chat_modules;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +16,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.stranger.chat.R;
 import com.stranger.chat.adappter.ChatAdapter;
-import com.stranger.chat.chat_modules.AddChat;
-import com.stranger.chat.data.Chat_Tile_Data;
+import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
 
 public class ChatFragment extends Fragment {
 

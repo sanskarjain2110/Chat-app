@@ -18,7 +18,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.MessagePage;
-import com.stranger.chat.data.Chat_Tile_Data;
+import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
 
 import java.util.Objects;
 
@@ -41,7 +41,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAd
 
     @Override
     protected void onBindViewHolder(@NonNull Chat_ViewHolder holder, int position, @NonNull Chat_Tile_Data model) {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(),
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),
                 reciverUsername = "Me";
 
         for (String s : model.getUser().keySet()) {

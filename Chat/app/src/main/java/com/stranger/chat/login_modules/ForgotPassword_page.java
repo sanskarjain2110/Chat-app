@@ -1,4 +1,4 @@
-package com.stranger.chat.login;
+package com.stranger.chat.login_modules;
 
 import android.os.Bundle;
 

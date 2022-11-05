@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.stranger.chat.R;
-import com.stranger.chat.data.MessageData;
+import com.stranger.chat.chat_modules.data.MessageData;
 
 public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessageData, MessagePageAdapter.MessageViewHolder> {
     public MessagePageAdapter(FirestoreRecyclerOptions<MessageData> options) {

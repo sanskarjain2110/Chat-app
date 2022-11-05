@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS"
+        tools:node="remove" />
 
     <application
         android:allowBackup="true"
@@ -20,16 +23,16 @@
         tools:targetApi="33">
 
         <activity
-            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".chat_modules.AddChat"
             android:exported="false" />
         <activity
-            android:name=".login.ForgotPassword_page"
+            android:name=".login_modules.ForgotPassword_page"
             android:exported="false" />
         <activity
-            android:name=".login.Log_in_page"
+            android:name=".login_modules.Log_in_page"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.Sign_up_Page"
+            android:name=".login_modules.Sign_up_Page"
             android:exported="true" />
         <activity
             android:name=".chat_modules.MessagePage"
@@ -46,6 +49,14 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
+        <service
+            android:name=".java.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
     </application>
 

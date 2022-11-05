@@ -1,4 +1,4 @@
-package com.stranger.chat.data;
+package com.stranger.chat.chat_modules.data;
 
 import java.util.Map;
 

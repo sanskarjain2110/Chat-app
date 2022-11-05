@@ -13,7 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.stranger.chat.R;
 import com.stranger.chat.adappter.AddChatAdapter;
-import com.stranger.chat.data.AddChat_Tile_Data;
+import com.stranger.chat.chat_modules.data.AddChat_Tile_Data;
 
 import java.util.List;
 

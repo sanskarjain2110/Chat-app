@@ -1,7 +1,15 @@
-package com.stranger.chat.data;
+package com.stranger.chat.chat_modules.data;
 
 public class AddChat_Tile_Data {
-    String username, phoneNumber, email, userId;
+    String username, phoneNumber, email, userId, profileUid;
+
+    public String getProfileUid() {
+        return profileUid;
+    }
+
+    public void setProfileUid(String profileUid) {
+        this.profileUid = profileUid;
+    }
 
     public String getUsername() {
         return username;

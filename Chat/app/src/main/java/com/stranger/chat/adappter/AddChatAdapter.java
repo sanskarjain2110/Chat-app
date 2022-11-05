@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.stranger.chat.R;
-import com.stranger.chat.data.AddChat_Tile_Data;
+import com.stranger.chat.chat_modules.data.AddChat_Tile_Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;

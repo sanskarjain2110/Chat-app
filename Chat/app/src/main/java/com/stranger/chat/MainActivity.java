@@ -9,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.stranger.chat.login.Log_in_page;
+import com.stranger.chat.chat_modules.ChatFragment;
+import com.stranger.chat.login_modules.Log_in_page;
 
 public class MainActivity extends AppCompatActivity {
     FrameLayout mainScreen;

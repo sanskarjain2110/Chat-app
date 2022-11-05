@@ -1,3 +1,13 @@
+------------------------------------------------------------
+RequestCode -->
+    --> 101 == gallery image picker
+
+
+------------------------------------------------------------
+Reference
+    * Image cropper --> https://github.com/Yalantis/uCrop
+
+------------------------------------------------------------
 // sign up page
   @Override
     protected void onResume() {
@@ -81,3 +91,23 @@
                                         Log.w(TAG, "Error writing document", e);
                                     }
                                 });
+
+--------------------------- to open gallery an pic image
+
+   request code is use to identify which inttent is invoking onActicityResult method
+         Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+          startActivityForResult(openGalleryIntent, 1000);
+
+
+            // use for get result from intent here it use for images
+            @Override
+            protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+                super.onActivityResult(requestCode, resultCode, data);
+                if (resultCode == Activity.RESULT_OK ) {
+                    assert data != null;
+                    profilePicUri = data.getData();
+
+                    // set image to widiget
+                    profilePic.setImageURI(profilePicUri);
+                }
+            }
