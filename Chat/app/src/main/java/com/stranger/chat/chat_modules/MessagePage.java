@@ -16,8 +16,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.stranger.chat.R;
-import com.stranger.chat.adappter.MessagePageAdapter;
-import com.stranger.chat.chat_modules.data.MessageData;
+import com.stranger.chat.chat_modules.adapter.MessagePageAdapter;
+import com.stranger.chat.chat_modules.data.MessagePage_Tile_Data;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +28,7 @@ public class MessagePage extends AppCompatActivity {
 
     ImageView backButton, sentButton;
     EditText textMessage;
-    TextView reciverName;
+    TextView recivername;
     RecyclerView messageView;
 
     String lastText, lastTimeStamp;
@@ -51,7 +51,7 @@ public class MessagePage extends AppCompatActivity {
         messageId = bundle.getString("messageId");
 
         textMessage = findViewById(R.id.getMessage);
-        reciverName = findViewById(R.id.reciversName);
+        recivername = findViewById(R.id.reciversName);
 
         messageView = findViewById(R.id.mainScreen);
 
@@ -60,13 +60,13 @@ public class MessagePage extends AppCompatActivity {
 
         database = FirebaseFirestore.getInstance();
         reference = database.collection("messages").document(messageId).collection("messagesData");
-        query = reference.limitToLast(50).orderBy("timeStamp");
+        query = reference.orderBy("timeStamp");
 
         SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
         String host_username = sharedPref.getString("host_username", "");
 
         // set Title
-        reciverName.setText(bundle.getString("reciverUsername"));
+        recivername.setText(bundle.getString("reciversname"));
 
         backButton.setOnClickListener(view -> finish());
 
@@ -93,8 +93,8 @@ public class MessagePage extends AppCompatActivity {
 
         });
 
-        FirestoreRecyclerOptions<MessageData> options = new FirestoreRecyclerOptions.Builder<MessageData>()
-                .setQuery(query, MessageData.class).build();
+        FirestoreRecyclerOptions<MessagePage_Tile_Data> options = new FirestoreRecyclerOptions.Builder<MessagePage_Tile_Data>()
+                .setQuery(query, MessagePage_Tile_Data.class).build();
 
         messagePageAdapter = new MessagePageAdapter(options);
         messageView.setAdapter(messagePageAdapter);

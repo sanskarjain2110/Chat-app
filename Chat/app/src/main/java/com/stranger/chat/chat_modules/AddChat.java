@@ -1,7 +1,5 @@
 package com.stranger.chat.chat_modules;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,10 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.stranger.chat.R;
-import com.stranger.chat.adappter.AddChatAdapter;
+import com.stranger.chat.chat_modules.adapter.AddChatAdapter;
 import com.stranger.chat.chat_modules.data.AddChat_Tile_Data;
 
 import java.util.List;
@@ -20,11 +21,13 @@ import java.util.List;
 public class AddChat extends AppCompatActivity {
     AddChatAdapter addChatAdapter;
 
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
+    CollectionReference reference;
     FirebaseFirestore database;
     Query query;
 
-    SharedPreferences sharedPref;
-    String host_username;
+    String currentUserId;
 
     RecyclerView addChatRecyclerView;
 
@@ -33,9 +36,6 @@ public class AddChat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_chat);
 
-        sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
-        host_username = sharedPref.getString("host_username", " ");
-
         addChatRecyclerView = findViewById(R.id.addChatRecyclerView);
     }
 
@@ -43,28 +43,32 @@ public class AddChat extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            currentUserId = mAuth.getCurrentUser().getUid();
+        }
+
         database = FirebaseFirestore.getInstance();
-        query = database.collection("users");
+        reference = database.collection("users");
+        query = reference.whereNotEqualTo("userId", currentUserId);
 
         query.addSnapshotListener((snapshot, error) -> {
             if (error != null) {
-                // Handle error
-                //...
                 return;
             }
 
             // Convert query snapshot to a list of chats
-            List<AddChat_Tile_Data> chats = snapshot.toObjects(AddChat_Tile_Data.class);
-
-            // Update UI
-            // ...
+            if (snapshot != null) {
+                List<AddChat_Tile_Data> chats = snapshot.toObjects(AddChat_Tile_Data.class);
+            }
         });
 
         FirestoreRecyclerOptions<AddChat_Tile_Data> options = new FirestoreRecyclerOptions.Builder<AddChat_Tile_Data>()
                 .setQuery(query, AddChat_Tile_Data.class).build();
 
         addChatRecyclerView.setHasFixedSize(true);
-        addChatAdapter = new AddChatAdapter(options, this, host_username);
+        addChatAdapter = new AddChatAdapter(options, this);
         addChatRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         addChatRecyclerView.setAdapter(addChatAdapter);
         addChatAdapter.startListening();

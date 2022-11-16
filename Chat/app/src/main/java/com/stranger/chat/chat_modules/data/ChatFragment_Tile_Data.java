@@ -1,10 +1,21 @@
 package com.stranger.chat.chat_modules.data;
 
-import java.util.Map;
+import java.util.ArrayList;
 
-public class Chat_Tile_Data {
+public class ChatFragment_Tile_Data {
     private String lastText, lastSeen, messageId;
-    private Map<String, Object> user;
+    ArrayList<String> usersId;
+
+    public ChatFragment_Tile_Data() {
+    }
+
+    public ArrayList<String> getUsersId() {
+        return usersId;
+    }
+
+    public void setUsersId(ArrayList<String> usersId) {
+        this.usersId = usersId;
+    }
 
     public String getMessageId() {
         return messageId;
@@ -12,17 +23,6 @@ public class Chat_Tile_Data {
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
-    }
-
-    public Chat_Tile_Data() {
-    }
-
-    public Map<String, Object> getUser() {
-        return user;
-    }
-
-    public void setUser(Map<String, Object> user) {
-        this.user = user;
     }
 
     public String getLastText() {

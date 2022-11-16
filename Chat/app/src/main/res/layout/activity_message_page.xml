@@ -34,7 +34,7 @@
                     android:id="@+id/reciversName"
                     android:layout_width='wrap_content'
                     android:layout_height="wrap_content"
-                    android:text="@string/sample_text"
+                    android:text="@string/name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             </androidx.appcompat.widget.Toolbar>

@@ -13,24 +13,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.stranger.chat.R;
-import com.stranger.chat.adappter.ChatAdapter;
-import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
+import com.stranger.chat.chat_modules.adapter.ChatFragmentAdapter;
+import com.stranger.chat.chat_modules.data.ChatFragment_Tile_Data;
+
+import java.util.List;
 
 public class ChatFragment extends Fragment {
 
     RecyclerView chatRecyclerView;
 
+    FirebaseAuth mAuth;
+    FirebaseUser user;
     FirebaseFirestore database;
     CollectionReference reference;
     Query query;
 
-    ChatAdapter chatAdapter;
+    ChatFragmentAdapter chatAdapter;
 
-    String user;
+    String currentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,26 +50,28 @@ public class ChatFragment extends Fragment {
         //Floating button
         view.findViewById(R.id.addPerson).setOnClickListener(view1 -> startActivity(new Intent(getContext(), AddChat.class)));
 
-        user = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        currentUser = " ";
+        if (user != null) {
+            currentUser = user.getUid();
+        }
 
         chatRecyclerView = view.findViewById(R.id.chatRecyclerView);
 
         database = FirebaseFirestore.getInstance();
         reference = database.collection("messages");
-        query = reference.whereArrayContains("filter", user);
+        query = reference.whereArrayContains("usersId", currentUser).orderBy("lastSeen");
 
         query.addSnapshotListener((snapshot, error) -> {
-//            if (error != null) {
-            // Handle error
-            //...
-//                return;
-//            }
+            if (error != null) {
+                return;
+            }
 
             // Convert query snapshot to a list of chats
-//            List<Chat_Tile_Data> list = snapshot.toObjects(Chat_Tile_Data.class);
-
-            // Update UI
-
+            if (snapshot != null) {
+                List<ChatFragment_Tile_Data> list = snapshot.toObjects(ChatFragment_Tile_Data.class);
+            }
         });
 
         return view;
@@ -72,10 +79,10 @@ public class ChatFragment extends Fragment {
 
     public void onResume() {
         super.onResume();
-        FirestoreRecyclerOptions<Chat_Tile_Data> options = new FirestoreRecyclerOptions.Builder<Chat_Tile_Data>()
-                .setQuery(query, Chat_Tile_Data.class).build();
+        FirestoreRecyclerOptions<ChatFragment_Tile_Data> options = new FirestoreRecyclerOptions.Builder<ChatFragment_Tile_Data>()
+                .setQuery(query, ChatFragment_Tile_Data.class).build();
 
-        chatAdapter = new ChatAdapter(options, getContext());
+        chatAdapter = new ChatFragmentAdapter(options, getContext(), currentUser);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         chatRecyclerView.setAdapter(chatAdapter);
 

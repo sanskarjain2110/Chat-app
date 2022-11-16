@@ -7,9 +7,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission
-        android:name="android.permission.POST_NOTIFICATIONS"
-        tools:node="remove" />
+<!--    <uses-permission-->
+<!--        android:name="android.permission.POST_NOTIFICATIONS"-->
+<!--        tools:node="remove" />-->
 
     <application
         android:allowBackup="true"
@@ -21,15 +21,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Chat"
         tools:targetApi="33">
-
+        <activity
+            android:name=".settings.Profile_Update"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".settings.Settings_MainPage"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".login_modules.Add_Profile_Detail"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".chat_modules.AddChat"
-            android:exported="false" />
-        <activity
-            android:name=".login_modules.ForgotPassword_page"
             android:exported="false" />
         <activity
             android:name=".login_modules.Log_in_page"
@@ -41,23 +58,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login_modules.Sign_up_Page"
-            android:exported="true" />
-        <activity
             android:name=".chat_modules.MessagePage"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-
-        <service
-            android:name=".java.MyFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
     </application>
 
 </manifest>

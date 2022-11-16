@@ -1,4 +1,4 @@
-package com.stranger.chat.adappter;
+package com.stranger.chat.chat_modules.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.stranger.chat.R;
-import com.stranger.chat.chat_modules.data.MessageData;
+import com.stranger.chat.chat_modules.data.MessagePage_Tile_Data;
 
-public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessageData, MessagePageAdapter.MessageViewHolder> {
-    public MessagePageAdapter(FirestoreRecyclerOptions<MessageData> options) {
+public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessagePage_Tile_Data, MessagePageAdapter.MessageViewHolder> {
+    public MessagePageAdapter(FirestoreRecyclerOptions<MessagePage_Tile_Data> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull MessageViewHolder holder, int position, @NonNull MessageData model) {
+    protected void onBindViewHolder(@NonNull MessageViewHolder holder, int position, @NonNull MessagePage_Tile_Data model) {
         holder.getUsername().setText(model.getSender());
         holder.getMessageArea().setText(model.getMessage());
         holder.getTimeStamp().setText(model.getTimeStamp());

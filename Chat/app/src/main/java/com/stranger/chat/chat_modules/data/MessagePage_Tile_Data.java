@@ -1,9 +1,9 @@
 package com.stranger.chat.chat_modules.data;
 
-public class MessageData {
+public class MessagePage_Tile_Data {
     String sender, timeStamp, message;
 
-    MessageData() {
+    MessagePage_Tile_Data() {
     }
 
     public String getSender() {

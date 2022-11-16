@@ -1,96 +1,151 @@
 package com.stranger.chat.login_modules;
 
+import static android.content.ContentValues.TAG;
 import static android.text.TextUtils.isEmpty;
+import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.stranger.chat.MainActivity;
 import com.stranger.chat.R;
 
-import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class Log_in_page extends AppCompatActivity {
-    EditText emailField, passwordField;
-    TextView forgotPassword, signUp;
-    Button login;
+
+    EditText phoneNumberField, otpField;
+    Button loginButton, getOtpButton;
 
     FirebaseAuth mAuth;
     FirebaseFirestore database;
+
+    String phoneNumber, otp;
+    String mVerificationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in_page);
 
-        database = FirebaseFirestore.getInstance();
+        phoneNumberField = findViewById(R.id.phoneNumberField);
+        otpField = findViewById(R.id.otpField);
 
-        emailField = findViewById(R.id.emailField);
-        passwordField = findViewById(R.id.passwordField);
+        loginButton = findViewById(R.id.loginButton);
+        getOtpButton = findViewById(R.id.getOtpButton);
 
-        forgotPassword = findViewById(R.id.forgotPassword);
-        signUp = findViewById(R.id.sin_up);
-        login = findViewById(R.id.loginButton);
 
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseFirestore.getInstance();
 
-        login.setOnClickListener(view -> {
-            String email = emailField.getText().toString().toLowerCase().replaceAll("\\s", "");
-            String password = passwordField.getText().toString();
+        // to get otp
+        getOtpButton.setOnClickListener(view -> {
+            phoneNumber = "+91" + phoneNumberField.getText().toString().replaceAll("\\s", "");
 
-            if (isEmpty(email) || isEmpty(password)) {
-                Toast.makeText(getApplicationContext(), "please fill entry", LENGTH_SHORT).show();
+            if (isEmpty(phoneNumber)) {
+                Toast.makeText(getApplicationContext(), "Fill the Phone Number Field first", LENGTH_SHORT).show();
+            } else if (phoneNumber.length() != 13) {
+                Toast.makeText(getApplicationContext(), "Enter valid number", LENGTH_SHORT).show();
             } else {
-                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        //fatching data from FirebaseFirestore to local database
-                        // local database  --> then change activity
-                        database.collection("users").document(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())
-                                .addSnapshotListener(this, (snapshot, error) -> {
-                                    assert snapshot != null;
-                                    SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPref.edit();
-                                    editor.putString("host_username", snapshot.getString("username"));
-                                    editor.putString("host_phoneNumber", snapshot.getString("phoneNumber"));
-                                    editor.apply();
+                PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber(phoneNumber)
+                        .setTimeout(60L, TimeUnit.SECONDS)
+                        .setActivity(this)
+                        .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                    finish();
-                                });
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Authentication failed.", LENGTH_SHORT).show();
-                    }
-                });
+                            @Override
+                            public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+                                signInWithPhoneAuthCredential(credential);
+                            }
+
+                            @Override
+                            public void onVerificationFailed(@NonNull FirebaseException e) {
+                                Toast.makeText(getApplicationContext(), e.getMessage(), LENGTH_LONG).show();
+
+                                Log.e(TAG, "onVerificationCompleted:" + e.getMessage());
+                            }
+
+                            @Override
+                            public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                                super.onCodeSent(verificationId, token);
+
+                                mVerificationId = verificationId;
+                            }
+                        }).build();
+
+                PhoneAuthProvider.verifyPhoneNumber(options);
             }
         });
 
-        signUp.setOnClickListener(view -> {
-            startActivity(new Intent(getApplicationContext(), Sign_up_Page.class));
-            finish();
-        });
+        loginButton.setOnClickListener(view -> {
+            otp = otpField.getText().toString();
 
-        forgotPassword.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), ForgotPassword_page.class)));
+            if (isEmpty(phoneNumber) || isEmpty(otp)) {
+                Toast.makeText(getApplicationContext(), "Please fill fields", LENGTH_SHORT).show();
+            } else {
+                signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(mVerificationId, otp));
+            }
+        });
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
+        if (mAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful() && mAuth.getCurrentUser() != null) {
+                        String currentUser = mAuth.getCurrentUser().getUid();
+                        //fatching data from FirebaseFirestore to local database
+                        // local database  --> then change activity
+                        database.collection("users").document(currentUser)
+                                .addSnapshotListener(this, (snapshot, error) -> {
+                                    SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+
+                                    if (snapshot != null && snapshot.exists()) {
+                                        editor.putString("host_username", snapshot.getString("username"));
+                                        editor.putString("host_phoneNumber", snapshot.getString("phoneNumber"));
+                                        editor.apply();
+
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    } else {
+                                        editor.putString("host_phoneNumber", phoneNumber);
+                                        editor.apply();
+
+                                        //on successfull sign up
+                                        // user will redirect to profile update page
+                                        Intent intent = new Intent(getApplicationContext(), Add_Profile_Detail.class);
+                                        intent.putExtra("phoneNumber", phoneNumber);
+                                        startActivity(intent);
+                                    }
+                                    finish();
+                                });
+                    } else {
+                        Toast.makeText(getApplicationContext(), "otp verified failed", LENGTH_SHORT).show();
+                    }
+                });
     }
 }

@@ -1,16 +1,16 @@
-package com.stranger.chat.login_modules;
-
-import android.os.Bundle;
+package com.stranger.chat.settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Bundle;
+
 import com.stranger.chat.R;
 
-public class ForgotPassword_page extends AppCompatActivity {
+public class Profile_Update extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password_page);
+        setContentView(R.layout.activity_profile_update);
     }
 }

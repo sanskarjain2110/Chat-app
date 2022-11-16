@@ -9,5 +9,9 @@
         android:enabled="true"
         android:icon="@drawable/ic_baseline_call_24"
         android:title="@string/calls" />
-
+    <item
+        android:id="@+id/settingsNavigationButton"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/settings" />
 </menu>
