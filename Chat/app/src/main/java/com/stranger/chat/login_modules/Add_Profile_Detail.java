@@ -1,5 +1,6 @@
 package com.stranger.chat.login_modules;
 
+import static android.content.ContentValues.TAG;
 import static android.text.TextUtils.isEmpty;
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -11,6 +12,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,12 +46,12 @@ public class Add_Profile_Detail extends AppCompatActivity {
     // Use for buinding sign in data
     Map<String, String> details = new HashMap<>();
 
-    String name, phoneNumber;
+    SharedPreferences sharedPref;
 
     FirebaseAuth mAuth;
     FirebaseUser user;
 
-    String userId;
+    String name, phoneNumber, userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +60,10 @@ public class Add_Profile_Detail extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-
-        // extracting phoneNumber from intent
-        phoneNumber = getIntent().getStringExtra("phoneNumber");
         userId = user.getUid();
+
+        sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
+        phoneNumber = sharedPref.getString("host_phoneNumber", userId);
 
         profilePic = findViewById(R.id.addProfilePic);
         nameField = findViewById(R.id.nameField);
@@ -150,7 +152,7 @@ public class Add_Profile_Detail extends AppCompatActivity {
                     });
         } else if (resultCode == UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);
+            Log.e(TAG, "onActivityResult: ", cropError);
         }
     }
 }
-

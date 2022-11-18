@@ -2,7 +2,10 @@
 RequestCode -->
     --> 101 == gallery image picker
 
-
+------------------------------------------------------------
+SharedPreferences -->
+    --> host_phoneNumber
+    --> host_username
 ------------------------------------------------------------
 Reference
     * Image cropper --> https://github.com/Yalantis/uCrop

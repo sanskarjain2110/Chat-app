@@ -61,7 +61,9 @@ public class ChatFragment extends Fragment {
 
         database = FirebaseFirestore.getInstance();
         reference = database.collection("messages");
-        query = reference.whereArrayContains("usersId", currentUser).orderBy("lastSeen");
+        query = reference
+                //.whereArrayContains("usersId", currentUser)
+                .orderBy("lastSeen");
 
         query.addSnapshotListener((snapshot, error) -> {
             if (error != null) {

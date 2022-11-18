@@ -37,14 +37,10 @@ public class AddChat extends AppCompatActivity {
         setContentView(R.layout.activity_add_chat);
 
         addChatRecyclerView = findViewById(R.id.addChatRecyclerView);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        currentUserId = " ";
         if (currentUser != null) {
             currentUserId = mAuth.getCurrentUser().getUid();
         }
@@ -64,16 +60,23 @@ public class AddChat extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         FirestoreRecyclerOptions<AddChat_Tile_Data> options = new FirestoreRecyclerOptions.Builder<AddChat_Tile_Data>()
                 .setQuery(query, AddChat_Tile_Data.class).build();
 
         addChatRecyclerView.setHasFixedSize(true);
-        addChatAdapter = new AddChatAdapter(options, this);
+        addChatAdapter = new AddChatAdapter(options, this, getApplicationContext());
         addChatRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         addChatRecyclerView.setAdapter(addChatAdapter);
         addChatAdapter.startListening();
     }
 
+    @Override
     protected void onStop() {
         super.onStop();
         addChatAdapter.stopListening();

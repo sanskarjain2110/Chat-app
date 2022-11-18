@@ -50,7 +50,6 @@ public class Log_in_page extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         getOtpButton = findViewById(R.id.getOtpButton);
 
-
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
 
@@ -108,8 +107,19 @@ public class Log_in_page extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         if (mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
+            String currentUser = mAuth.getCurrentUser().getUid();
+            database.collection("users").document(currentUser).addSnapshotListener(this, (snapshot, error) -> {
+                if (error != null) {
+                    return;
+                } else if (snapshot != null && snapshot.exists()) {
+                    // if exist then add then move to MainActivity class
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                } else {
+                    // if not exist user will redirect to profile update page class
+                    startActivity(new Intent(getApplicationContext(), Add_Profile_Detail.class));
+                }
+                finish();
+            });
         }
     }
 
@@ -118,13 +128,17 @@ public class Log_in_page extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful() && mAuth.getCurrentUser() != null) {
                         String currentUser = mAuth.getCurrentUser().getUid();
+
                         //fatching data from FirebaseFirestore to local database
                         // local database  --> then change activity
                         database.collection("users").document(currentUser)
                                 .addSnapshotListener(this, (snapshot, error) -> {
+
+                                    // local database objects
                                     SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPref.edit();
 
+                                    // if exist then add that data to local
                                     if (snapshot != null && snapshot.exists()) {
                                         editor.putString("host_username", snapshot.getString("username"));
                                         editor.putString("host_phoneNumber", snapshot.getString("phoneNumber"));
@@ -132,14 +146,12 @@ public class Log_in_page extends AppCompatActivity {
 
                                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                     } else {
+                                        editor.putString("host_username", phoneNumber);
                                         editor.putString("host_phoneNumber", phoneNumber);
                                         editor.apply();
 
-                                        //on successfull sign up
                                         // user will redirect to profile update page
-                                        Intent intent = new Intent(getApplicationContext(), Add_Profile_Detail.class);
-                                        intent.putExtra("phoneNumber", phoneNumber);
-                                        startActivity(intent);
+                                        startActivity(new Intent(getApplicationContext(), Add_Profile_Detail.class));
                                     }
                                     finish();
                                 });
