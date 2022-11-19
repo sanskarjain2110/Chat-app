@@ -1,3 +1,35 @@
 <resources>
     <string name="app_name">Chat</string>
+    <string name="sample_text">Sample Text</string>
+    <string name="profilePic">Profile Pic</string>
+    <string name="chats">Chats</string>
+    <string name="calls">Calls</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="seen_status">seen status</string>
+
+
+    <!--    log in page -->
+    <string name="log_in">Log in</string>
+
+    <!--    log in page-->
+    <string name="phone_number">Phone number</string>
+    <string name="otp">OTP</string>
+    <string name="enter_received_otp">Enter received otp</string>
+    <string name="get_otp">Get OTP</string>
+
+    <!--    add Profile details-->
+    <string name="update_profile">Update Profile</string>
+    <string name="name">Name</string>
+    <string name="update">Update</string>
+
+    <string name="back">back</string>
+    <string name="type_something">Type something....</string>
+    <string name="verify">verify</string>
+    <string name="sent_icon">sent icon</string>
+    <string name="add_person">Add person</string>
+
+    <string name="logout">logout</string>
+    <string name="settings">settings</string>
+
+
 </resources>

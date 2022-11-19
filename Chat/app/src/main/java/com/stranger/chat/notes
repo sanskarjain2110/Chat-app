@@ -1,0 +1,353 @@
+------------------------------------------------------------
+RequestCode -->
+    --> 101 == gallery image picker
+
+------------------------------------------------------------
+SharedPreferences -->
+    --> host_phoneNumber
+    --> host_username
+------------------------------------------------------------
+Reference
+    * Image cropper --> https://github.com/Yalantis/uCrop
+
+------------------------------------------------------------
+// sign up page
+  @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null && user.isEmailVerified()) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }
+    }
+
+// AlertDialog
+  private void dialogBox(String email, FirebaseUser user) {
+        builder.setTitle("Please verify your email " + email)
+                .setCancelable(false)
+                .setPositiveButton("Resend email", (dialogInterface, i) -> {
+                    verificationLink(user);
+                    dialogBox(email, user);
+                })
+                .setNegativeButton("Already verified", (dialogInterface, i) -> {
+                    if (user != null && user.isEmailVerified()) {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        finish();
+
+                    }
+                }).show();
+    }
+
+// home tool bar
+
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content">-->
+
+    <!--        <androidx.appcompat.widget.Toolbar-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content">-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/title"-->
+    <!--                android:layout_width='wrap_content'-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:text="@string/chats"-->
+    <!--                android:textAppearance="@style/TextAppearance.AppCompat.Large" />-->
+
+
+    <!--        </androidx.appcompat.widget.Toolbar>-->
+
+    <!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+    -------------recyclerview
+      <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/statusRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+    ---------------divider
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+----------------------firestore
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                  Map<String, Object> city = new HashMap<>();
+                        city.put("name", "Los Angeles");
+                        city.put("state", "CA");
+                        city.put("country", "USA");
+
+                        db.collection("cities").document("LA")
+                                .set(city)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error writing document", e);
+                                    }
+                                });
+
+--------------------------- to open gallery an pic image
+
+   request code is use to identify which inttent is invoking onActicityResult method
+         Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+          startActivityForResult(openGalleryIntent, 1000);
+
+
+            // use for get result from intent here it use for images
+            @Override
+            protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+                super.onActivityResult(requestCode, resultCode, data);
+                if (resultCode == Activity.RESULT_OK ) {
+                    assert data != null;
+                    profilePicUri = data.getData();
+
+                    // set image to widiget
+                    profilePic.setImageURI(profilePicUri);
+                }
+            }
+
+----------------------------------------------------------------------------------------------------
+public class Sign_up_Page extends AppCompatActivity {
+    ImageView profilePic;
+    EditText nameField, emailField, passwordField, confirmPasswordField, phoneNumberField, otpField;
+    Button sign_upButton, getOtpButton;
+    TextView sign_in;
+
+    Uri profilePicUri;
+
+    // Use for buinding sign in data
+    Map<String, String> data = new HashMap<>();
+
+    String name, email, password, confirmPassword, phoneNumber, otp;
+
+    FirebaseAuth mAuth;
+
+    String mVerificationId;
+
+    ProgressDialog progressDialog = new ProgressDialog(this);
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_up_page);
+
+        profilePic = findViewById(R.id.addProfilePic);
+        nameField = findViewById(R.id.nameField);
+        emailField = findViewById(R.id.emailField);
+        passwordField = findViewById(R.id.passwordField);
+        confirmPasswordField = findViewById(R.id.confirmPasswordField);
+        phoneNumberField = findViewById(R.id.phoneNumberField);
+        otpField = findViewById(R.id.otpField);
+
+        getOtpButton = findViewById(R.id.getOtpButton);
+        sign_upButton = findViewById(R.id.sign_upButton);
+        sign_in = findViewById(R.id.sign_in);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        // to open gallery and select image
+        profilePic.setOnClickListener(view -> {
+            Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(openGalleryIntent, 101);
+        });
+
+        // to get otp
+        getOtpButton.setOnClickListener(view -> {
+            PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                    .setPhoneNumber("+91" + phoneNumberField.getText().toString().replaceAll("\\s", ""))
+                    .setTimeout(60L, TimeUnit.SECONDS)
+                    .setActivity(this)
+                    .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+                        @Override
+                        public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+                            signInWithPhoneAuthCredential(credential);
+                        }
+
+                        @Override
+                        public void onVerificationFailed(@NonNull FirebaseException e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                            super.onCodeSent(verificationId, token);
+
+                            mVerificationId = verificationId;
+                        }
+                    }).build();
+
+            PhoneAuthProvider.verifyPhoneNumber(options);
+        });
+
+        sign_upButton.setOnClickListener(view -> {
+            name = nameField.getText().toString().trim();
+            email = emailField.getText().toString().toLowerCase().replaceAll("\\s", "").trim();
+            password = passwordField.getText().toString();
+            confirmPassword = confirmPasswordField.getText().toString();
+            phoneNumber = "+91" + phoneNumberField.getText().toString().replaceAll("\\s", "");
+            otp = otpField.getText().toString();
+
+            if (isEmpty(name) || isEmpty(email) || isEmpty(password) || isEmpty(confirmPassword) || isEmpty(phoneNumber) || isEmpty(otp)) {
+                Toast.makeText(getApplicationContext(), "Please fill fields", LENGTH_SHORT).show();
+            } else if (password.length() < 8) {
+                Toast.makeText(getApplicationContext(), "Sort password", LENGTH_SHORT).show();
+            } else if (!password.equals(confirmPassword)) {
+                Toast.makeText(getApplicationContext(), "Password and Confirm password is not same", LENGTH_SHORT).show();
+            } else {
+                data.put("username", name);
+                data.put("email", email);
+                data.put("phoneNumber", phoneNumber);
+
+                signInWithPhoneAuthCredential(PhoneAuthProvider.getCredential(mVerificationId, otp));
+            }
+        });
+
+        sign_in.setOnClickListener(view -> {
+            startActivity(new Intent(getApplicationContext(), Log_in_page.class));
+            finish();
+        });
+    }
+
+    // use for get result from intent here it use for images
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        assert data != null;
+        if (resultCode == Activity.RESULT_OK && requestCode == 101) {
+
+            String destinationUriString = UUID.randomUUID().toString() + ".jpg";
+            UCrop.of(data.getData(), Uri.fromFile(new File(getCacheDir(), destinationUriString)))
+                    .withAspectRatio(1, 1)
+                    .withMaxResultSize(20000, 2000)
+                    .start(this);
+
+        } else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            profilePicUri = UCrop.getOutput(data);
+            // set image to widiget
+            profilePic.setImageURI(profilePicUri);
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
+        }
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "otp verified", LENGTH_SHORT).show();
+                        //after verifying otp it verify email
+                        signInWithEmailAndPassword();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "otp verified failed", LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void signInWithEmailAndPassword() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        progressDialog.setTitle("Uploding image........");
+
+        if (user != null) {
+            AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+
+            user.linkWithCredential(credential).addOnCompleteListener(this, task -> {
+                if (task.isSuccessful()) {
+                    String userId = user.getUid();
+                    StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("users").child(userId).child("profilePic.jpg");
+
+                    //verification link sent
+                    verificationLink(user);
+
+                    //uplode profile pic in firebaseStorage
+                    storageRef.putFile(profilePicUri)
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+                                progressDialog.dismiss();
+                            })
+                            .addOnProgressListener(snapshot -> {
+                                int progressPercent = (int) (100 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                                progressDialog.setMessage(progressPercent + "% file uploded");
+                            })
+                            .addOnSuccessListener(taskSnapshot -> {
+                                progressDialog.setMessage("Verifying......");
+
+                                // on successfull upload it will download CloudPicUri
+                                storageRef.getDownloadUrl()
+                                        .addOnSuccessListener(uri -> {
+                                            data.put("profilePic", uri.toString() + " ");
+                                            progressDialog.dismiss();
+                                        })
+                                        .addOnFailureListener(exception -> {
+                                            Toast.makeText(getApplicationContext(), "Image not uploded", Toast.LENGTH_LONG).show();
+                                            progressDialog.dismiss();
+                                        });
+                            });
+
+                    //add userId
+                    data.put("userId", userId);
+
+                    //login data updated
+                    FirebaseFirestore.getInstance().collection("users").document(userId).set(data);
+
+                    //saving data to local database
+                    SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("host_username", data.get("username"));
+                    editor.putString("host_phoneNumber", data.get("phoneNumber"));
+                    editor.apply();
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Authentication failed.", LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void verificationLink(@NonNull FirebaseUser user) {
+        user.sendEmailVerification().addOnSuccessListener(unused ->
+                Toast.makeText(getApplicationContext(), "A verification email has been sent on your email", Toast.LENGTH_LONG).show()
+        );
+    }
+}
+
+
+----------------------------------------------------------------------------------------------------
+addChatAdapter
+
+//                progressDialog.setMessage("binding data.......");
+//                Bundle sendData = new Bundle();
+//                sendData.putString("reciversUserId", model.getUserId());
+//                sendData.putString("reciversname", reciver);
+//
+//
+//                FirebaseFirestore.getInstance().collection("userMessageId").document(senderId)
+//                      .addSnapshotListener((value, error1) -> {
+//                    if (error1 != null) {
+//                        return;
+//                    }
+//                    if (value != null) {
+//                        messageId = (String) value.get(reciverId);
+//
+//                    }
+//                });
+//                while (messageId == null) {
+//                    sendData.putString("messageId", messageId);
+//                }
+//                Intent intent = new Intent(activity, MessagePage.class);
+//                intent.putExtra("data", sendData);
+//                activity.startActivity(intent);
+//                progressDialog.dismiss();
