@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:gravity="center"
-        android:text="@string/log_in"
+        android:text="@string/login"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -67,7 +67,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-
-        android:text="@string/log_in" />
+        android:text="@string/login" />
 
 </LinearLayout>

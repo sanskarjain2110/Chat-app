@@ -1,4 +1,4 @@
-package com.stranger.chat;
+package com.stranger.chat.call_module;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.stranger.chat.adappter.CallAdapter;
-import com.stranger.chat.data.Userdata;
+import com.stranger.chat.R;
+import com.stranger.chat.call_module.data.Userdata;
 
 public class CallFragment extends Fragment {
     RecyclerView callRecyclerView;

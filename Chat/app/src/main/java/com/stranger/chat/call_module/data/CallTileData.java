@@ -1,4 +1,4 @@
-package com.stranger.chat.data;
+package com.stranger.chat.call_module.data;
 
 public class CallTileData {
     public int profilePicId, callActionId, callTypeId;

@@ -111,12 +111,15 @@ public class Log_in_page extends AppCompatActivity {
             database.collection("users").document(currentUser).addSnapshotListener(this, (snapshot, error) -> {
                 if (error != null) {
                     return;
-                } else if (snapshot != null && snapshot.exists()) {
-                    // if exist then add then move to MainActivity class
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                } else {
-                    // if not exist user will redirect to profile update page class
-                    startActivity(new Intent(getApplicationContext(), Add_Profile_Detail.class));
+                }
+                if (snapshot != null) {
+                    if (snapshot.exists()) {
+                        // if exist then add then move to NotesMaker class
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    } else {
+                        // if not exist user will redirect to profile update page class
+                        startActivity(new Intent(getApplicationContext(), Add_Profile_Detail.class));
+                    }
                 }
                 finish();
             });

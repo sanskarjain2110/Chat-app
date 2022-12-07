@@ -92,6 +92,10 @@ public class MessagePage extends AppCompatActivity {
         query.addSnapshotListener((snapshot, error) -> {
 
         });
+    }
+
+    protected void onResume() {
+        super.onResume();
 
         FirestoreRecyclerOptions<MessagePage_Tile_Data> options = new FirestoreRecyclerOptions.Builder<MessagePage_Tile_Data>()
                 .setQuery(query, MessagePage_Tile_Data.class).build();
@@ -101,23 +105,18 @@ public class MessagePage extends AppCompatActivity {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         messageView.setLayoutManager(linearLayoutManager);
-    }
 
-    protected void onStart() {
-        super.onStart();
         messagePageAdapter.startListening();
     }
 
     protected void onStop() {
         super.onStop();
         messagePageAdapter.stopListening();
-
         lastUpdate();
     }
 
     protected void onPause() {
         super.onPause();
-
         lastUpdate();
     }
 

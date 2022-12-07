@@ -13,10 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:gravity="center"
-        android:text="@string/update_profile"
+        android:text="@string/profile"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/addProfilePic"
         android:layout_width="300dp"
         android:layout_height="300dp"

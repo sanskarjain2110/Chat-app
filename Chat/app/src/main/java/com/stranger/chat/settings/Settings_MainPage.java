@@ -18,12 +18,11 @@ public class Settings_MainPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_main_page);
 
-        updateProfileButton = findViewById(R.id.updateProfile);
         loginButton = findViewById(R.id.logout);
 
-        updateProfileButton.setOnClickListener(view -> {
-            startActivity(new Intent(getApplicationContext(), Profile_Update.class));
-        });
+        // update button
+        findViewById(R.id.updateProfile).setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), Profile_Update.class)));
+
         loginButton.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
 

@@ -1,4 +1,4 @@
-package com.stranger.chat.adappter;
+package com.stranger.chat.call_module;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.stranger.chat.R;
-import com.stranger.chat.data.Userdata;
+import com.stranger.chat.call_module.data.Userdata;
 
 
 public class CallAdapter extends RecyclerView.Adapter<CallAdapter.Call_ViewHolder> {

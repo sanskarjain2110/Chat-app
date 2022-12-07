@@ -7,9 +7,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-<!--    <uses-permission-->
-<!--        android:name="android.permission.POST_NOTIFICATIONS"-->
-<!--        tools:node="remove" />-->
 
     <application
         android:allowBackup="true"
@@ -63,6 +60,18 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".notesmaker.contentPage.ContentActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".notesmaker.NotesMaker"
+            android:exported="false" />
+
     </application>
 
 </manifest>

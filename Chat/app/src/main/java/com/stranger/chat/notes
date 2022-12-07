@@ -22,6 +22,20 @@ Reference
         }
     }
 
+// alertbox
+//        to update profile details
+//        updateButton.setOnClickListener(view -> new AlertDialog.Builder(this)
+//                .setTitle("Update")
+//                .setMessage("Do you want to Update details ?")
+//                .setCancelable(false)
+//                .setPositiveButton("Yes", (dialog, id) -> {
+//                    Toast.makeText(getApplicationContext(), "you choose yes action for alertbox",
+//                            Toast.LENGTH_SHORT).show();
+//                }).setNegativeButton("No", (dialog, id) -> {
+//                    dialog.cancel();
+//                    finish();
+//                }).create().show());
+
 // AlertDialog
   private void dialogBox(String email, FirebaseUser user) {
         builder.setTitle("Please verify your email " + email)

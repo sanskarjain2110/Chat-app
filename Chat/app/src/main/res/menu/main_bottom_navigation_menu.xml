@@ -10,8 +10,8 @@
         android:icon="@drawable/ic_baseline_call_24"
         android:title="@string/calls" />
     <item
-        android:id="@+id/settingsNavigationButton"
+        android:id="@+id/notesMakerNavigationButton"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_settings_24"
-        android:title="@string/settings" />
+        android:icon="@drawable/ic_baseline_notes_24"
+        android:title="@string/notes" />
 </menu>
