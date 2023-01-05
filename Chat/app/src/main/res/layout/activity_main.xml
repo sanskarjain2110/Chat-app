@@ -1,69 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/settingsButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="30dp"
-                android:contentDescription="@string/settings"
-                android:src="@drawable/ic_account_circle_48"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.cardview.widget.CardView
-            style="@style/CustomCardViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="17"
-            app:cardCornerRadius="30dp"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/mainScreen"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="30dp"
-        android:elevation="10dp"
-        app:cardCornerRadius="1000dp"
-        app:cornerFamily="rounded"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="10dp"
-            app:menu="@menu/main_bottom_navigation_menu"
-            tools:layout_editor_absoluteX="20dp" />
-    </androidx.cardview.widget.CardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_gravity="top"
+            app:menu="@menu/main_top_app_bar" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="30dp"
+            android:elevation="20dp"
+            app:cornerFamily="rounded">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="search"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@null"
+                app:queryHint="Search..." />
+        </androidx.cardview.widget.CardView>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchorGravity="right|top|end"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:hideOnScroll="true"
+        app:menu="@menu/main_bottom_navigation_menu" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/add"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_anchor="@id/bottom_navigation" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

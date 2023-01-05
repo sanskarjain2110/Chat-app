@@ -1,6 +1,6 @@
 package com.stranger.chat.chat_modules.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,12 +24,12 @@ import com.stranger.chat.chat_modules.data.ChatFragment_Tile_Data;
 import java.util.Objects;
 
 public class ChatFragmentAdapter extends FirestoreRecyclerAdapter<ChatFragment_Tile_Data, ChatFragmentAdapter.Chat_ViewHolder> {
-    Context context;
+    Activity activity;
     String currentUser, reciversUserId, reciversname;
 
-    public ChatFragmentAdapter(@NonNull FirestoreRecyclerOptions<ChatFragment_Tile_Data> options, Context context, String currentUser) {
+    public ChatFragmentAdapter(@NonNull FirestoreRecyclerOptions<ChatFragment_Tile_Data> options, Activity activity, String currentUser) {
         super(options);
-        this.context = context;
+        this.activity = activity;
         this.currentUser = currentUser;
     }
 
@@ -65,7 +65,6 @@ public class ChatFragmentAdapter extends FirestoreRecyclerAdapter<ChatFragment_T
                     }
                 });
 
-
         holder.getLastTextField().setText(model.getLastText());
         holder.getLastChatTimeField().setText(model.getLastSeen());
 
@@ -75,9 +74,9 @@ public class ChatFragmentAdapter extends FirestoreRecyclerAdapter<ChatFragment_T
             sendData.putString("messageId", model.getMessageId());
             sendData.putString("reciversname", reciversname);
 
-            Intent intent = new Intent(context, MessagePage.class);
+            Intent intent = new Intent(activity, MessagePage.class);
             intent.putExtra("data", sendData);
-            context.startActivity(intent);
+            activity.startActivity(intent);
         });
     }
 

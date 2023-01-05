@@ -7,86 +7,42 @@
     android:orientation="vertical"
     tools:context=".settings.Profile_Update">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="20dp">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/backButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:contentDescription="@string/back"
-                    android:src="@drawable/ic_baseline_arrow_back_ios_36" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:text="@string/profile"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
-    </androidx.cardview.widget.CardView>
+            android:layout_height="wrap_content"
+            app:menu="@menu/save_button_menu"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_ios_36"
+            app:title="@string/profile" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/changeProfilePic"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_margin="10dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_margin="5dp"
         android:layout_gravity="center"
         android:contentDescription="@string/profilePic"
         android:src="@drawable/ic_account_circle_48" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/nameField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:hint="@string/username" />
 
-        android:hint="@string/phone_number"
-        app:startIconDrawable="@drawable/ic_baseline_call_24">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/phoneNumberField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-
-        android:hint="@string/name"
-        app:startIconDrawable="@drawable/ic_baseline_person_24">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nameField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/doneButton"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:text="@string/done" />
+        android:gravity="center"
+        android:text="@string/userneme_hint"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 </LinearLayout>

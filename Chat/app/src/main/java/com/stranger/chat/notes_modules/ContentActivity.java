@@ -1,9 +1,10 @@
-package com.stranger.chat.notesmaker.contentPage;
+package com.stranger.chat.notes_modules;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -11,7 +12,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.stranger.chat.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ContentActivity extends AppCompatActivity {
@@ -19,8 +23,9 @@ public class ContentActivity extends AppCompatActivity {
     FirebaseUser currentUser;
     String currentUserId;
 
-    FirebaseFirestore database;
     DocumentReference reference;
+
+    Toolbar topAppBar;
 
     TextView topicTextView, contentTextView;
     String topicId, topic, content;
@@ -38,8 +43,9 @@ public class ContentActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
 
-        database = FirebaseFirestore.getInstance();
-        reference = database.collection("users").document(currentUserId).collection("notes").document(topicId);
+        reference = FirebaseFirestore.getInstance().collection("users").document(currentUserId).collection("notes").document(topicId);
+
+        topAppBar = findViewById(R.id.topAppBar);
 
         topicTextView = findViewById(R.id.topic);
         contentTextView = findViewById(R.id.content);
@@ -58,19 +64,35 @@ public class ContentActivity extends AppCompatActivity {
         });
 
         //  back button
-        findViewById(R.id.backButton).setOnClickListener(v -> finish());
+        topAppBar.setNavigationOnClickListener(v -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.US);
+            String currentDateandTime = sdf.format(new Date());
 
-        // saveButton
-        findViewById(R.id.saveButton).setOnClickListener(v -> {
-            topic = topicTextView.getText().toString().trim();
-            content = contentTextView.getText().toString().trim();
-
+            // change validation is not implemented
             Map<String, Object> data = new HashMap<>();
-            data.put("topic", topic);
-            data.put("content", content);
-            // time stamp
+            data.put("lastUpdated", currentDateandTime);
 
-            reference.update(data).addOnSuccessListener(unused -> finish());
+            reference.update(data);
+            finish();
+        });
+
+        topAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.save) {
+                topic = topicTextView.getText().toString().trim();
+                content = contentTextView.getText().toString().trim();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+                String currentDateandTime = sdf.format(new Date());
+
+                Map<String, Object> data = new HashMap<>();
+                data.put("topic", topic);
+                data.put("content", content);
+                data.put("lastUpdated", currentDateandTime);
+
+                reference.update(data).addOnSuccessListener(unused -> finish());
+            } else {
+                return false;
+            }
+            return true;
         });
     }
 }

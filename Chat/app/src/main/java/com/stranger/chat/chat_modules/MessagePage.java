@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -22,13 +22,14 @@ import com.stranger.chat.chat_modules.data.MessagePage_Tile_Data;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class MessagePage extends AppCompatActivity {
 
-    ImageView backButton, sentButton;
+    Toolbar topAppBar;
+    FloatingActionButton sentButton;
     EditText textMessage;
-    TextView recivername;
     RecyclerView messageView;
 
     String lastText, lastTimeStamp;
@@ -50,12 +51,12 @@ public class MessagePage extends AppCompatActivity {
         bundle = getIntent().getBundleExtra("data");
         messageId = bundle.getString("messageId");
 
+        topAppBar = findViewById(R.id.topAppBar);
+
         textMessage = findViewById(R.id.getMessage);
-        recivername = findViewById(R.id.reciversName);
 
-        messageView = findViewById(R.id.mainScreen);
+        messageView = findViewById(R.id.recyclerview);
 
-        backButton = findViewById(R.id.backButton);
         sentButton = findViewById(R.id.sentButton);
 
         database = FirebaseFirestore.getInstance();
@@ -65,16 +66,13 @@ public class MessagePage extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
         String host_username = sharedPref.getString("host_username", "");
 
-        // set Title
-        recivername.setText(bundle.getString("reciversname"));
-
-        backButton.setOnClickListener(view -> finish());
+        topAppBar.setTitle(bundle.getString("reciversname"));
+        topAppBar.setNavigationOnClickListener(view -> finish());
 
         sentButton.setOnClickListener(view -> {
-            String text = textMessage.getText().toString();
+            String text = textMessage.getText().toString().trim();
             if (text.length() != 0) {
-
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.US);
                 String currentDateandTime = sdf.format(new Date());
 
                 Map<String, Object> pushMessage = new HashMap<>();
@@ -83,7 +81,7 @@ public class MessagePage extends AppCompatActivity {
                 pushMessage.put("message", text);
                 reference.add(pushMessage);
 
-                lastText = text;
+                lastText = host_username + " : " + text;
                 lastTimeStamp = currentDateandTime;
                 textMessage.setText("");
             }

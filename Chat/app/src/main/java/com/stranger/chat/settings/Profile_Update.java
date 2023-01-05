@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,7 +34,8 @@ import java.util.UUID;
 public class Profile_Update extends AppCompatActivity {
 
     ImageView profilePicField;
-    EditText nameField, phoneNumberField;
+    EditText nameField;
+    Toolbar topAppBar;
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -46,19 +48,23 @@ public class Profile_Update extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_update);
 
+        topAppBar = findViewById(R.id.topAppBar);
         profilePicField = findViewById(R.id.changeProfilePic);
         nameField = findViewById(R.id.nameField);
-        phoneNumberField = findViewById(R.id.phoneNumberField);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
 
-        // back button
-        findViewById(R.id.backButton).setOnClickListener(view -> finish());
-
-        // done button
-        findViewById(R.id.doneButton).setOnClickListener(view -> finish());
+        topAppBar.setNavigationOnClickListener(v -> finish());
+        topAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.save) {
+                finish();
+            } else {
+                return false;
+            }
+            return true;
+        });
 
         // fill the details
         FirebaseFirestore.getInstance().collection("users").document(currentUserId).addSnapshotListener((value, error) -> {
@@ -67,7 +73,6 @@ public class Profile_Update extends AppCompatActivity {
             }
             if (value != null) {
                 nameField.setText((String) value.get("username"));
-                phoneNumberField.setText((String) value.get("phoneNumber"));
                 if (value.get("profilePic") != null) {
                     Picasso.get().load((String) value.get("profilePic")).into(profilePicField);
                 }

@@ -1,4 +1,4 @@
-package com.stranger.chat.notesmaker;
+package com.stranger.chat.notes_modules.data;
 
 public class Topics_Tile_Data {
     String topic, lastUpdated, content, topicId;

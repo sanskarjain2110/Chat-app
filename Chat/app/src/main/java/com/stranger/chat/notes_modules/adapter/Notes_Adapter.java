@@ -1,31 +1,29 @@
-package com.stranger.chat.notesmaker;
+package com.stranger.chat.notes_modules.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.stranger.chat.R;
-import com.stranger.chat.notesmaker.contentPage.ContentActivity;
+import com.stranger.chat.notes_modules.ContentActivity;
+import com.stranger.chat.notes_modules.data.Topics_Tile_Data;
 
-public class Topics_Adapter extends FirestoreRecyclerAdapter<Topics_Tile_Data, Topics_Adapter.Topic_ViewHolder> {
+public class Notes_Adapter extends FirestoreRecyclerAdapter<Topics_Tile_Data, Notes_Adapter.Topic_ViewHolder> {
 
-    Activity activity;
     Context context;
 
-    public Topics_Adapter(FirestoreRecyclerOptions<Topics_Tile_Data> options, Activity activity, Context context) {
+    public Notes_Adapter(FirestoreRecyclerOptions<Topics_Tile_Data> options, Context context) {
         super(options);
-        this.activity = activity;
         this.context = context;
     }
 
@@ -33,9 +31,9 @@ public class Topics_Adapter extends FirestoreRecyclerAdapter<Topics_Tile_Data, T
     @Override
     public Topic_ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.topics_tile_sample, parent, false);
+                .inflate(R.layout.notes_tile_sample, parent, false);
 
-        return new Topics_Adapter.Topic_ViewHolder(view);
+        return new Notes_Adapter.Topic_ViewHolder(view);
     }
 
     @Override
@@ -49,25 +47,22 @@ public class Topics_Adapter extends FirestoreRecyclerAdapter<Topics_Tile_Data, T
         holder.getContent().setText(content);
         holder.getLastUpdated().setText(lastUpdated);
 
-        // to open
+        // to open content
         holder.getTile().setOnClickListener(view -> {
             Intent intent = new Intent(context, ContentActivity.class);
             intent.putExtra("topicId", topicId);
-            activity.startActivity(intent);
+            context.startActivity(intent);
         });
 
         // to open menu
-        holder.getTile().setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(activity, "hello", Toast.LENGTH_SHORT).show();
-                return true;
-            }
+        holder.getTile().setOnLongClickListener(v -> {
+            Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
+            return true;
         });
     }
 
     static class Topic_ViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout tile;
+        CardView tile;
         TextView topic, content, lastUpdated;
 
         public Topic_ViewHolder(@NonNull View itemView) {
@@ -78,7 +73,7 @@ public class Topics_Adapter extends FirestoreRecyclerAdapter<Topics_Tile_Data, T
             lastUpdated = itemView.findViewById(R.id.lastUpdated);
         }
 
-        public LinearLayout getTile() {
+        public CardView getTile() {
             return tile;
         }
 
@@ -95,4 +90,3 @@ public class Topics_Adapter extends FirestoreRecyclerAdapter<Topics_Tile_Data, T
         }
     }
 }
-

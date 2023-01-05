@@ -365,3 +365,42 @@ addChatAdapter
 //                intent.putExtra("data", sendData);
 //                activity.startActivity(intent);
 //                progressDialog.dismiss();
+
+
+----------------------------------------------------------------------------------------------------
+<androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:elevation="20dp"
+        app:cardCornerRadius="25dp"
+        app:cornerFamily="rounded">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/getMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/type_something"
+                android:inputType="text|textNoSuggestions|textMultiLine"
+                android:padding="10dp" />
+            <ImageView
+                android:id="@+id/sentButton"
+                android:layout_gravity="bottom|end"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_margin="10dp"
+                android:color="#000000"
+                android:contentDescription="@string/sent_icon"
+                android:gravity="end"
+                android:src="@drawable/ic_send_48px" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
