@@ -1,6 +1,6 @@
 package com.stranger.chat.notes_modules.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.stranger.chat.R;
-import com.stranger.chat.notes_modules.ContentActivity;
-import com.stranger.chat.notes_modules.data.Topics_Tile_Data;
+import com.stranger.chat.notes_modules.NoteEditorActivity;
+import com.stranger.chat.notes_modules.data.Note_Tile_Data;
 
-public class Notes_Adapter extends FirestoreRecyclerAdapter<Topics_Tile_Data, Notes_Adapter.Topic_ViewHolder> {
+public class Notes_Adapter extends FirestoreRecyclerAdapter<Note_Tile_Data, Notes_Adapter.Topic_ViewHolder> {
 
-    Context context;
+    Activity activity;
 
-    public Notes_Adapter(FirestoreRecyclerOptions<Topics_Tile_Data> options, Context context) {
+    public Notes_Adapter(FirestoreRecyclerOptions<Note_Tile_Data> options, Activity activity) {
         super(options);
-        this.context = context;
+        this.activity = activity;
     }
 
     @NonNull
@@ -37,39 +37,39 @@ public class Notes_Adapter extends FirestoreRecyclerAdapter<Topics_Tile_Data, No
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull Topic_ViewHolder holder, int position, @NonNull Topics_Tile_Data model) {
-        String topic = model.getTopic(),
+    protected void onBindViewHolder(@NonNull Topic_ViewHolder holder, int position, @NonNull Note_Tile_Data model) {
+        String title = model.getTitle(),
                 lastUpdated = model.getLastUpdated(),
-                content = model.getContent(),
-                topicId = model.getTopicId();
+                description = model.getDescription(),
+                noteId = model.getNoteId();
 
-        holder.getTopic().setText(topic);
-        holder.getContent().setText(content);
+        holder.getTitle().setText(title);
+        holder.getDescription().setText(description);
         holder.getLastUpdated().setText(lastUpdated);
 
         // to open content
         holder.getTile().setOnClickListener(view -> {
-            Intent intent = new Intent(context, ContentActivity.class);
-            intent.putExtra("topicId", topicId);
-            context.startActivity(intent);
+            Intent intent = new Intent(activity, NoteEditorActivity.class);
+            intent.putExtra("noteId", noteId);
+            activity.startActivity(intent);
         });
 
         // to open menu
         holder.getTile().setOnLongClickListener(v -> {
-            Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "hello", Toast.LENGTH_SHORT).show();
             return true;
         });
     }
 
     static class Topic_ViewHolder extends RecyclerView.ViewHolder {
         CardView tile;
-        TextView topic, content, lastUpdated;
+        TextView title, description, lastUpdated;
 
         public Topic_ViewHolder(@NonNull View itemView) {
             super(itemView);
             tile = itemView.findViewById(R.id.tile);
-            topic = itemView.findViewById(R.id.topic);
-            content = itemView.findViewById(R.id.content);
+            title = itemView.findViewById(R.id.title);
+            description = itemView.findViewById(R.id.description);
             lastUpdated = itemView.findViewById(R.id.lastUpdated);
         }
 
@@ -77,12 +77,12 @@ public class Notes_Adapter extends FirestoreRecyclerAdapter<Topics_Tile_Data, No
             return tile;
         }
 
-        public TextView getTopic() {
-            return topic;
+        public TextView getTitle() {
+            return title;
         }
 
-        public TextView getContent() {
-            return content;
+        public TextView getDescription() {
+            return description;
         }
 
         public TextView getLastUpdated() {

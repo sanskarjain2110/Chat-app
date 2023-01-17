@@ -18,11 +18,9 @@ import com.google.firebase.firestore.Query;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.adapter.MessagePageAdapter;
 import com.stranger.chat.chat_modules.data.MessagePage_Tile_Data;
+import com.stranger.chat.fuctionality.TimeStamp;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class MessagePage extends AppCompatActivity {
@@ -72,17 +70,15 @@ public class MessagePage extends AppCompatActivity {
         sentButton.setOnClickListener(view -> {
             String text = textMessage.getText().toString().trim();
             if (text.length() != 0) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.US);
-                String currentDateandTime = sdf.format(new Date());
-
+                String time = (String) TimeStamp.timeStamp();
                 Map<String, Object> pushMessage = new HashMap<>();
                 pushMessage.put("sender", host_username);
-                pushMessage.put("timeStamp", currentDateandTime);
+                pushMessage.put("timeStamp", time);
                 pushMessage.put("message", text);
                 reference.add(pushMessage);
 
                 lastText = host_username + " : " + text;
-                lastTimeStamp = currentDateandTime;
+                lastTimeStamp = time;
                 textMessage.setText("");
             }
         });

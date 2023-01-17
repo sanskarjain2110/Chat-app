@@ -62,7 +62,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".notes_modules.ContentActivity"
+            android:name=".notes_modules.NoteEditorActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

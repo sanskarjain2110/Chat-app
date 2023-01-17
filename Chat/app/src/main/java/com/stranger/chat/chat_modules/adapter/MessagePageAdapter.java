@@ -30,7 +30,7 @@ public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessagePage_Til
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sample_message_tile, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_tile_sample, parent, false);
         return new MessagePageAdapter.MessageViewHolder(view);
     }
 

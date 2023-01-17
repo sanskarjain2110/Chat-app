@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".notes_modules.ContentActivity">
+    tools:context=".notes_modules.NoteEditorActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/topic"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -29,7 +29,7 @@
         android:padding="10dp" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/content"
+        android:id="@+id/description"
         android:layout_height="match_parent"
         android:gravity="top"
         android:layout_width="match_parent"

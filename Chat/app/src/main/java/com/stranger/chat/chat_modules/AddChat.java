@@ -59,7 +59,6 @@ public class AddChat extends AppCompatActivity {
                 List<AddChat_Tile_Data> chats = snapshot.toObjects(AddChat_Tile_Data.class);
             }
         });
-
     }
 
     @Override

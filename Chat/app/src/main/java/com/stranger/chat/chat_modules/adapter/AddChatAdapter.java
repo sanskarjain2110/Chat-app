@@ -37,8 +37,6 @@ public class AddChatAdapter extends FirestoreRecyclerAdapter<AddChat_Tile_Data, 
     Activity activity;
     Context context;
 
-//    static String messageId = null;
-
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
 
