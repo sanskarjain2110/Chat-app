@@ -17,8 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -41,6 +43,8 @@ public class Profile_Update extends AppCompatActivity {
     FirebaseUser currentUser;
     String currentUserId;
 
+    DocumentReference query;
+
     Uri profilePicUri;
 
     @Override
@@ -48,18 +52,23 @@ public class Profile_Update extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_update);
 
-        topAppBar = findViewById(R.id.topAppBar);
-        profilePicField = findViewById(R.id.changeProfilePic);
-        nameField = findViewById(R.id.nameField);
-
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         currentUserId = currentUser.getUid();
 
+        query = FirebaseFirestore.getInstance().collection("users").document(currentUserId);
+
+        topAppBar = findViewById(R.id.topAppBar);
+        profilePicField = findViewById(R.id.changeProfilePic);
+        nameField = findViewById(R.id.nameField);
+
         topAppBar.setNavigationOnClickListener(v -> finish());
         topAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.save) {
-                finish();
+                Map<String, Object> data = new HashMap<>();
+                data.put("username", nameField.getText().toString());
+
+                query.update(data).addOnSuccessListener(unused -> finish());
             } else {
                 return false;
             }
@@ -67,7 +76,7 @@ public class Profile_Update extends AppCompatActivity {
         });
 
         // fill the details
-        FirebaseFirestore.getInstance().collection("users").document(currentUserId).addSnapshotListener((value, error) -> {
+        query.addSnapshotListener((value, error) -> {
             if (error != null) {
                 return;
             }

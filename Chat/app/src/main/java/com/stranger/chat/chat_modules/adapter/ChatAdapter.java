@@ -19,15 +19,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.MessagePage;
-import com.stranger.chat.chat_modules.data.ChatFragment_Tile_Data;
+import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
 
 import java.util.Objects;
 
-public class ChatFragmentAdapter extends FirestoreRecyclerAdapter<ChatFragment_Tile_Data, ChatFragmentAdapter.Chat_ViewHolder> {
+public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAdapter.Chat_ViewHolder> {
     Activity activity;
     String currentUser, reciversUserId, reciversname;
 
-    public ChatFragmentAdapter(@NonNull FirestoreRecyclerOptions<ChatFragment_Tile_Data> options, Activity activity, String currentUser) {
+    public ChatAdapter(@NonNull FirestoreRecyclerOptions<Chat_Tile_Data> options, Activity activity, String currentUser) {
         super(options);
         this.activity = activity;
         this.currentUser = currentUser;
@@ -35,15 +35,15 @@ public class ChatFragmentAdapter extends FirestoreRecyclerAdapter<ChatFragment_T
 
     @NonNull
     @Override
-    public ChatFragmentAdapter.Chat_ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ChatAdapter.Chat_ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.chat_tile_sample, parent, false);
 
-        return new ChatFragmentAdapter.Chat_ViewHolder(view);
+        return new ChatAdapter.Chat_ViewHolder(view);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull Chat_ViewHolder holder, int position, @NonNull ChatFragment_Tile_Data model) {
+    protected void onBindViewHolder(@NonNull Chat_ViewHolder holder, int position, @NonNull Chat_Tile_Data model) {
         for (String userId : model.getUsersId()) {
             if (!Objects.equals(userId, currentUser)) {
                 reciversUserId = userId;
@@ -65,7 +65,6 @@ public class ChatFragmentAdapter extends FirestoreRecyclerAdapter<ChatFragment_T
                     }
                 });
 
-        holder.getLastTextField().setText(model.getLastText());
         holder.getLastChatTimeField().setText(model.getLastSeen());
 
         holder.getChatTile().setOnClickListener(view -> {
@@ -82,7 +81,7 @@ public class ChatFragmentAdapter extends FirestoreRecyclerAdapter<ChatFragment_T
 
     public static class Chat_ViewHolder extends RecyclerView.ViewHolder {
         ImageView profilePicField;
-        TextView usernameField, lastTextField, lastChatTimeField;
+        TextView usernameField, lastChatTimeField;
         LinearLayout chatTile;
 
         public Chat_ViewHolder(@NonNull View itemView) {
@@ -90,7 +89,6 @@ public class ChatFragmentAdapter extends FirestoreRecyclerAdapter<ChatFragment_T
             profilePicField = itemView.findViewById(R.id.profilePic);
             usernameField = itemView.findViewById(R.id.username);
             lastChatTimeField = itemView.findViewById(R.id.lastChatTime);
-            lastTextField = itemView.findViewById(R.id.lastText);
             chatTile = itemView.findViewById(R.id.chatTile);
         }
 
@@ -100,10 +98,6 @@ public class ChatFragmentAdapter extends FirestoreRecyclerAdapter<ChatFragment_T
 
         public TextView getUsernameField() {
             return usernameField;
-        }
-
-        public TextView getLastTextField() {
-            return lastTextField;
         }
 
         public TextView getLastChatTimeField() {

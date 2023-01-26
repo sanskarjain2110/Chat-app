@@ -48,17 +48,6 @@ public class AddChat extends AppCompatActivity {
         database = FirebaseFirestore.getInstance();
         reference = database.collection("users");
         query = reference.whereNotEqualTo("userId", currentUserId);
-
-        query.addSnapshotListener((snapshot, error) -> {
-            if (error != null) {
-                return;
-            }
-
-            // Convert query snapshot to a list of chats
-            if (snapshot != null) {
-                List<AddChat_Tile_Data> chats = snapshot.toObjects(AddChat_Tile_Data.class);
-            }
-        });
     }
 
     @Override

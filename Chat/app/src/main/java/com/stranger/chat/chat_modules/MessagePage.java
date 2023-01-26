@@ -30,8 +30,6 @@ public class MessagePage extends AppCompatActivity {
     EditText textMessage;
     RecyclerView messageView;
 
-    String lastText, lastTimeStamp;
-
     Bundle bundle;
     String messageId;
 
@@ -75,16 +73,10 @@ public class MessagePage extends AppCompatActivity {
                 pushMessage.put("sender", host_username);
                 pushMessage.put("timeStamp", time);
                 pushMessage.put("message", text);
-                reference.add(pushMessage);
 
-                lastText = host_username + " : " + text;
-                lastTimeStamp = time;
+                reference.add(pushMessage).addOnSuccessListener(v -> lastMessage(time));
                 textMessage.setText("");
             }
-        });
-
-        query.addSnapshotListener((snapshot, error) -> {
-
         });
     }
 
@@ -106,20 +98,15 @@ public class MessagePage extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         messagePageAdapter.stopListening();
-        lastUpdate();
     }
 
     protected void onPause() {
         super.onPause();
-        lastUpdate();
     }
 
-    void lastUpdate() {
-        if (lastText != null) {
-            Map<String, Object> lastPush = new HashMap<>();
-            lastPush.put("lastText", lastText);
-            lastPush.put("lastSeen", lastTimeStamp);
-            FirebaseFirestore.getInstance().collection("messages").document(messageId).update(lastPush);
-        }
+    void lastMessage(String time) {
+        Map<String, Object> lastPush = new HashMap<>();
+        lastPush.put("lastSeen", time);
+        FirebaseFirestore.getInstance().collection("messages").document(messageId).update(lastPush);
     }
 }

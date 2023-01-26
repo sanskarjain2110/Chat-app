@@ -38,7 +38,7 @@ public class NoteEditorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_content);
+        setContentView(R.layout.activity_note_editor);
 
         // current user
         mAuth = FirebaseAuth.getInstance();
@@ -74,22 +74,27 @@ public class NoteEditorActivity extends AppCompatActivity {
         topAppBar.setNavigationOnClickListener(view -> finish());
 
         topAppBar.setOnMenuItemClickListener(item -> {
-            String title = titleTextView.getText().toString().trim();
-            if (item.getItemId() == R.id.save && !isEmpty(title)) {
-                String description = descriptionTextView.getText().toString().trim();
+            if (item.getItemId() == R.id.save) {
+                String title = titleTextView.getText().toString().trim();
+                if (!isEmpty(title)) {
+                    String description = descriptionTextView.getText().toString().trim();
 
-                Map<String, Object> data = new HashMap<>();
-                data.put("title", title);
-                data.put("noteId", noteId);
-                data.put("description", description);
-                data.put("lastUpdated", timeStamp());
-                if (updateNotes) {
-                    documentReference.update(data).addOnSuccessListener(unused -> finish());
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("title", title);
+                    data.put("noteId", noteId);
+                    data.put("description", description);
+                    data.put("lastUpdated", timeStamp());
+                    if (updateNotes) {
+                        documentReference.update(data).addOnSuccessListener(unused -> finish());
+                    } else {
+                        documentReference.set(data).addOnSuccessListener(unused -> finish());
+                    }
                 } else {
-                    documentReference.set(data).addOnSuccessListener(unused -> finish());
+                    Toast.makeText(this, "Plesae set the title", Toast.LENGTH_SHORT).show();
                 }
+            } else if (item.getItemId() == R.id.delete && updateNotes) {
+                documentReference.delete().addOnSuccessListener(unused -> finish());
             } else {
-                Toast.makeText(this, "Plesae set the title", Toast.LENGTH_SHORT).show();
                 return false;
             }
             return true;

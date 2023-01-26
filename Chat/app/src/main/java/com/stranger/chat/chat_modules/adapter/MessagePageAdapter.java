@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,7 +36,7 @@ public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessagePage_Til
     }
 
     static class MessageViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout tile;
+        RelativeLayout tile;
         ImageView profilePic;
         TextView messageArea, timeStamp, username;
 
@@ -44,12 +45,13 @@ public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessagePage_Til
 
             tile = itemView.findViewById(R.id.tile);
 
+            profilePic = itemView.findViewById(R.id.profilePic);
             username = itemView.findViewById(R.id.username);
             messageArea = itemView.findViewById(R.id.messageTextView);
             timeStamp = itemView.findViewById(R.id.timeStamp);
         }
 
-        public LinearLayout getTile() {
+        public RelativeLayout getTile() {
             return tile;
         }
 

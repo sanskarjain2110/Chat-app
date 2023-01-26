@@ -46,6 +46,19 @@ public class Settings extends AppCompatActivity {
 
         topAppBar.setNavigationOnClickListener(v -> finish());
 
+        userCardView.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Profile_Update.class)));
+
+        loginButton.setOnClickListener(view -> {
+            FirebaseAuth.getInstance().signOut();
+
+            startActivity(new Intent(getApplicationContext(), Log_in_page.class));
+            finish();
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         FirebaseFirestore.getInstance().collection("users").document(currentUserId).addSnapshotListener((value, error) -> {
             if (error != null) {
                 return;
@@ -57,15 +70,6 @@ public class Settings extends AppCompatActivity {
                     Picasso.get().load((String) value.get("profilePic")).into(profilePic);
                 }
             }
-        });
-
-        userCardView.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Profile_Update.class)));
-
-        loginButton.setOnClickListener(view -> {
-            FirebaseAuth.getInstance().signOut();
-
-            startActivity(new Intent(getApplicationContext(), Log_in_page.class));
-            finish();
         });
     }
 }

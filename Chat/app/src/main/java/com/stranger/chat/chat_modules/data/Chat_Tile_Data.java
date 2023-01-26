@@ -2,11 +2,11 @@ package com.stranger.chat.chat_modules.data;
 
 import java.util.ArrayList;
 
-public class ChatFragment_Tile_Data {
-    private String lastText, lastSeen, messageId;
-    ArrayList<String> usersId;
+public class Chat_Tile_Data {
+    private String lastSeen, messageId;
+    private ArrayList<String> usersId;
 
-    public ChatFragment_Tile_Data() {
+    public Chat_Tile_Data() {
     }
 
     public ArrayList<String> getUsersId() {
@@ -23,14 +23,6 @@ public class ChatFragment_Tile_Data {
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
-    }
-
-    public String getLastText() {
-        return lastText;
-    }
-
-    public void setLastText(String lastText) {
-        this.lastText = lastText;
     }
 
     public String getLastSeen() {
