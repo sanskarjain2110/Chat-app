@@ -15,7 +15,7 @@
             android:id="@id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:menu="@menu/save_button_menu"
+            app:menu="@menu/profile_menu"
             app:navigationIcon="@drawable/ic_baseline_arrow_back_ios_36"
             app:title="@string/profile" />
     </com.google.android.material.appbar.AppBarLayout>

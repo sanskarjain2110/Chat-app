@@ -1,24 +1,30 @@
 package com.stranger.chat.chat_modules.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.stranger.chat.chat_modules.bottom_sheet.MessagePage_BottomSheet;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.data.MessagePage_Tile_Data;
 
 public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessagePage_Tile_Data, MessagePageAdapter.MessageViewHolder> {
-    public MessagePageAdapter(FirestoreRecyclerOptions<MessagePage_Tile_Data> options) {
+    Context context;
+    FragmentManager fragmentManager;
+    public MessagePageAdapter(FirestoreRecyclerOptions<MessagePage_Tile_Data> options, FragmentManager fragmentManager, Context context) {
         super(options);
+        this.context = context;
+        this.fragmentManager = fragmentManager;
     }
 
     @Override
@@ -26,6 +32,12 @@ public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessagePage_Til
         holder.getUsername().setText(model.getSender());
         holder.getMessageArea().setText(model.getMessage());
         holder.getTimeStamp().setText(model.getTimeStamp());
+
+        holder.getTile().setOnLongClickListener(v -> {
+            MessagePage_BottomSheet bottomSheet = new MessagePage_BottomSheet(model,context);
+            bottomSheet.show(fragmentManager, "ModalBottomSheet");
+            return true;
+        });
     }
 
     @NonNull

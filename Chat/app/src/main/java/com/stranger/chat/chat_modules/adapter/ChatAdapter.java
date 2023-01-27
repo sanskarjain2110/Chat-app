@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.MessagePage;
+import com.stranger.chat.chat_modules.bottom_sheet.Chat_BottomSheet;
 import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
 
 import java.util.Objects;
@@ -26,9 +28,11 @@ import java.util.Objects;
 public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAdapter.Chat_ViewHolder> {
     Activity activity;
     String currentUser, reciversUserId, reciversname;
+    FragmentManager fragmentManager;
 
-    public ChatAdapter(@NonNull FirestoreRecyclerOptions<Chat_Tile_Data> options, Activity activity, String currentUser) {
+    public ChatAdapter(@NonNull FirestoreRecyclerOptions<Chat_Tile_Data> options, Activity activity, String currentUser, FragmentManager fragmentManager) {
         super(options);
+        this.fragmentManager = fragmentManager;
         this.activity = activity;
         this.currentUser = currentUser;
     }
@@ -77,6 +81,13 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAd
             intent.putExtra("data", sendData);
             activity.startActivity(intent);
         });
+
+        holder.getChatTile().setOnLongClickListener(view -> {
+            Chat_BottomSheet chat_bottomSheet = new Chat_BottomSheet(model);
+            chat_bottomSheet.show(fragmentManager, "ModalBottomSheet");
+            return true;
+        });
+
     }
 
     public static class Chat_ViewHolder extends RecyclerView.ViewHolder {

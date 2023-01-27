@@ -1,5 +1,9 @@
 package com.stranger.chat.chat_modules;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -49,10 +53,9 @@ public class MessagePage extends AppCompatActivity {
 
         topAppBar = findViewById(R.id.topAppBar);
 
-        textMessage = findViewById(R.id.getMessage);
-
         messageView = findViewById(R.id.recyclerview);
 
+        textMessage = findViewById(R.id.getMessage);
         sentButton = findViewById(R.id.sentButton);
 
         database = FirebaseFirestore.getInstance();
@@ -66,15 +69,16 @@ public class MessagePage extends AppCompatActivity {
         topAppBar.setNavigationOnClickListener(view -> finish());
 
         sentButton.setOnClickListener(view -> {
-            String text = textMessage.getText().toString().trim();
+            String text = textMessage.getText().toString().trim(), dilogId = reference.document().getId();
             if (text.length() != 0) {
                 String time = (String) TimeStamp.timeStamp();
                 Map<String, Object> pushMessage = new HashMap<>();
                 pushMessage.put("sender", host_username);
                 pushMessage.put("timeStamp", time);
                 pushMessage.put("message", text);
+                pushMessage.put("dilogId", dilogId);
 
-                reference.add(pushMessage).addOnSuccessListener(v -> lastMessage(time));
+                reference.document(dilogId).set(pushMessage).addOnSuccessListener(v -> lastMessage(time));
                 textMessage.setText("");
             }
         });
@@ -83,10 +87,9 @@ public class MessagePage extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        FirestoreRecyclerOptions<MessagePage_Tile_Data> options = new FirestoreRecyclerOptions.Builder<MessagePage_Tile_Data>()
-                .setQuery(query, MessagePage_Tile_Data.class).build();
+        FirestoreRecyclerOptions<MessagePage_Tile_Data> options = new FirestoreRecyclerOptions.Builder<MessagePage_Tile_Data>().setQuery(query, MessagePage_Tile_Data.class).build();
 
-        messagePageAdapter = new MessagePageAdapter(options);
+        messagePageAdapter = new MessagePageAdapter(options, getSupportFragmentManager(), getApplicationContext());
         messageView.setAdapter(messagePageAdapter);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);

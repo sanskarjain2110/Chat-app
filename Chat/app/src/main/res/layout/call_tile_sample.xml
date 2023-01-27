@@ -1,58 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profilePic"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_account_circle_48" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profilePic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_account_circle_48" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/callAction"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="bottom"
+                android:contentDescription="@string/call_action"
+                android:src="@drawable/ic_launcher_background" />
 
             <TextView
-                android:id="@+id/username"
+
+                android:id="@+id/callTime"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sample_text"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/callAction"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="bottom"
-                    android:contentDescription="@string/call_action"
-                    android:src="@drawable/ic_launcher_background" />
-
-                <TextView
-
-                    android:id="@+id/callTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="5dp"
-                    android:gravity="bottom"
-                    android:text="@string/sample_text" />
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:gravity="bottom" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/callType"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_launcher_background"
-            android:contentDescription="@string/call_type" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/callType"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="@string/call_type"
+        android:src="@drawable/ic_launcher_background" />
+</LinearLayout>

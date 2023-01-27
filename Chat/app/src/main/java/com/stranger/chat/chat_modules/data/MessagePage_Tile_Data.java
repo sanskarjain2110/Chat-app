@@ -1,9 +1,15 @@
 package com.stranger.chat.chat_modules.data;
 
 public class MessagePage_Tile_Data {
-    String sender, timeStamp, message;
+    String dilogId, sender, timeStamp, message;
 
-    MessagePage_Tile_Data() {
+
+    public String getDilogId() {
+        return dilogId;
+    }
+
+    public void setDilogId(String dilogId) {
+        this.dilogId = dilogId;
     }
 
     public String getSender() {
