@@ -1,13 +1,10 @@
 package com.stranger.chat.chat_modules;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -37,11 +34,12 @@ public class MessagePage extends AppCompatActivity {
     Bundle bundle;
     String messageId;
 
-    MessagePageAdapter messagePageAdapter;
-
     FirebaseFirestore database;
     CollectionReference reference;
     Query query;
+
+    MessagePageAdapter messagePageAdapter;
+    LinearLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +65,16 @@ public class MessagePage extends AppCompatActivity {
 
         topAppBar.setTitle(bundle.getString("reciversname"));
         topAppBar.setNavigationOnClickListener(view -> finish());
+        topAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.audio_call) {
+                Toast.makeText(getApplicationContext(), "Audio", Toast.LENGTH_SHORT).show();
+            } else if (item.getItemId() == R.id.video_call) {
+                Toast.makeText(getApplicationContext(), "Video", Toast.LENGTH_SHORT).show();
+            } else {
+                return false;
+            }
+            return true;
+        });
 
         sentButton.setOnClickListener(view -> {
             String text = textMessage.getText().toString().trim(), dilogId = reference.document().getId();
@@ -78,7 +86,13 @@ public class MessagePage extends AppCompatActivity {
                 pushMessage.put("message", text);
                 pushMessage.put("dilogId", dilogId);
 
-                reference.document(dilogId).set(pushMessage).addOnSuccessListener(v -> lastMessage(time));
+                reference.document(dilogId).set(pushMessage).addOnSuccessListener(v -> {
+                    Map<String, Object> lastPush = new HashMap<>();
+                    lastPush.put("lastSeen", time);
+                    FirebaseFirestore.getInstance().collection("messages").document(messageId).update(lastPush);
+
+                    messageView.scrollToPosition(messagePageAdapter.getItemCount() - 1);
+                });
                 textMessage.setText("");
             }
         });
@@ -89,27 +103,16 @@ public class MessagePage extends AppCompatActivity {
 
         FirestoreRecyclerOptions<MessagePage_Tile_Data> options = new FirestoreRecyclerOptions.Builder<MessagePage_Tile_Data>().setQuery(query, MessagePage_Tile_Data.class).build();
 
-        messagePageAdapter = new MessagePageAdapter(options, getSupportFragmentManager(), getApplicationContext());
-        messageView.setAdapter(messagePageAdapter);
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        messagePageAdapter = new MessagePageAdapter(options, getSupportFragmentManager(), getApplicationContext(), reference);
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         messageView.setLayoutManager(linearLayoutManager);
-
+        messageView.setAdapter(messagePageAdapter);
         messagePageAdapter.startListening();
     }
 
     protected void onStop() {
         super.onStop();
         messagePageAdapter.stopListening();
-    }
-
-    protected void onPause() {
-        super.onPause();
-    }
-
-    void lastMessage(String time) {
-        Map<String, Object> lastPush = new HashMap<>();
-        lastPush.put("lastSeen", time);
-        FirebaseFirestore.getInstance().collection("messages").document(messageId).update(lastPush);
     }
 }

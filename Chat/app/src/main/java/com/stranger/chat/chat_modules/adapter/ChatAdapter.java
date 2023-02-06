@@ -19,9 +19,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
+import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
 import com.stranger.chat.chat_modules.MessagePage;
 import com.stranger.chat.chat_modules.bottom_sheet.Chat_BottomSheet;
-import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
 
 import java.util.Objects;
 

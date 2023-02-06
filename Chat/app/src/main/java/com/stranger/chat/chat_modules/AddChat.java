@@ -16,8 +16,6 @@ import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.adapter.AddChatAdapter;
 import com.stranger.chat.chat_modules.data.AddChat_Tile_Data;
 
-import java.util.List;
-
 public class AddChat extends AppCompatActivity {
     AddChatAdapter addChatAdapter;
 

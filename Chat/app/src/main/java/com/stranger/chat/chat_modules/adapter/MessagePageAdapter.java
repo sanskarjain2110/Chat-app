@@ -14,17 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.stranger.chat.chat_modules.bottom_sheet.MessagePage_BottomSheet;
+import com.google.firebase.firestore.CollectionReference;
 import com.stranger.chat.R;
+import com.stranger.chat.chat_modules.bottom_sheet.MessagePage_BottomSheet;
 import com.stranger.chat.chat_modules.data.MessagePage_Tile_Data;
 
 public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessagePage_Tile_Data, MessagePageAdapter.MessageViewHolder> {
+    CollectionReference reference;
     Context context;
     FragmentManager fragmentManager;
-    public MessagePageAdapter(FirestoreRecyclerOptions<MessagePage_Tile_Data> options, FragmentManager fragmentManager, Context context) {
+
+    public MessagePageAdapter(FirestoreRecyclerOptions<MessagePage_Tile_Data> options,
+                              FragmentManager fragmentManager, Context context, CollectionReference reference) {
         super(options);
         this.context = context;
         this.fragmentManager = fragmentManager;
+        this.reference = reference;
     }
 
     @Override
@@ -34,7 +39,7 @@ public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessagePage_Til
         holder.getTimeStamp().setText(model.getTimeStamp());
 
         holder.getTile().setOnLongClickListener(v -> {
-            MessagePage_BottomSheet bottomSheet = new MessagePage_BottomSheet(model,context);
+            MessagePage_BottomSheet bottomSheet = new MessagePage_BottomSheet(model, context, reference);
             bottomSheet.show(fragmentManager, "ModalBottomSheet");
             return true;
         });
@@ -45,6 +50,12 @@ public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessagePage_Til
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_tile_sample, parent, false);
         return new MessagePageAdapter.MessageViewHolder(view);
+    }
+
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+        notifyDataSetChanged();
     }
 
     static class MessageViewHolder extends RecyclerView.ViewHolder {
@@ -65,6 +76,10 @@ public class MessagePageAdapter extends FirestoreRecyclerAdapter<MessagePage_Til
 
         public RelativeLayout getTile() {
             return tile;
+        }
+
+        public ImageView getProfilePic() {
+            return profilePic;
         }
 
         public TextView getMessageArea() {

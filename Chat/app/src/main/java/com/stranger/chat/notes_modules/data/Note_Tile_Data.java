@@ -1,7 +1,20 @@
 package com.stranger.chat.notes_modules.data;
 
 public class Note_Tile_Data {
-    String title, lastUpdated, description, noteId;
+    String title;
+    String lastUpdated;
+    String description;
+    String noteId;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    String type;
 
     public String getTitle() {
         return title;

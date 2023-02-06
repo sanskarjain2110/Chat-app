@@ -59,30 +59,4 @@
         android:contentDescription="@string/add"
         android:src="@drawable/ic_baseline_add_24"
         app:layout_anchor="@id/bottom_navigation" />
-
-    <LinearLayout
-        android:id="@+id/notesNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom|end"
-        android:orientation="vertical"
-        android:paddingBottom="100dp"
-        android:visibility="gone">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/createNoteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:contentDescription="@string/create_note"
-            android:src="@drawable/ic_baseline_add_notes_24" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/createListButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:contentDescription="@string/create_check_list"
-            android:src="@drawable/ic_baseline_checklist_24" />
-    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

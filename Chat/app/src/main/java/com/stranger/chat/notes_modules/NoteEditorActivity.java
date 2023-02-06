@@ -5,6 +5,7 @@ import static com.stranger.chat.fuctionality.TimeStamp.timeStamp;
 import static java.util.Objects.isNull;
 
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,13 +27,15 @@ public class NoteEditorActivity extends AppCompatActivity {
     FirebaseUser currentUser;
     String currentUserId;
 
+    FirebaseFirestore database;
     CollectionReference collectionReference;
     DocumentReference documentReference;
     String noteId;
 
     Toolbar topAppBar;
 
-    TextView titleTextView, descriptionTextView;
+    TextView timestamp;
+    EditText titleTextView, descriptionTextView;
     Boolean updateNotes = true;
 
     @Override
@@ -47,10 +50,12 @@ public class NoteEditorActivity extends AppCompatActivity {
 
         topAppBar = findViewById(R.id.topAppBar);
 
+        timestamp = findViewById(R.id.timestamp);
         titleTextView = findViewById(R.id.title);
         descriptionTextView = findViewById(R.id.description);
 
-        collectionReference = FirebaseFirestore.getInstance().collection("users").document(currentUserId).collection("notes");
+        database = FirebaseFirestore.getInstance();
+        collectionReference = database.collection("users").document(currentUserId).collection("notes");
 
         noteId = getIntent().getStringExtra("noteId");
         if (isNull(noteId)) {
@@ -64,9 +69,11 @@ public class NoteEditorActivity extends AppCompatActivity {
                 if (value != null && value.exists()) {
                     titleTextView.setText((String) value.get("title"));
                     descriptionTextView.setText((String) value.get("description"));
+                    timestamp.setText((String) value.get("lastUpdated"));
                 }
             });
         }
+
 
         documentReference = collectionReference.document(noteId);
 
@@ -74,7 +81,7 @@ public class NoteEditorActivity extends AppCompatActivity {
         topAppBar.setNavigationOnClickListener(view -> finish());
 
         topAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.save) {
+            if (item.getItemId() == R.id.save) {                                                    // save note
                 String title = titleTextView.getText().toString().trim();
                 if (!isEmpty(title)) {
                     String description = descriptionTextView.getText().toString().trim();
@@ -84,6 +91,7 @@ public class NoteEditorActivity extends AppCompatActivity {
                     data.put("noteId", noteId);
                     data.put("description", description);
                     data.put("lastUpdated", timeStamp());
+                    data.put("type", "notes");
                     if (updateNotes) {
                         documentReference.update(data).addOnSuccessListener(unused -> finish());
                     } else {
@@ -92,7 +100,7 @@ public class NoteEditorActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Plesae set the title", Toast.LENGTH_SHORT).show();
                 }
-            } else if (item.getItemId() == R.id.delete && updateNotes) {
+            } else if (item.getItemId() == R.id.delete && updateNotes) {                            // delete note
                 documentReference.delete().addOnSuccessListener(unused -> finish());
             } else {
                 return false;

@@ -2,8 +2,6 @@ package com.stranger.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,8 +24,8 @@ import com.stranger.chat.call_module.data.Userdata;
 import com.stranger.chat.chat_modules.AddChat;
 import com.stranger.chat.chat_modules.adapter.ChatAdapter;
 import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
-import com.stranger.chat.notes_modules.NoteEditorActivity;
 import com.stranger.chat.notes_modules.adapter.Notes_Adapter;
+import com.stranger.chat.notes_modules.bottom_sheet.NotesCreate_BottomSheet;
 import com.stranger.chat.notes_modules.data.Note_Tile_Data;
 import com.stranger.chat.settings.Settings;
 
@@ -40,13 +38,19 @@ public class MainActivity extends AppCompatActivity {
             new Userdata(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan", "20/07/2022, 07:30 a.m."),
             new Userdata(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan", "20/07/2022, 07:30 a.m."),
             new Userdata(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan", "20/07/2022, 07:30 a.m."),
-            new Userdata(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan", "20/07/2022, 07:30 a.m.")};
+            new Userdata(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan", "20/07/2022, 07:30 a.m."),
+            new Userdata(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan", "20/07/2022, 07:30 a.m."),
+            new Userdata(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan", "20/07/2022, 07:30 a.m."),
+            new Userdata(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan", "20/07/2022, 07:30 a.m."),
+            new Userdata(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan", "20/07/2022, 07:30 a.m."),
+            new Userdata(R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, "Rohan", "20/07/2022, 07:30 a.m.")
+    };
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     String currentUserId;
 
-    CollectionReference chatReference, notesReference;
+    CollectionReference chatCollectionReference, notesCollectionReference;
     Query chatQuery, noteQuery;
 
     ChatAdapter chatAdapter;
@@ -56,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
     Toolbar topAppBar;
     SearchView searchBar;
     RecyclerView recyclerview;
-
-    LinearLayout notesNavigation;
-    FloatingActionButton createNoteButton, createListButton;
 
     FloatingActionButton addButton;
     BottomAppBar bottomAppBar;
@@ -78,10 +79,6 @@ public class MainActivity extends AppCompatActivity {
         searchBar = findViewById(R.id.searchBar);
         recyclerview = findViewById(R.id.recyclerview);
 
-        notesNavigation = findViewById(R.id.notesNavigation);
-        createNoteButton = findViewById(R.id.createNoteButton);
-        createListButton = findViewById(R.id.createListButton);
-
         addButton = findViewById(R.id.addButton);
         bottomAppBar = findViewById(R.id.bottom_navigation);
 
@@ -96,24 +93,17 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        notesNavigation.setOnClickListener(view -> notesNavigation.setVisibility(View.GONE));
-
         addButton.setOnClickListener(view -> {
             if (selectedMenuItemInBotomAppBar == R.id.chatNavigationButton) {
                 startActivity(new Intent(getApplicationContext(), AddChat.class));
             } else if (selectedMenuItemInBotomAppBar == R.id.callNavigationButton) {
                 Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
             } else if (selectedMenuItemInBotomAppBar == R.id.notesNavigationButton) {
-                notesNavigation.setVisibility(View.VISIBLE);
+                NotesCreate_BottomSheet bottomSheet = new NotesCreate_BottomSheet(getApplicationContext(), notesCollectionReference);
+                bottomSheet.show(getSupportFragmentManager(), "ModalBottomSheet");
             } else {
-                Toast.makeText(this, "There is an error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "error!!", Toast.LENGTH_SHORT).show();
             }
-        });
-
-        createNoteButton.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), NoteEditorActivity.class)));
-
-        //<---create new list
-        createListButton.setOnClickListener(view -> {
         });
 
         bottomAppBar.setOnMenuItemClickListener(item -> navigationMenu(item.getItemId()));
@@ -137,12 +127,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void notesView() {
-        notesReference = FirebaseFirestore.getInstance().collection("users").document(currentUserId).collection("notes");
-        noteQuery = notesReference.orderBy("lastUpdated", Query.Direction.DESCENDING);
+        notesCollectionReference = FirebaseFirestore.getInstance().collection("users").document(currentUserId).collection("notes");
+        noteQuery = notesCollectionReference.orderBy("lastUpdated", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Note_Tile_Data> options = new FirestoreRecyclerOptions.Builder<Note_Tile_Data>().setQuery(noteQuery, Note_Tile_Data.class).build();
 
-        notesAdapter = new Notes_Adapter(options, this, getSupportFragmentManager());
+        notesAdapter = new Notes_Adapter(options, this, getSupportFragmentManager(), notesCollectionReference);
         notesAdapter.startListening();
     }
 
@@ -151,8 +141,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void chatView() {
-        chatReference = FirebaseFirestore.getInstance().collection("messages");
-        chatQuery = chatReference.whereArrayContains("usersId", currentUserId).orderBy("lastSeen", Query.Direction.DESCENDING);
+        chatCollectionReference = FirebaseFirestore.getInstance().collection("messages");
+        chatQuery = chatCollectionReference.whereArrayContains("usersId", currentUserId).orderBy("lastSeen", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Chat_Tile_Data> options = new FirestoreRecyclerOptions.Builder<Chat_Tile_Data>()
                 .setQuery(chatQuery, Chat_Tile_Data.class).build();
@@ -187,3 +177,4 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 }
+
