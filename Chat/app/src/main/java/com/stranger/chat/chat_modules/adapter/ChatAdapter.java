@@ -16,18 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
-import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
-import com.stranger.chat.chat_modules.MessagePage;
+import com.stranger.chat.chat_modules.ChatPage;
 import com.stranger.chat.chat_modules.bottom_sheet.Chat_BottomSheet;
+import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
+import com.stranger.chat.fuctionality.FirebaseConnections;
 
 import java.util.Objects;
 
 public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAdapter.Chat_ViewHolder> {
     Activity activity;
-    String currentUser, reciversUserId, reciversname;
+    String currentUser, reciverUserId, reciverName;
     FragmentManager fragmentManager;
 
     public ChatAdapter(@NonNull FirestoreRecyclerOptions<Chat_Tile_Data> options, Activity activity, String currentUser, FragmentManager fragmentManager) {
@@ -50,34 +50,32 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAd
     protected void onBindViewHolder(@NonNull Chat_ViewHolder holder, int position, @NonNull Chat_Tile_Data model) {
         for (String userId : model.getUsersId()) {
             if (!Objects.equals(userId, currentUser)) {
-                reciversUserId = userId;
+                reciverUserId = userId;
                 break;
             }
         }
 
-        FirebaseFirestore.getInstance()
-                .collection("users").document(reciversUserId)
-                .addSnapshotListener((snapshot, error) -> {
-                    if (error != null) {
-                        return;
-                    }
-                    if (snapshot != null) {
-                        reciversname = (String) snapshot.get("username");
-                        holder.getUsernameField().setText(reciversname);
-                        // download image from fireStorage
-                        Picasso.get().load((String) snapshot.get("profilePic")).into(holder.getProfilePicField());
-                    }
-                });
+        FirebaseConnections.userDocument(reciverUserId).addSnapshotListener((snapshot, error) -> {
+            if (error != null) {
+                return;
+            }
+            if (snapshot != null) {
+                reciverName = (String) snapshot.get("username");
+                holder.getUsernameField().setText(reciverName);
+                // download image from fireStorage
+                Picasso.get().load((String) snapshot.get("profilePic")).into(holder.getProfilePicField());
+            }
+        });
 
         holder.getLastChatTimeField().setText(model.getLastSeen());
 
         holder.getChatTile().setOnClickListener(view -> {
             Bundle sendData = new Bundle();
-            sendData.putString("reciversUserId", reciversUserId);
+            sendData.putString("reciverUserId", reciverUserId);
             sendData.putString("messageId", model.getMessageId());
-            sendData.putString("reciversname", reciversname);
+            sendData.putString("reciverName", reciverName);
 
-            Intent intent = new Intent(activity, MessagePage.class);
+            Intent intent = new Intent(activity, ChatPage.class);
             intent.putExtra("data", sendData);
             activity.startActivity(intent);
         });

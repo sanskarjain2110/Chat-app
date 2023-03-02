@@ -11,7 +11,7 @@
         android:layout_width="40dp"
         android:layout_height="5dp" />
 
-    <include layout="@layout/message_tile_sample" />
+    <include layout="@layout/message_reciver_tile_sample" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

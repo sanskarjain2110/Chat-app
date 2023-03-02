@@ -7,9 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission
-        android:name="android.permission.POST_NOTIFICATIONS"
-        tools:node="remove" />
 
     <application
         android:allowBackup="true"
@@ -25,9 +22,9 @@
             android:name=".MainActivity"
             android:exported="false" />
 
-        <!--      settings-->
+        <!-- settings -->
         <activity
-            android:name=".settings.Profile_Update"
+            android:name=".settings.Profile"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -41,9 +38,9 @@
                 android:value="" />
         </activity>
 
-        <!--        login-->
+        <!-- login -->
         <activity
-            android:name=".login_modules.Log_in_page"
+            android:name=".login_modules.StartScrean"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,6 +49,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".login_modules.LogInPage"
+            android:exported="true" />
+        <activity
             android:name=".login_modules.Add_Profile_Detail"
             android:exported="false">
             <meta-data
@@ -59,20 +59,18 @@
                 android:value="" />
         </activity>
 
-        <!--        extra-->
+        <!-- extra -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
-        <!--        chat -->
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- chat -->
         <activity
-            android:name=".chat_modules.AddChat"
+            android:name=".chat_modules.AddPerson"
             android:exported="false" />
         <activity
-            android:name=".chat_modules.MessagePage"
+            android:name=".chat_modules.ChatPage"
             android:exported="false" />
 
-        <!--        notes-->
+        <!-- notes -->
         <activity
             android:name=".notes_modules.NoteEditorActivity"
             android:exported="false">

@@ -8,7 +8,7 @@
     android:layout_margin="20dp"
     android:padding="10dp"
     android:orientation="vertical"
-    tools:context=".login_modules.Log_in_page">
+    tools:context=".login_modules.LogInPage">
 
     <TextView
         android:layout_width="match_parent"

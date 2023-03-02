@@ -2,6 +2,22 @@
     <!--    Application Name-->
     <string name="app_name">Chat</string>
 
+    <!--    common-->
+    <string name="chats">Chats</string>
+    <string name="calls">Calls</string>
+    <string name="notes">Notes</string>
+
+    <string name="settings">Settings</string>
+    <string name="invite_friends">Invite friends</string>
+    <string name="add_new_person">Add new person</string>
+
+    <string name="save">Save</string>
+
+    <!--    main activity-->
+    <string name="search">Search</string>
+    <string name="mark_all_read">Mark all read</string>
+    <string name="notification_profile">Notification profile</string>
+
     <!--    log in page -->
     <string name="login">Login</string>
     <string name="phone_number">Phone Number</string>
@@ -16,12 +32,7 @@
 
     <string name="sample_text">Sample Text</string>
     <string name="profilePic">Profile Pic</string>
-    <string name="chats">Chats</string>
-    <string name="calls">Calls</string>
-    <string name="notes">Notes</string>
 
-
-    <string name="add_person">Add Person</string>
     <!--    message page -->
     <string name="send_message">Send message</string>
     <string name="verify">verify</string>
@@ -32,11 +43,6 @@
     <string name="send">Send</string>
     <string name="call">Call</string>
     <string name="video_call">Video Call</string>
-
-    <!--    settings-->
-    <string name="settings">Settings</string>
-    <string name="logout">logout</string>
-    <string name="theme">Theme</string>
 
     <string name="update_profile">Update Profile</string>
     <string name="userneme_hint">This could be your first name or nickname.\nIt\'s how you appear on ${app_name}.</string>
@@ -58,8 +64,7 @@
     <string name="last_updated">Last updated</string>
     <string name="add">Add</string>
     <string name="title">Title</string>
-    <string name="save">Save</string>
-    <string name="search">Search</string>
+
 
     <string name="username">username</string>
     <string name="forward">Forward</string>
@@ -73,5 +78,19 @@
     <string name="todos">To Dos</string>
     <string name="list_title">List Title</string>
     <string name="list_name">List Name</string>
+    <string name="app_icon">App Icon</string>
+
+    <!--    settings-->
+    <string name="account">Account</string>
+    <string name="linked_devices">Linked Devices</string>
+    <string name="donate_to_app_name">Donate To ${app_name}</string>
+    <string name="apperareance">Apperareance</string>
+    <string name="stories">Stories</string>
+    <string name="notification">Notification</string>
+    <string name="privacy">Privacy</string>
+    <string name="data_and_storage">Data And Storage</string>
+    <string name="help">Help</string>
+    <string name="logout">logout</string>
+
 
 </resources>

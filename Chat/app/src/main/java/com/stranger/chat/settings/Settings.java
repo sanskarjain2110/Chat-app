@@ -4,18 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
-import com.stranger.chat.login_modules.Log_in_page;
+import com.stranger.chat.login_modules.LogInPage;
 
 public class Settings extends AppCompatActivity {
     FirebaseAuth mAuth;
@@ -23,7 +23,7 @@ public class Settings extends AppCompatActivity {
     String currentUserId;
 
     Toolbar topAppBar;
-    CardView userCardView;
+    LinearLayout userCardView;
     ImageView profilePic;
     TextView username, phoneNumber;
     Button loginButton;
@@ -46,12 +46,12 @@ public class Settings extends AppCompatActivity {
 
         topAppBar.setNavigationOnClickListener(v -> finish());
 
-        userCardView.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Profile_Update.class)));
+        userCardView.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Profile.class)));
 
         loginButton.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
 
-            startActivity(new Intent(getApplicationContext(), Log_in_page.class));
+            startActivity(new Intent(getApplicationContext(), LogInPage.class));
             finish();
         });
     }

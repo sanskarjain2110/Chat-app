@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -17,15 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
+import com.stranger.chat.fuctionality.FirebaseConnections;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -33,15 +32,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Profile_Update extends AppCompatActivity {
+public class Profile extends AppCompatActivity {
 
     ImageView profilePicField;
     EditText nameField;
     Toolbar topAppBar;
+    Button saveButton;
 
-    FirebaseAuth mAuth;
-    FirebaseUser currentUser;
-    String currentUserId;
+    String currentUserId = FirebaseConnections.currentUser.getUid();
 
     DocumentReference query;
 
@@ -50,29 +48,22 @@ public class Profile_Update extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_update);
+        setContentView(R.layout.activity_profile);
 
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        currentUserId = currentUser.getUid();
-
-        query = FirebaseFirestore.getInstance().collection("users").document(currentUserId);
+        query = FirebaseConnections.userDocument(currentUserId);
 
         topAppBar = findViewById(R.id.topAppBar);
         profilePicField = findViewById(R.id.changeProfilePic);
         nameField = findViewById(R.id.nameField);
+        saveButton = findViewById(R.id.saveButton);
 
         topAppBar.setNavigationOnClickListener(v -> finish());
-        topAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.save) {
-                Map<String, Object> data = new HashMap<>();
-                data.put("username", nameField.getText().toString());
 
-                query.update(data).addOnSuccessListener(unused -> finish());
-            } else {
-                return false;
-            }
-            return true;
+        saveButton.setOnClickListener(v -> {
+            Map<String, Object> data = new HashMap<>();
+            data.put("username", nameField.getText().toString());
+
+            query.update(data).addOnSuccessListener(unused -> finish());
         });
 
         // fill the details

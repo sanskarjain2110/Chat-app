@@ -20,15 +20,15 @@ import com.google.firebase.firestore.CollectionReference;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.data.MessagePage_Tile_Data;
 
-public class MessagePage_BottomSheet extends BottomSheetDialogFragment {
+public class ChatPage_BottomSheet extends BottomSheetDialogFragment {
     Context context;
     MessagePage_Tile_Data model;
     CollectionReference reference;
 
-    TextView username, timeStamp, message;
+    TextView  timeStamp, message;
     Button delete, copy;
 
-    public MessagePage_BottomSheet(MessagePage_Tile_Data model, Context context, CollectionReference reference) {
+    public ChatPage_BottomSheet(MessagePage_Tile_Data model, Context context, CollectionReference reference) {
         this.context = context;
         this.model = model;
         this.reference = reference;
@@ -37,14 +37,13 @@ public class MessagePage_BottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.mesage_bottom_sheet, container, false);
 
-        username = view.findViewById(R.id.username);
+
         timeStamp = view.findViewById(R.id.timeStamp);
         message = view.findViewById(R.id.messageTextView);
 
         delete = view.findViewById(R.id.delete);
         copy = view.findViewById(R.id.copy);
 
-        username.setText(model.getSender());
         message.setText(model.getMessage());
         timeStamp.setText(model.getTimeStamp());
 

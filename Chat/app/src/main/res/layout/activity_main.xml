@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,56 +7,56 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            app:menu="@menu/main_top_app_bar_menu" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:elevation="20dp"
-            app:cardCornerRadius="30dp"
-            app:cornerFamily="rounded">
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="search"
-                app:iconifiedByDefault="false"
-                app:queryBackground="@null"
-                app:queryHint="Search..." />
-        </androidx.cardview.widget.CardView>
+            app:menu="@menu/main_top_app_bar_menu"
+            app:navigationIcon="@drawable/account_circle_48px"
+            app:title="@string/app_name" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_anchorGravity="right|top|end"
+
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_below="@+id/appBar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <com.google.android.material.bottomappbar.BottomAppBar
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+
         android:layout_gravity="bottom"
-        app:hideOnScroll="true"
         app:menu="@menu/main_bottom_navigation_menu" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:layout_above="@+id/bottom_navigation"
+        android:layout_alignParentEnd="true"
+
+        android:layout_margin="16dp"
         android:contentDescription="@string/add"
         android:src="@drawable/ic_baseline_add_24"
-        app:layout_anchor="@id/bottom_navigation" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:tooltipText="@string/add" />
+</RelativeLayout>

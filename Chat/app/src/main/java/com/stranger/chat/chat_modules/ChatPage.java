@@ -14,17 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.stranger.chat.R;
-import com.stranger.chat.chat_modules.adapter.MessagePageAdapter;
+import com.stranger.chat.chat_modules.adapter.ChatPageAdapter;
 import com.stranger.chat.chat_modules.data.MessagePage_Tile_Data;
+import com.stranger.chat.fuctionality.FirebaseConnections;
 import com.stranger.chat.fuctionality.TimeStamp;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessagePage extends AppCompatActivity {
+public class ChatPage extends AppCompatActivity {
 
     Toolbar topAppBar;
     FloatingActionButton sentButton;
@@ -34,11 +34,10 @@ public class MessagePage extends AppCompatActivity {
     Bundle bundle;
     String messageId;
 
-    FirebaseFirestore database;
     CollectionReference reference;
     Query query;
 
-    MessagePageAdapter messagePageAdapter;
+    ChatPageAdapter chatPageAdapter;
     LinearLayoutManager linearLayoutManager;
 
     @Override
@@ -56,8 +55,7 @@ public class MessagePage extends AppCompatActivity {
         textMessage = findViewById(R.id.getMessage);
         sentButton = findViewById(R.id.sentButton);
 
-        database = FirebaseFirestore.getInstance();
-        reference = database.collection("messages").document(messageId).collection("messagesData");
+        reference = FirebaseConnections.messageDataCollection(messageId);
         query = reference.orderBy("timeStamp");
 
         SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
@@ -89,9 +87,9 @@ public class MessagePage extends AppCompatActivity {
                 reference.document(dilogId).set(pushMessage).addOnSuccessListener(v -> {
                     Map<String, Object> lastPush = new HashMap<>();
                     lastPush.put("lastSeen", time);
-                    FirebaseFirestore.getInstance().collection("messages").document(messageId).update(lastPush);
+                    FirebaseConnections.messageDocument(messageId).update(lastPush);
 
-                    messageView.scrollToPosition(messagePageAdapter.getItemCount() - 1);
+                    messageView.scrollToPosition(chatPageAdapter.getItemCount() - 1);
                 });
                 textMessage.setText("");
             }
@@ -103,16 +101,16 @@ public class MessagePage extends AppCompatActivity {
 
         FirestoreRecyclerOptions<MessagePage_Tile_Data> options = new FirestoreRecyclerOptions.Builder<MessagePage_Tile_Data>().setQuery(query, MessagePage_Tile_Data.class).build();
 
-        messagePageAdapter = new MessagePageAdapter(options, getSupportFragmentManager(), getApplicationContext(), reference);
+        chatPageAdapter = new ChatPageAdapter(options, getSupportFragmentManager(), getApplicationContext(), reference);
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         messageView.setLayoutManager(linearLayoutManager);
-        messageView.setAdapter(messagePageAdapter);
-        messagePageAdapter.startListening();
+        messageView.setAdapter(chatPageAdapter);
+        chatPageAdapter.startListening();
     }
 
     protected void onStop() {
         super.onStop();
-        messagePageAdapter.stopListening();
+        chatPageAdapter.stopListening();
     }
 }

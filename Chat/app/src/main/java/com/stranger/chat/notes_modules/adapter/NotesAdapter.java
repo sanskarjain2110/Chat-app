@@ -24,13 +24,13 @@ import com.stranger.chat.notes_modules.data.Note_Tile_Data;
 
 import java.util.Objects;
 
-public class Notes_Adapter extends FirestoreRecyclerAdapter<Note_Tile_Data, Notes_Adapter.Topic_ViewHolder> {
+public class NotesAdapter extends FirestoreRecyclerAdapter<Note_Tile_Data, NotesAdapter.Topic_ViewHolder> {
 
     FragmentManager fragmentManager;
     Activity activity;
     CollectionReference notesCollectionReferance;
 
-    public Notes_Adapter(FirestoreRecyclerOptions<Note_Tile_Data> options, Activity activity, FragmentManager fragmentManager, CollectionReference notesCollectionReference) {
+    public NotesAdapter(FirestoreRecyclerOptions<Note_Tile_Data> options, Activity activity, FragmentManager fragmentManager, CollectionReference notesCollectionReference) {
         super(options);
         this.fragmentManager = fragmentManager;
         this.activity = activity;
@@ -43,7 +43,7 @@ public class Notes_Adapter extends FirestoreRecyclerAdapter<Note_Tile_Data, Note
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.note_tile_sample, parent, false);
 
-        return new Notes_Adapter.Topic_ViewHolder(view);
+        return new NotesAdapter.Topic_ViewHolder(view);
     }
 
     @Override
