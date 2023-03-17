@@ -1,6 +1,6 @@
 package com.stranger.chat.notes_modules.bottom_sheet;
 
-import static com.stranger.chat.fuctionality.TimeStamp.timeStamp;
+import static com.stranger.chat.fuctionality.Helper.timeStamp;
 
 import android.content.Context;
 import android.content.Intent;

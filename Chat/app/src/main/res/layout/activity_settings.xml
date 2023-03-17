@@ -29,7 +29,7 @@
             android:id="@+id/profilePic"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:contentDescription="@string/profilePic"
+            android:contentDescription="@string/profile_pic"
             android:src="@drawable/account_circle_48px" />
 
         <LinearLayout
@@ -72,7 +72,7 @@
         app:icon="@drawable/devices_48px" />
 
     <Button
-        android:id="@+id/donateToChats"
+        android:id="@+id/donate"
         style="@style/Widget.Material3.Button.TextButton.Settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
         app:icon="@drawable/notifications_48px" />
 
     <Button
-        android:id="@+id/privaacy"
+        android:id="@+id/privacy"
         style="@style/Widget.Material3.Button.TextButton.Settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
         app:icon="@drawable/help_48px" />
 
     <Button
-        android:id="@+id/invite"
+        android:id="@+id/inviteFriend"
         style="@style/Widget.Material3.Button.TextButton.Settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

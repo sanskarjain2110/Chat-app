@@ -24,7 +24,7 @@
     <Button
         android:id="@+id/delete"
         android:gravity="start|center"
-        app:icon="@drawable/ic_baseline_delete_24"
+        app:icon="@drawable/delete_48px"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

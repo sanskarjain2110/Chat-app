@@ -11,6 +11,6 @@
         android:id="@+id/notesNavigationButton"
         android:enabled="true"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_baseline_notes_24"
+        android:icon="@drawable/notes_48px"
         android:title="@string/notes" />
 </menu>

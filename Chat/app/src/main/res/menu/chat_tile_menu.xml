@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/reply"
+        android:icon="@drawable/reply_48px"
+        android:title="@string/reply"
+        android:tooltipText="@string/reply"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/forward"
+        android:icon="@drawable/forward_48px"
+        android:title="@string/forward"
+        android:tooltipText="@string/forward"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/copy"
+        android:icon="@drawable/content_copy_48px"
+        android:title="@string/copy"
+        android:tooltipText="@string/copy"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/info"
+        android:icon="@drawable/info_48px"
+        android:title="@string/info"
+        android:tooltipText="@string/info"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/delete_48px"
+        android:title="@string/delete"
+        android:tooltipText="@string/delete"
+        app:showAsAction="never" />
+
+</menu>

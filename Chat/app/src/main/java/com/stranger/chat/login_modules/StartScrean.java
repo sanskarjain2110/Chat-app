@@ -1,7 +1,7 @@
 package com.stranger.chat.login_modules;
 
-import static com.stranger.chat.fuctionality.FirebaseConnections.currentUser;
-import static com.stranger.chat.fuctionality.FirebaseConnections.userDocument;
+import static com.stranger.chat.fuctionality.FirebaseDatabaseConnection.currentUser;
+import static com.stranger.chat.fuctionality.FirebaseDatabaseConnection.userDocument;
 
 import android.content.Intent;
 import android.os.Bundle;

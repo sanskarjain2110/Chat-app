@@ -1,25 +1,30 @@
 package com.stranger.chat.chat_modules;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.adapter.ChatPageAdapter;
-import com.stranger.chat.chat_modules.data.MessagePage_Tile_Data;
-import com.stranger.chat.fuctionality.FirebaseConnections;
-import com.stranger.chat.fuctionality.TimeStamp;
+import com.stranger.chat.chat_modules.bottom_sheet.ChatPage_BottomSheet;
+import com.stranger.chat.chat_modules.data.ChatPage_Tile_Data;
+import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
+import com.stranger.chat.fuctionality.Helper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +32,9 @@ import java.util.Map;
 public class ChatPage extends AppCompatActivity {
 
     Toolbar topAppBar;
-    FloatingActionButton sentButton;
+    RecyclerView chatRecyclerView;
     EditText textMessage;
-    RecyclerView messageView;
+    ImageView camera, audio, menuImage, sentButton;
 
     Bundle bundle;
     String messageId;
@@ -43,69 +48,122 @@ public class ChatPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message_page);
+        setContentView(R.layout.activity_chat_page);
 
         bundle = getIntent().getBundleExtra("data");
         messageId = bundle.getString("messageId");
 
         topAppBar = findViewById(R.id.topAppBar);
 
-        messageView = findViewById(R.id.recyclerview);
+        chatRecyclerView = findViewById(R.id.recyclerview);
 
         textMessage = findViewById(R.id.getMessage);
+        camera = findViewById(R.id.camera);
+        audio = findViewById(R.id.audio);
+        menuImage = findViewById(R.id.menuImage);
         sentButton = findViewById(R.id.sentButton);
 
-        reference = FirebaseConnections.messageDataCollection(messageId);
+        reference = FirebaseDatabaseConnection.messageDataCollection(messageId);
         query = reference.orderBy("timeStamp");
 
-        SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
-        String host_username = sharedPref.getString("host_username", "");
-
-        topAppBar.setTitle(bundle.getString("reciversname"));
+        topAppBar.setTitle(bundle.getString("reciverName"));
         topAppBar.setNavigationOnClickListener(view -> finish());
         topAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.audio_call) {
                 Toast.makeText(getApplicationContext(), "Audio", Toast.LENGTH_SHORT).show();
             } else if (item.getItemId() == R.id.video_call) {
                 Toast.makeText(getApplicationContext(), "Video", Toast.LENGTH_SHORT).show();
-            } else {
-                return false;
-            }
+            } else return false;
             return true;
         });
 
+        textMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (textMessage.getText().toString().length() != 0) {
+                    camera.setVisibility(View.GONE);
+                    audio.setVisibility(View.GONE);
+
+                    sentButton.setVisibility(View.VISIBLE);
+                } else {
+                    camera.setVisibility(View.VISIBLE);
+                    audio.setVisibility(View.VISIBLE);
+
+                    sentButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        camera.setOnClickListener(view -> {
+        });
+
+        audio.setOnClickListener(view -> {
+        });
+
+        menuImage.setOnClickListener(view -> {
+            ChatPage_BottomSheet chatPage_bottomSheet = new ChatPage_BottomSheet(this);
+            chatPage_bottomSheet.show(getSupportFragmentManager(), "menu");
+        });
+
         sentButton.setOnClickListener(view -> {
-            String text = textMessage.getText().toString().trim(), dilogId = reference.document().getId();
+            String text = textMessage.getText().toString().trim(),
+                    dilogId = FirebaseDatabaseConnection.randomId();
             if (text.length() != 0) {
-                String time = (String) TimeStamp.timeStamp();
+                String time = (String) Helper.timeStamp();
                 Map<String, Object> pushMessage = new HashMap<>();
-                pushMessage.put("sender", host_username);
+                pushMessage.put("sender", FirebaseDatabaseConnection.currentUser.getUid());
+                pushMessage.put("dilogId", dilogId);
                 pushMessage.put("timeStamp", time);
                 pushMessage.put("message", text);
-                pushMessage.put("dilogId", dilogId);
+                pushMessage.put("type", "text");
 
                 reference.document(dilogId).set(pushMessage).addOnSuccessListener(v -> {
                     Map<String, Object> lastPush = new HashMap<>();
                     lastPush.put("lastSeen", time);
-                    FirebaseConnections.messageDocument(messageId).update(lastPush);
+                    FirebaseDatabaseConnection.messageDocument(messageId).update(lastPush);
 
-                    messageView.scrollToPosition(chatPageAdapter.getItemCount() - 1);
+                    chatRecyclerView.scrollToPosition(chatPageAdapter.getItemCount() - 1);
                 });
                 textMessage.setText("");
             }
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 101 && data != null) {
+            Bundle args = new Bundle();
+            args.putString("image", String.valueOf(data.getData()));
+            args.putString("messageId", messageId);
+
+            Intent intent = new Intent(getApplicationContext(), ImageMessageActivity.class);
+            intent.putExtra("data", args);
+
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "error", Toast.LENGTH_LONG).show();
+        }
+    }
+
     protected void onResume() {
         super.onResume();
 
-        FirestoreRecyclerOptions<MessagePage_Tile_Data> options = new FirestoreRecyclerOptions.Builder<MessagePage_Tile_Data>().setQuery(query, MessagePage_Tile_Data.class).build();
+        FirestoreRecyclerOptions<ChatPage_Tile_Data> options = new FirestoreRecyclerOptions.Builder<ChatPage_Tile_Data>().setQuery(query, ChatPage_Tile_Data.class).build();
 
-        chatPageAdapter = new ChatPageAdapter(options, getSupportFragmentManager(), getApplicationContext(), reference);
-        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        chatPageAdapter = new ChatPageAdapter(options, getSupportFragmentManager(), this, reference);
+        linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
-        messageView.setLayoutManager(linearLayoutManager);
-        messageView.setAdapter(chatPageAdapter);
+        chatRecyclerView.setLayoutManager(linearLayoutManager);
+        chatRecyclerView.setAdapter(chatPageAdapter);
         chatPageAdapter.startListening();
     }
 

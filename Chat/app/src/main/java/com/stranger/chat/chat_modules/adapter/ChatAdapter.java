@@ -21,7 +21,7 @@ import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.ChatPage;
 import com.stranger.chat.chat_modules.bottom_sheet.Chat_BottomSheet;
 import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
-import com.stranger.chat.fuctionality.FirebaseConnections;
+import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
 
 import java.util.Objects;
 
@@ -55,7 +55,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAd
             }
         }
 
-        FirebaseConnections.userDocument(reciverUserId).addSnapshotListener((snapshot, error) -> {
+        FirebaseDatabaseConnection.userDocument(reciverUserId).addSnapshotListener((snapshot, error) -> {
             if (error != null) {
                 return;
             }

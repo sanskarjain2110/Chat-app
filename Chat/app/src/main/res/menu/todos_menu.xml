@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/deleteList"
-        android:icon="@drawable/ic_baseline_delete_24"
+        android:icon="@drawable/delete_48px"
         android:title="@string/delete_list" />
     <item
         android:id="@+id/editListName"

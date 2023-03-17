@@ -7,13 +7,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,7 +25,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
-import com.stranger.chat.fuctionality.FirebaseConnections;
+import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -39,8 +40,9 @@ public class Profile extends AppCompatActivity {
     Toolbar topAppBar;
     Button saveButton;
 
-    String currentUserId = FirebaseConnections.currentUser.getUid();
+    String currentUserId = FirebaseDatabaseConnection.currentUser.getUid();
 
+    ActivityResultLauncher<String> image;
     DocumentReference query;
 
     Uri profilePicUri;
@@ -50,12 +52,22 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        query = FirebaseConnections.userDocument(currentUserId);
+        query = FirebaseDatabaseConnection.userDocument(currentUserId);
 
         topAppBar = findViewById(R.id.topAppBar);
-        profilePicField = findViewById(R.id.changeProfilePic);
+        profilePicField = findViewById(R.id.viewPhoto);
         nameField = findViewById(R.id.nameField);
         saveButton = findViewById(R.id.saveButton);
+
+
+        image = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                result -> {
+                    String destinationUriString = UUID.randomUUID().toString() + ".jpg";
+                    UCrop.of(result, Uri.fromFile(new File(getCacheDir(), destinationUriString)))
+                            .withAspectRatio(1, 1)
+                            .withMaxResultSize(20000, 2000)
+                            .start(this);
+                });
 
         topAppBar.setNavigationOnClickListener(v -> finish());
 
@@ -81,8 +93,9 @@ public class Profile extends AppCompatActivity {
 
         // to uplode profile pic
         profilePicField.setOnClickListener(view -> {
-            Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(openGalleryIntent, 101);
+//            Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            startActivityForResult(openGalleryIntent, 101);
+            image.launch("image/*");
         });
     }
 

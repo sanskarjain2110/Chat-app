@@ -4,9 +4,9 @@ import static android.content.ContentValues.TAG;
 import static android.text.TextUtils.isEmpty;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
-import static com.stranger.chat.fuctionality.FirebaseConnections.currentUser;
-import static com.stranger.chat.fuctionality.FirebaseConnections.mAuth;
-import static com.stranger.chat.fuctionality.FirebaseConnections.userDocument;
+import static com.stranger.chat.fuctionality.FirebaseDatabaseConnection.currentUser;
+import static com.stranger.chat.fuctionality.FirebaseDatabaseConnection.mAuth;
+import static com.stranger.chat.fuctionality.FirebaseDatabaseConnection.userDocument;
 
 import android.content.Context;
 import android.content.Intent;

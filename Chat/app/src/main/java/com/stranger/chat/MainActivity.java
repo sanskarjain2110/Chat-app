@@ -1,6 +1,6 @@
 package com.stranger.chat;
 
-import static com.stranger.chat.fuctionality.FirebaseConnections.currentUser;
+import static com.stranger.chat.fuctionality.FirebaseDatabaseConnection.currentUser;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import com.google.firebase.firestore.Query;
 import com.stranger.chat.chat_modules.AddPerson;
 import com.stranger.chat.chat_modules.adapter.ChatAdapter;
 import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
-import com.stranger.chat.fuctionality.FirebaseConnections;
+import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
 import com.stranger.chat.notes_modules.adapter.NotesAdapter;
 import com.stranger.chat.notes_modules.bottom_sheet.NotesCreate_BottomSheet;
 import com.stranger.chat.notes_modules.data.Note_Tile_Data;
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final String currentUserId = currentUser.getUid();
 
-    private final CollectionReference notesCollectionReference = FirebaseConnections.notesCollectionReference(currentUserId);
+    private final CollectionReference notesCollectionReference = FirebaseDatabaseConnection.notesCollectionReference(currentUserId);
     Query chatQuery, noteQuery;
 
     ChatAdapter chatAdapter;
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void chatView() {
-        chatQuery = FirebaseConnections.messageCollection.whereArrayContains("usersId", currentUserId);
+        chatQuery = FirebaseDatabaseConnection.messageCollection.whereArrayContains("usersId", currentUserId);
 
         FirestoreRecyclerOptions<Chat_Tile_Data> options = new FirestoreRecyclerOptions.Builder<Chat_Tile_Data>()
                 .setQuery(chatQuery, Chat_Tile_Data.class).build();

@@ -7,6 +7,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -30,6 +38,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+            android:name=".settings.Account"
+            android:exported="false" />
         <activity
             android:name=".settings.Settings"
             android:exported="false">
@@ -62,9 +73,14 @@
         <!-- extra -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- chat -->
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <!-- chat -->
         <activity
             android:name=".chat_modules.AddPerson"
+            android:exported="false" />
+        <activity
+            android:name=".chat_modules.ImageMessageActivity"
             android:exported="false" />
         <activity
             android:name=".chat_modules.ChatPage"

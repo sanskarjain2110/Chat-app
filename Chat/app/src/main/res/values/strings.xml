@@ -11,6 +11,8 @@
     <string name="invite_friends">Invite friends</string>
     <string name="add_new_person">Add new person</string>
 
+    <string name="profile">Profile</string>
+    <string name="profile_pic">Profile pic</string>
     <string name="save">Save</string>
 
     <!--    main activity-->
@@ -20,36 +22,50 @@
 
     <!--    log in page -->
     <string name="login">Login</string>
-    <string name="phone_number">Phone Number</string>
+    <string name="phone_number">Phone number</string>
     <string name="otp">OTP</string>
     <string name="enter_received_otp">Enter received otp</string>
     <string name="get_otp">Get OTP</string>
 
     <!--    add Profile details-->
-    <string name="profile">Profile</string>
     <string name="name">Name</string>
     <string name="update">Update</string>
 
-    <string name="sample_text">Sample Text</string>
-    <string name="profilePic">Profile Pic</string>
+    <string name="sample_text">Sample text</string>
 
     <!--    message page -->
+    <string name="audio_call">Audio call</string>
+    <string name="video_call">Video call</string>
+    <string name="disappear_messages">Disappear messages</string>
+    <string name="all_media">All media</string>
+    <string name="conversation_setting">Conversation setting</string>
+    <string name="add_to_home_screen">Add to home screen</string>
+    <string name="mute_notification">Mute notification</string>
+
+    <string name="reply">Reply</string>
+    <string name="forward">Forward</string>
+    <string name="copy">Copy to clipboard</string>
+    <string name="info">Info</string>
+    <string name="delete">Delete</string>
+
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="aduio">audio</string>
+    <string name="contact">Contact</string>
+    <string name="documents">Documents</string>
+
+    <string name="image_sent">Image sent</string>
     <string name="send_message">Send message</string>
     <string name="verify">verify</string>
-    <string name="sent_icon">sent icon</string>
+
     <string name="sender_name">Sender Name</string>
     <string name="timeStamp">Time Stamp</string>
     <string name="message">Message</string>
     <string name="send">Send</string>
-    <string name="call">Call</string>
-    <string name="video_call">Video Call</string>
 
     <string name="update_profile">Update Profile</string>
-    <string name="userneme_hint">This could be your first name or nickname.\nIt\'s how you appear on ${app_name}.</string>
 
     <!--    bottom sheet-->
-    <string name="copy">Copy to clipboard</string>
-    <string name="delete">Delete</string>
     <string name="edit">Edit</string>
 
     <!--    notes-->
@@ -67,30 +83,34 @@
 
 
     <string name="username">username</string>
-    <string name="forward">Forward</string>
     <string name="description">Description</string>
 
     <string name="call_action">call action</string>
     <string name="call_type">call type</string>
     <string name="text">Text</string>
-    <string name="add_task">Add Task</string>
-    <string name="delete_task">Delete Task</string>
+    <string name="add_task">Add task</string>
+    <string name="delete_task">Delete task</string>
     <string name="todos">To Dos</string>
-    <string name="list_title">List Title</string>
-    <string name="list_name">List Name</string>
-    <string name="app_icon">App Icon</string>
+    <string name="list_title">List title</string>
+    <string name="list_name">List name</string>
+    <string name="app_icon">App icon</string>
 
     <!--    settings-->
     <string name="account">Account</string>
-    <string name="linked_devices">Linked Devices</string>
-    <string name="donate_to_app_name">Donate To ${app_name}</string>
+    <string name="linked_devices">Linked devices</string>
+    <string name="donate_to_app_name">Donate to ${app_name}</string>
     <string name="apperareance">Apperareance</string>
     <string name="stories">Stories</string>
     <string name="notification">Notification</string>
     <string name="privacy">Privacy</string>
-    <string name="data_and_storage">Data And Storage</string>
+    <string name="data_and_storage">Data and storage</string>
     <string name="help">Help</string>
     <string name="logout">logout</string>
 
+    <string name="userneme_hint">This could be your first name or nickname.\nIt\'s how you appear on ${app_name}.</string>
+    <string name="edit_photo">Edit Photo</string>
+    <string name="change_phone_number">Change phone number</string>
+    <string name="delete_account">Delete account</string>
+    <string name="audio">Audio</string>
 
 </resources>

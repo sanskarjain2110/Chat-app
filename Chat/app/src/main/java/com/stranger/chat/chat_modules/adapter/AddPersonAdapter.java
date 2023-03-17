@@ -24,7 +24,7 @@ import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.ChatPage;
 import com.stranger.chat.chat_modules.data.AddChat_Tile_Data;
-import com.stranger.chat.fuctionality.FirebaseConnections;
+import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public class AddPersonAdapter extends FirestoreRecyclerAdapter<AddChat_Tile_Data
         this.context = context;
 
         // again and again using this line
-        this.senderId = FirebaseConnections.currentUser.getUid();
+        this.senderId = FirebaseDatabaseConnection.currentUser.getUid();
     }
 
     @NonNull
@@ -82,7 +82,7 @@ public class AddPersonAdapter extends FirestoreRecyclerAdapter<AddChat_Tile_Data
 
             progressDialog.setMessage("Checking History...");
             // checking messageId document Exist
-            FirebaseConnections.userChatIdDocument(senderId).addSnapshotListener((snapshot, error) -> {
+            FirebaseDatabaseConnection.userChatIdDocument(senderId).addSnapshotListener((snapshot, error) -> {
                 if (error != null) {
                     return;
                 }
@@ -101,7 +101,7 @@ public class AddPersonAdapter extends FirestoreRecyclerAdapter<AddChat_Tile_Data
                 } else {
                     progressDialog.setMessage("creating chanal...\nplease wait");
                     // messageId collection not exist so create new collection
-                    FirebaseConnections.messageCollection.document().addSnapshotListener((snapshot1, error1) -> {
+                    FirebaseDatabaseConnection.messageCollection.document().addSnapshotListener((snapshot1, error1) -> {
                         if (error1 != null) {
                             return;
                         }
@@ -114,16 +114,16 @@ public class AddPersonAdapter extends FirestoreRecyclerAdapter<AddChat_Tile_Data
                             roots.put("usersId", usersId);
 
                             // inserting document with new messageId in message collection
-                            FirebaseConnections.messageCollection.document(messagekey).set(roots);
+                            FirebaseDatabaseConnection.messageCollection.document(messagekey).set(roots);
 
                             // adding data to userMessageId collection
                             Map<String, Object> senderEnd = new HashMap<>();
                             senderEnd.put(senderId, messagekey);
-                            FirebaseConnections.userChatIdDocument(reciverId).set(senderEnd, SetOptions.merge());
+                            FirebaseDatabaseConnection.userChatIdDocument(reciverId).set(senderEnd, SetOptions.merge());
 
                             Map<String, Object> reciverEnd = new HashMap<>();
                             reciverEnd.put(reciverId, messagekey);
-                            FirebaseConnections.userChatIdDocument(senderId).set(reciverEnd, SetOptions.merge());
+                            FirebaseDatabaseConnection.userChatIdDocument(senderId).set(reciverEnd, SetOptions.merge());
                         }
                     });
                 }

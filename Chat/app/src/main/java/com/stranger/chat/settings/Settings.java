@@ -11,44 +11,82 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
+import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
 import com.stranger.chat.login_modules.LogInPage;
 
 public class Settings extends AppCompatActivity {
-    FirebaseAuth mAuth;
-    FirebaseUser currentUser;
-    String currentUserId;
+    String currentUserId = FirebaseDatabaseConnection.currentUser.getUid();
 
     Toolbar topAppBar;
     LinearLayout userCardView;
     ImageView profilePic;
     TextView username, phoneNumber;
-    Button loginButton;
+    Button account, linkedDevices, donate, apperareance, chats, stories, notification, privacy,
+            dataAndStorage, help, inviteFriend, logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        currentUserId = currentUser.getUid();
-
         topAppBar = findViewById(R.id.topAppBar);
         userCardView = findViewById(R.id.userCard);
         profilePic = findViewById(R.id.profilePic);
         username = findViewById(R.id.username);
         phoneNumber = findViewById(R.id.phoneNumber);
-        loginButton = findViewById(R.id.logout);
+
+        account = findViewById(R.id.account);
+        linkedDevices = findViewById(R.id.linkedDevices);
+        donate = findViewById(R.id.donate);
+        apperareance = findViewById(R.id.apperareance);
+        chats = findViewById(R.id.chats);
+        stories = findViewById(R.id.stories);
+        notification = findViewById(R.id.notification);
+        privacy = findViewById(R.id.privacy);
+        dataAndStorage = findViewById(R.id.dataAndStorage);
+        help = findViewById(R.id.help);
+        inviteFriend = findViewById(R.id.inviteFriend);
+        logout = findViewById(R.id.logout);
 
         topAppBar.setNavigationOnClickListener(v -> finish());
 
         userCardView.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Profile.class)));
 
-        loginButton.setOnClickListener(view -> {
+        account.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Account.class)));
+
+        linkedDevices.setOnClickListener(v -> {
+        });
+
+        donate.setOnClickListener(v -> {
+        });
+
+        apperareance.setOnClickListener(v -> {
+        });
+
+        chats.setOnClickListener(v -> {
+        });
+
+        stories.setOnClickListener(v -> {
+        });
+
+        notification.setOnClickListener(v -> {
+        });
+
+        privacy.setOnClickListener(v -> {
+        });
+
+        dataAndStorage.setOnClickListener(v -> {
+        });
+
+        help.setOnClickListener(v -> {
+        });
+
+        inviteFriend.setOnClickListener(v -> {
+        });
+
+        logout.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
 
             startActivity(new Intent(getApplicationContext(), LogInPage.class));
@@ -59,7 +97,7 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        FirebaseFirestore.getInstance().collection("users").document(currentUserId).addSnapshotListener((value, error) -> {
+        FirebaseDatabaseConnection.userDocument(currentUserId).addSnapshotListener((value, error) -> {
             if (error != null) {
                 return;
             }

@@ -1,7 +1,7 @@
 package com.stranger.chat.notes_modules;
 
 import static android.text.TextUtils.isEmpty;
-import static com.stranger.chat.fuctionality.TimeStamp.timeStamp;
+import static com.stranger.chat.fuctionality.Helper.timeStamp;
 import static java.util.Objects.isNull;
 
 import android.os.Bundle;

@@ -1,5 +1,6 @@
 ------------------------------------------------------------
 RequestCode -->
+    --> 100 == camera image picker
     --> 101 == gallery image picker
 
 ------------------------------------------------------------
@@ -11,16 +12,31 @@ Reference
     * Image cropper --> https://github.com/Yalantis/uCrop
 
 ------------------------------------------------------------
-// sign up page
-  @Override
-    protected void onResume() {
-        super.onResume();
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null && user.isEmailVerified()) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }
+Model -->
+    * Chat Page Tile Data
+        --> String dilogId
+        --> String sender = senderId
+        --> String timeStamp
+        --> String message = text | image uri | { searching for implementation of document, video and audio }
+        --> String url
+        --> String type = text | image | video | audio | document
+
+    *
+------------------------------------------------------------
+// get result from activity
+ActivityResultLauncher<String> gallery() {
+        return registerForActivityResult(new ActivityResultContracts.GetContent(),
+                result -> {
+                    Bundle args = new Bundle();
+                    args.putString("image", result.toString());
+
+                    Intent intent = new Intent(context, ImageMessageActivity.class);
+                    intent.putExtra("data", args);
+
+                    startActivity(intent);
+                });
     }
+------------------------------------------------------------
 
 // alertbox
 //        to update profile details
@@ -53,39 +69,6 @@ Reference
                 }).show();
     }
 
-// home tool bar
-
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content">-->
-
-    <!--        <androidx.appcompat.widget.Toolbar-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content">-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/title"-->
-    <!--                android:layout_width='wrap_content'-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:text="@string/chats"-->
-    <!--                android:textAppearance="@style/TextAppearance.AppCompat.Large" />-->
-
-
-    <!--        </androidx.appcompat.widget.Toolbar>-->
-
-    <!--    </com.google.android.material.appbar.AppBarLayout>-->
-
-    -------------recyclerview
-      <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/statusRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-    ---------------divider
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
 ----------------------firestore
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -111,7 +94,7 @@ Reference
 
 --------------------------- to open gallery an pic image
 
-   request code is use to identify which inttent is invoking onActicityResult method
+//   request code is use to identify which inttent is invoking onActicityResult method
          Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
           startActivityForResult(openGalleryIntent, 1000);
 
@@ -337,70 +320,3 @@ public class Sign_up_Page extends AppCompatActivity {
         );
     }
 }
-
-
-----------------------------------------------------------------------------------------------------
-addChatAdapter
-
-//                progressDialog.setMessage("binding data.......");
-//                Bundle sendData = new Bundle();
-//                sendData.putString("reciversUserId", model.getUserId());
-//                sendData.putString("reciversname", reciver);
-//
-//
-//                FirebaseFirestore.getInstance().collection("userMessageId").document(senderId)
-//                      .addSnapshotListener((value, error1) -> {
-//                    if (error1 != null) {
-//                        return;
-//                    }
-//                    if (value != null) {
-//                        messageId = (String) value.get(reciverId);
-//
-//                    }
-//                });
-//                while (messageId == null) {
-//                    sendData.putString("messageId", messageId);
-//                }
-//                Intent intent = new Intent(activity, MessagePage.class);
-//                intent.putExtra("data", sendData);
-//                activity.startActivity(intent);
-//                progressDialog.dismiss();
-
-
-----------------------------------------------------------------------------------------------------
-<androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:elevation="20dp"
-        app:cardCornerRadius="25dp"
-        app:cornerFamily="rounded">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/getMessage"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:hint="@string/type_something"
-                android:inputType="text|textNoSuggestions|textMultiLine"
-                android:padding="10dp" />
-            <ImageView
-                android:id="@+id/sentButton"
-                android:layout_gravity="bottom|end"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_margin="10dp"
-                android:color="#000000"
-                android:contentDescription="@string/sent_icon"
-                android:gravity="end"
-                android:src="@drawable/ic_send_48px" />
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-

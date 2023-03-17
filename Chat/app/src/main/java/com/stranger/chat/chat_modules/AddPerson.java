@@ -11,14 +11,14 @@ import com.google.firebase.firestore.Query;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.adapter.AddPersonAdapter;
 import com.stranger.chat.chat_modules.data.AddChat_Tile_Data;
-import com.stranger.chat.fuctionality.FirebaseConnections;
+import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
 
 public class AddPerson extends AppCompatActivity {
     AddPersonAdapter addPersonAdapter;
 
     Query userCollectionQuery;
 
-    String currentUserId = FirebaseConnections.currentUser.getUid();
+    String currentUserId = FirebaseDatabaseConnection.currentUser.getUid();
     RecyclerView addChatRecyclerView;
 
     @Override
@@ -28,7 +28,7 @@ public class AddPerson extends AppCompatActivity {
 
         addChatRecyclerView = findViewById(R.id.addChatRecyclerView);
 
-        userCollectionQuery = FirebaseConnections.userCollection.whereNotEqualTo("userId", currentUserId);
+        userCollectionQuery = FirebaseDatabaseConnection.userCollection.whereNotEqualTo("userId", currentUserId);
     }
 
     @Override
