@@ -19,19 +19,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/image_sent"
-            android:maxWidth="250dp"
-            android:maxHeight="250dp"
-            android:minWidth="100dp"
-            android:minHeight="100dp"
-            android:src="@drawable/image_48px"
-            android:visibility="gone" />
-
-
+            android:src="@drawable/image_48px" />
+        
         <TextView
             android:id="@+id/messageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="250dp"
             android:text="@string/text"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 

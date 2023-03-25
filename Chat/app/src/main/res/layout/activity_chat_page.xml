@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:contentDescription="@string/add"
-                android:src="@drawable/add_circle_48px" />
+                android:src="@drawable/add_48px" />
 
             <ImageView
                 android:id="@+id/camera"
@@ -87,7 +87,6 @@
                 android:contentDescription="@string/send"
                 android:src="@drawable/send_48px"
                 android:visibility="gone" />
-
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

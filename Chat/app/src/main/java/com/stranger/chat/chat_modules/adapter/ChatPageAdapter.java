@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,25 +18,29 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
+import com.stranger.chat.chat_modules.adapter.chatPage_ViewHolder.ImageViewHolder;
+import com.stranger.chat.chat_modules.adapter.chatPage_ViewHolder.TextViewHolder;
 import com.stranger.chat.chat_modules.data.ChatPage_Tile_Data;
 import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
 import com.stranger.chat.fuctionality.Helper;
 
 public class ChatPageAdapter extends FirestoreRecyclerAdapter<ChatPage_Tile_Data, RecyclerView.ViewHolder> {
     private static final int
-            SENDER_MESSAGE = R.layout.message_sender_tile_sample,
-            RECEIVER_MESSAGE = R.layout.message_receiver_tile_sample,
+            SENDER_TEXT = R.layout.message_sender_text_tile_sample,
+            RECEIVER_TEXT = R.layout.message_receiver_text_tile_sample,
+            SENDER_IMAGE = R.layout.message_sender_image_tile_sample,   // image
+            RECEIVER_IMAGE = R.layout.message_receiver_image_tile_sample,
 
-    SENDER_AUDIO = R.layout.message_sender_tile_sample,
-            RECEIVER_AUDIO = R.layout.message_receiver_tile_sample,
+    SENDER_AUDIO = R.layout.message_sender_text_tile_sample,
+            RECEIVER_AUDIO = R.layout.message_receiver_text_tile_sample,
 
-    SENDER_VIDEO = R.layout.message_sender_tile_sample,
-            RECEIVER_VIDEO = R.layout.message_receiver_tile_sample;
+    SENDER_VIDEO = R.layout.message_sender_text_tile_sample,
+            RECEIVER_VIDEO = R.layout.message_receiver_text_tile_sample;
 
     CollectionReference reference;
     Context context;
     FragmentManager fragmentManager;
-    String currentUserId = FirebaseDatabaseConnection.currentUser.getUid();
+    private final String currentUserId = FirebaseDatabaseConnection.currentUser.getUid();
 
     public ChatPageAdapter(FirestoreRecyclerOptions<ChatPage_Tile_Data> options,
                            FragmentManager fragmentManager, Context context, CollectionReference reference) {
@@ -49,44 +52,28 @@ public class ChatPageAdapter extends FirestoreRecyclerAdapter<ChatPage_Tile_Data
 
     @Override
     public int getItemViewType(int position) {
-        if (getItem(position).getSender().equals(currentUserId)) {
-            switch (getItem(position).getType()) {
-                case "text":
-                case "image":
-                    return SENDER_MESSAGE;
-                case "audio":
-                    return SENDER_AUDIO;
-                case "video":
-                    return SENDER_VIDEO;
-            }
-        } else {
-            switch (getItem(position).getType()) {
-                case "text":
-                case "image":
-                    return RECEIVER_MESSAGE;
-                case "audio":
-                    return RECEIVER_AUDIO;
-                case "video":
-                    return RECEIVER_VIDEO;
-            }
+        if (getItem(position).getSender().equals(currentUserId)) {  // if sender
+            if (getItem(position).getType().equals("text")) return SENDER_TEXT;
+            else if (getItem(position).getType().equals("image")) return SENDER_IMAGE;
+            else if (getItem(position).getType().equals("audio")) return SENDER_AUDIO;
+            else return SENDER_VIDEO;
+        } else {    // if reciver
+            if (getItem(position).getType().equals("text")) return RECEIVER_TEXT;
+            else if (getItem(position).getType().equals("image")) return RECEIVER_IMAGE;
+            else if (getItem(position).getType().equals("audio")) return RECEIVER_AUDIO;
+            else return RECEIVER_VIDEO;
         }
-        return position;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
-        switch (viewType) {
-            case SENDER_MESSAGE:
-                view = LayoutInflater.from(parent.getContext()).inflate(SENDER_MESSAGE, parent, false);
-                return new SenderChatViewHolder(view);
-            case RECEIVER_MESSAGE:
-                view = LayoutInflater.from(parent.getContext()).inflate(RECEIVER_MESSAGE, parent, false);
-                return new ReceiverChatViewHolder(view);
-            default:
-                throw new IllegalArgumentException("Invalid view type");
-        }
+        View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
+
+        if (viewType == SENDER_TEXT || viewType == RECEIVER_TEXT) return new TextViewHolder(view);
+        else if (viewType == SENDER_IMAGE || viewType == RECEIVER_IMAGE)
+            return new ImageViewHolder(view);
+        else return new ImageViewHolder(view);
     }
 
     @Override
@@ -94,129 +81,26 @@ public class ChatPageAdapter extends FirestoreRecyclerAdapter<ChatPage_Tile_Data
                                     @NonNull ChatPage_Tile_Data model) {
 
         switch (holder.getItemViewType()) {
-            case SENDER_MESSAGE:
-                SenderChatViewHolder senderViewHolder = (SenderChatViewHolder) holder;
-
-                if (model.getMessage() != null)
-                    senderViewHolder.getMessageTextView().setText(model.getMessage());
-                else senderViewHolder.getMessageTextView().setVisibility(View.GONE);
-
-                senderViewHolder.getTimeStamp().setText(model.getTimeStamp());
-
-                switch (model.getType()) {
-                    case "text":
-                        break;
-                    case "image":
-                        senderViewHolder.getImage().setVisibility(View.VISIBLE);
-                        Picasso.get().load(model.getUri()).into(senderViewHolder.getImage());
-                        break;
-                    case "video":
-                    case "audio":
-                    default:
-                        Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
-                }
-
-                senderViewHolder.getTile().setOnLongClickListener(v -> popupMenu(senderViewHolder.getTile(), model));
+            case SENDER_TEXT:
+            case RECEIVER_TEXT:
+                TextViewHolder textViewHolder = (TextViewHolder) holder;
+                holderFunctionality(textViewHolder.getMessageTextView(), textViewHolder.getTimeStamp(), textViewHolder.getTile(), model);
                 break;
-            case RECEIVER_MESSAGE:
-                ReceiverChatViewHolder receiverViewHolder = (ReceiverChatViewHolder) holder;
-
-                if (model.getMessage() != null)
-                    receiverViewHolder.getMessageTextView().setText(model.getMessage());
-                else receiverViewHolder.getMessageTextView().setVisibility(View.GONE);
-
-                receiverViewHolder.getTimeStamp().setText(model.getTimeStamp());
-
-                switch (model.getType()) {
-                    case "text":
-                        break;
-                    case "image":
-                        receiverViewHolder.getImage().setVisibility(View.VISIBLE);
-                        Picasso.get().load(model.getUri()).into(receiverViewHolder.getImage());
-                        break;
-                    case "video":
-                    case "audio":
-                    default:
-                        Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
-                }
-
+            case SENDER_IMAGE:
+            case RECEIVER_IMAGE:
+                ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
+                holderFunctionality(imageViewHolder.getMessageTextView(), imageViewHolder.getTimeStamp(), imageViewHolder.getTile(), model);
+                Picasso.get().load(model.getUri()).into(imageViewHolder.getImage());
                 break;
             default:
-                throw new IllegalArgumentException("Invalid view type");
+                break;
         }
     }
 
-    @Override
-    public void onDataChanged() {
-        super.onDataChanged();
-        notifyDataSetChanged();
-    }
-
-    static class ReceiverChatViewHolder extends RecyclerView.ViewHolder {
-        CardView tile;
-        ImageView image;
-        TextView messageTextView, timeStamp;
-
-        public ReceiverChatViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tile = itemView.findViewById(R.id.tile);
-            image = itemView.findViewById(R.id.image);
-            messageTextView = itemView.findViewById(R.id.messageTextView);
-            timeStamp = itemView.findViewById(R.id.timeStamp);
-        }
-
-        public CardView getTile() {
-            return tile;
-        }
-
-        public ImageView getImage() {
-            return image;
-        }
-
-        public TextView getMessageTextView() {
-            return messageTextView;
-        }
-
-        public TextView getTimeStamp() {
-            return timeStamp;
-        }
-
-    }
-
-    static class SenderChatViewHolder extends RecyclerView.ViewHolder {
-        CardView tile;
-        ImageView image;
-        TextView messageTextView, timeStamp;
-
-        public SenderChatViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tile = itemView.findViewById(R.id.tile);
-            image = itemView.findViewById(R.id.image);
-            messageTextView = itemView.findViewById(R.id.messageTextView);
-            timeStamp = itemView.findViewById(R.id.timeStamp);
-        }
-
-        public CardView getTile() {
-            return tile;
-        }
-
-        public ImageView getImage() {
-            return image;
-        }
-
-
-        public TextView getMessageTextView() {
-            return messageTextView;
-        }
-
-        public TextView getTimeStamp() {
-            return timeStamp;
-        }
-    }
-
+    // menu
     Boolean popupMenu(View view, ChatPage_Tile_Data model) {
         PopupMenu popup = new PopupMenu(context, view);
-        popup.inflate(R.menu.chat_tile_menu);
+        popup.inflate(R.menu.chat_page_tile_menu);
         popup.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.reply) {
                 Toast.makeText(context, "Not Implemented", Toast.LENGTH_SHORT).show();
@@ -226,9 +110,9 @@ public class ChatPageAdapter extends FirestoreRecyclerAdapter<ChatPage_Tile_Data
                 Helper.copyString(context, model.getMessage());
             } else if (item.getItemId() == R.id.info) {
                 Toast.makeText(context, "Not Implemented", Toast.LENGTH_SHORT).show();
-            } else if (item.getItemId() == R.id.delete) {
+            } else if (item.getItemId() == R.id.delete)
                 reference.document(model.getDilogId()).delete();
-            } else return false;
+            else return false;
             return true;
         });
         popup.setForceShowIcon(true);
@@ -236,4 +120,19 @@ public class ChatPageAdapter extends FirestoreRecyclerAdapter<ChatPage_Tile_Data
 
         return true;
     }
+
+    void holderFunctionality(TextView messageView, TextView timeStampView, CardView cardView, @NonNull ChatPage_Tile_Data model) {
+        // message
+        if (model.getMessage() != null)
+            messageView.setText(model.getMessage());
+        else messageView.setVisibility(View.GONE);
+
+        // time stamp
+        timeStampView.setText(model.getTimeStamp());
+
+        // menu
+        if (model.getSender().equals(currentUserId))
+            cardView.setOnLongClickListener(v -> popupMenu(cardView, model));
+    }
 }
+

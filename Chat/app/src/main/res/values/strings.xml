@@ -2,6 +2,12 @@
     <!--    Application Name-->
     <string name="app_name">Chat</string>
 
+    <!--    hints and errors-->
+    <string name="not_implemented">This feature is coming soon in ${app_name}</string>
+
+    <!--    dimensions-->
+
+
     <!--    common-->
     <string name="chats">Chats</string>
     <string name="calls">Calls</string>
@@ -112,5 +118,22 @@
     <string name="change_phone_number">Change phone number</string>
     <string name="delete_account">Delete account</string>
     <string name="audio">Audio</string>
+    <string name="disappearing_messages">Disappearing messages</string>
+    <string name="chat_color_amp_wallpaper"><![CDATA[Chat color & wallpaper]]></string>
+    <string name="sound_notification"><![CDATA[Sound & notification]]></string>
+    <string name="contact_details">Contact details</string>
+    <string name="view_safety_number">View safety number</string>
+    <string name="shared_media">Shared media</string>
+    <string name="see_all">See all</string>
+    <string name="block">Block</string>
 
+    <!--    Account Settings-->
+    <string name="app_pin">${app_name} pin</string>
+    <string name="change_your_pin">Change your PIN</string>
+    <string name="pin_reminders">PIN reminders</string>
+    <string name="pin_reminders_hint">You\'ll be asked less frequently over time</string>
+    <string name="registration_lock">Registration Lock</string>
+    <string name="registration_lock_hint">Require your ${app_name} PIN to be register your phone number with ${app_name} again</string>
+    <string name="disable_pin">Disable PIN</string>
+    <string name="transfer_account">Transfer Account</string>
 </resources>

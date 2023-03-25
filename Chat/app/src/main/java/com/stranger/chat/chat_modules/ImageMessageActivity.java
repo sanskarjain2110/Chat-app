@@ -9,7 +9,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.stranger.chat.R;
@@ -27,7 +26,7 @@ public class ImageMessageActivity extends AppCompatActivity {
     Toolbar toolbar;
     ImageView image;
     EditText message;
-    FloatingActionButton send;
+    ImageView send;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +42,6 @@ public class ImageMessageActivity extends AppCompatActivity {
         message = findViewById(R.id.getMessage);
         send = findViewById(R.id.send);
 
-
         toolbar.setNavigationOnClickListener(v -> finish());
 
         image.setImageURI(Uri.parse(imageUri));
@@ -52,37 +50,31 @@ public class ImageMessageActivity extends AppCompatActivity {
             String pictureName = UUID.randomUUID().toString() + ".jpg";
             StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("message").child(messageId).child(pictureName);
 
-            storageReference.putFile(Uri.parse(imageUri))
-                    .addOnProgressListener(snapshot -> Toast.makeText(this, "u", Toast.LENGTH_SHORT).show())
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(ImageMessageActivity.this, "network problem", Toast.LENGTH_SHORT).show();
-                        finish();
+            storageReference.putFile(Uri.parse(imageUri)).addOnFailureListener(e -> {
+                Toast.makeText(ImageMessageActivity.this, "network problem", Toast.LENGTH_SHORT).show();
+                finish();
 
-                    }).addOnSuccessListener(taskSnapshot -> storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                        String dilogId = FirebaseDatabaseConnection.randomId(),
-                                text = message.getText().toString().trim(),
-                                time = (String) Helper.timeStamp();
+            }).addOnSuccessListener(taskSnapshot -> storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                String dilogId = FirebaseDatabaseConnection.randomId(),
+                        text = message.getText().toString().trim(),
+                        time = (String) Helper.timeStamp();
 
-                        Map<String, Object> pushMessage = new HashMap<>();
-                        pushMessage.put("sender", FirebaseDatabaseConnection.currentUser.getUid());
-                        pushMessage.put("timeStamp", time);
-                        if (text.length() != 0) pushMessage.put("message", text);
-                        pushMessage.put("uri", uri);
-                        pushMessage.put("dilogId", dilogId);
-                        pushMessage.put("type", "image");
+                Map<String, Object> pushMessage = new HashMap<>();
+                pushMessage.put("sender", FirebaseDatabaseConnection.currentUser.getUid());
+                pushMessage.put("timeStamp", time);
+                if (text.length() != 0) pushMessage.put("message", text);
+                pushMessage.put("uri", uri);
+                pushMessage.put("dilogId", dilogId);
+                pushMessage.put("type", "image");
 
-                        FirebaseDatabaseConnection.messageDataCollection(messageId).document(dilogId).set(pushMessage)
-                                .addOnSuccessListener(v -> {
-                                    Map<String, Object> lastPush = new HashMap<>();
-                                    lastPush.put("lastSeen", time);
-                                    FirebaseDatabaseConnection.messageDocument(messageId).update(lastPush);
+                FirebaseDatabaseConnection.messageDataCollection(messageId).document(dilogId).set(pushMessage).addOnSuccessListener(v -> {
+                    Map<String, Object> lastPush = new HashMap<>();
+                    lastPush.put("lastSeen", time);
+                    FirebaseDatabaseConnection.messageDocument(messageId).update(lastPush);
 
-                                    finish();
-                                }).addOnFailureListener(v -> {
-                                    Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                });
-                    }));
+                    finish();
+                }).addOnFailureListener(v -> Toast.makeText(this, "check internet connection", Toast.LENGTH_SHORT).show());
+            }));
         });
     }
 }

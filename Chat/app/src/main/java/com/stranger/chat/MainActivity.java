@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         selectedMenuItemInBotomAppBar = R.id.chatNavigationButton;
 
         topAppBar.setNavigationOnClickListener(item -> startActivity(new Intent(getApplicationContext(), Settings.class)));
+        topAppBar.setSubtitle("Hello!");
         topAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.settings) {
                 startActivity(new Intent(getApplicationContext(), Settings.class));

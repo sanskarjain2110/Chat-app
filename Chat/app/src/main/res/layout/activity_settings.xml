@@ -54,7 +54,6 @@
         </LinearLayout>
     </LinearLayout>
 
-
     <Button
         android:id="@+id/account"
         style="@style/Widget.Material3.Button.TextButton.Settings"
@@ -70,14 +69,6 @@
         android:layout_height="wrap_content"
         android:text="@string/linked_devices"
         app:icon="@drawable/devices_48px" />
-
-    <Button
-        android:id="@+id/donate"
-        style="@style/Widget.Material3.Button.TextButton.Settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/donate_to_app_name"
-        app:icon="@drawable/favorite_48px" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

@@ -59,4 +59,18 @@
         android:contentDescription="@string/add"
         android:src="@drawable/add_48px"
         android:tooltipText="@string/add" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addButton"
+        android:layout_alignParentEnd="true"
+
+        android:layout_margin="16dp"
+        android:contentDescription="@string/camera"
+        android:src="@drawable/photo_camera_48px"
+        android:tooltipText="@string/camera" />
+
+
 </RelativeLayout>

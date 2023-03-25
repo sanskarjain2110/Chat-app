@@ -64,16 +64,27 @@ public class ChatPage extends AppCompatActivity {
         sentButton = findViewById(R.id.sentButton);
 
         reference = FirebaseDatabaseConnection.messageDataCollection(messageId);
-        query = reference.orderBy("timeStamp");
+        query = reference.orderBy("timeStamp").limitToLast(50);
 
         topAppBar.setTitle(bundle.getString("reciverName"));
         topAppBar.setNavigationOnClickListener(view -> finish());
         topAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.audio_call) {
-                Toast.makeText(getApplicationContext(), "Audio", Toast.LENGTH_SHORT).show();
-            } else if (item.getItemId() == R.id.video_call) {
-                Toast.makeText(getApplicationContext(), "Video", Toast.LENGTH_SHORT).show();
-            } else return false;
+            String text;
+            if (item.getItemId() == R.id.video_call) text = "Video";
+            else if (item.getItemId() == R.id.audio_call) text = "Audio";
+            else if (item.getItemId() == R.id.disappearMessages) text = "Disappearing Message";
+            else if (item.getItemId() == R.id.allMedia) text = "All media";
+            else if (item.getItemId() == R.id.conversationSetting) {
+                text = "Conversation Setting";
+
+                Intent intent = new Intent(getApplicationContext(), ConversationSetting.class);
+                intent.putExtra("data", bundle);
+                startActivity(intent);
+            } else if (item.getItemId() == R.id.search) text = "Search";
+            else if (item.getItemId() == R.id.add_to_home_screen) text = "add to hame screen";
+            else if (item.getItemId() == R.id.muteNotification) text = "Mute notification";
+            else return false;
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
             return true;
         });
 

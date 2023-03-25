@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/audio_call"
-        android:icon="@drawable/call_48px"
-        android:title="@string/audio_call"
-        android:tooltipText="@string/audio_call"
-        app:showAsAction="always" />
+
     <item
         android:id="@+id/video_call"
         android:icon="@drawable/videocam_48px"
@@ -14,35 +9,42 @@
         android:tooltipText="@string/video_call"
         app:showAsAction="always" />
     <item
+        android:id="@+id/audio_call"
+        android:icon="@drawable/call_48px"
+        android:title="@string/audio_call"
+        android:tooltipText="@string/audio_call"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/disappearMessages"
         android:title="@string/disappear_messages"
         android:tooltipText="@string/disappear_messages"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/allMedia"
         android:title="@string/all_media"
         android:tooltipText="@string/all_media"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/conversationSetting"
         android:title="@string/conversation_setting"
         android:tooltipText="@string/conversation_setting"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/search"
         android:title="@string/search"
         android:tooltipText="@string/search"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/add_to_home_screen"
         android:title="@string/add_to_home_screen"
         android:tooltipText="@string/add_to_home_screen"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/muteNotification"
         android:title="@string/mute_notification"
         android:tooltipText="@string/mute_notification"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
 
 </menu>

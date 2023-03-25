@@ -27,10 +27,11 @@
         android:theme="@style/Theme.Chat"
         tools:targetApi="33">
         <activity
-            android:name=".MainActivity"
+            android:name=".Apperareance"
             android:exported="false" />
-
-        <!-- settings -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" /> <!-- settings -->
         <activity
             android:name=".settings.Profile"
             android:exported="false">
@@ -47,9 +48,7 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-
-        <!-- login -->
+        </activity> <!-- login -->
         <activity
             android:name=".login_modules.StartScrean"
             android:exported="true">
@@ -68,14 +67,10 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-
-        <!-- extra -->
+        </activity> <!-- extra -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
-        <!-- chat -->
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- chat -->
         <activity
             android:name=".chat_modules.AddPerson"
             android:exported="false" />
@@ -85,8 +80,9 @@
         <activity
             android:name=".chat_modules.ChatPage"
             android:exported="false" />
-
-        <!-- notes -->
+        <activity
+            android:name=".chat_modules.ConversationSetting"
+            android:exported="false" /> <!-- notes -->
         <activity
             android:name=".notes_modules.NoteEditorActivity"
             android:exported="false">

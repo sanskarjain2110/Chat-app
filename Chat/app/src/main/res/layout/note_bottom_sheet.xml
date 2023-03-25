@@ -14,18 +14,18 @@
 
     <Button
         android:id="@+id/edit"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start|center"
         android:text="@string/edit"
-        app:icon="@drawable/baseline_edit_24" />
+        style="@style/Widget.Material3.Button.TextButton.Settings"
+        app:icon="@drawable/edit_48px" />
 
     <Button
         android:id="@+id/delete"
         android:gravity="start|center"
         app:icon="@drawable/delete_48px"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/Widget.Material3.Button.TextButton.Settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/delete" />

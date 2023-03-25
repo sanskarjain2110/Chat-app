@@ -27,7 +27,7 @@ import java.util.Objects;
 
 public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAdapter.Chat_ViewHolder> {
     Activity activity;
-    String currentUser, reciverUserId, reciverName;
+    String currentUser, reciverUserId, reciverName, reciverNumber, reciverProfilePic;
     FragmentManager fragmentManager;
 
     public ChatAdapter(@NonNull FirestoreRecyclerOptions<Chat_Tile_Data> options, Activity activity, String currentUser, FragmentManager fragmentManager) {
@@ -61,6 +61,8 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAd
             }
             if (snapshot != null) {
                 reciverName = (String) snapshot.get("username");
+                reciverNumber = (String) snapshot.get("phoneNumber");
+                reciverProfilePic = (String) snapshot.get("profilePic");
                 holder.getUsernameField().setText(reciverName);
                 // download image from fireStorage
                 Picasso.get().load((String) snapshot.get("profilePic")).into(holder.getProfilePicField());
@@ -74,6 +76,8 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAd
             sendData.putString("reciverUserId", reciverUserId);
             sendData.putString("messageId", model.getMessageId());
             sendData.putString("reciverName", reciverName);
+            sendData.putString("reciverNumber", reciverNumber);
+            sendData.putString("reciverProfilePic", reciverProfilePic);
 
             Intent intent = new Intent(activity, ChatPage.class);
             intent.putExtra("data", sendData);

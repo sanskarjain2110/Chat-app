@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,6 +17,8 @@ import com.stranger.chat.R;
 import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
 import com.stranger.chat.login_modules.LogInPage;
 
+// to be implement
+// linked divices
 public class Settings extends AppCompatActivity {
     String currentUserId = FirebaseDatabaseConnection.currentUser.getUid();
 
@@ -23,7 +26,7 @@ public class Settings extends AppCompatActivity {
     LinearLayout userCardView;
     ImageView profilePic;
     TextView username, phoneNumber;
-    Button account, linkedDevices, donate, apperareance, chats, stories, notification, privacy,
+    Button account, linkedDevices, apperareance, chats, stories, notification, privacy,
             dataAndStorage, help, inviteFriend, logout;
 
     @Override
@@ -39,7 +42,7 @@ public class Settings extends AppCompatActivity {
 
         account = findViewById(R.id.account);
         linkedDevices = findViewById(R.id.linkedDevices);
-        donate = findViewById(R.id.donate);
+
         apperareance = findViewById(R.id.apperareance);
         chats = findViewById(R.id.chats);
         stories = findViewById(R.id.stories);
@@ -56,14 +59,9 @@ public class Settings extends AppCompatActivity {
 
         account.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Account.class)));
 
-        linkedDevices.setOnClickListener(v -> {
-        });
+        linkedDevices.setOnClickListener(v -> Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show());
 
-        donate.setOnClickListener(v -> {
-        });
-
-        apperareance.setOnClickListener(v -> {
-        });
+        apperareance.setOnClickListener(v -> new Intent(getApplicationContext(), Apperareance.class));
 
         chats.setOnClickListener(v -> {
         });
@@ -84,6 +82,7 @@ public class Settings extends AppCompatActivity {
         });
 
         inviteFriend.setOnClickListener(v -> {
+
         });
 
         logout.setOnClickListener(view -> {

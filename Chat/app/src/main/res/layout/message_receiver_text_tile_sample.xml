@@ -3,5 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include layout="@layout/message_layout" />
+    <include layout="@layout/message_text_layout" />
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
