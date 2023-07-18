@@ -7,7 +7,6 @@
 
     <!--    dimensions-->
 
-
     <!--    common-->
     <string name="chats">Chats</string>
     <string name="calls">Calls</string>
@@ -115,11 +114,8 @@
 
     <string name="userneme_hint">This could be your first name or nickname.\nIt\'s how you appear on ${app_name}.</string>
     <string name="edit_photo">Edit Photo</string>
-    <string name="change_phone_number">Change phone number</string>
-    <string name="delete_account">Delete account</string>
     <string name="audio">Audio</string>
     <string name="disappearing_messages">Disappearing messages</string>
-    <string name="chat_color_amp_wallpaper"><![CDATA[Chat color & wallpaper]]></string>
     <string name="sound_notification"><![CDATA[Sound & notification]]></string>
     <string name="contact_details">Contact details</string>
     <string name="view_safety_number">View safety number</string>
@@ -133,7 +129,43 @@
     <string name="pin_reminders">PIN reminders</string>
     <string name="pin_reminders_hint">You\'ll be asked less frequently over time</string>
     <string name="registration_lock">Registration Lock</string>
+    <string name="disable_pin_hint">If you disable the PIN, you will lose all data when you re-register ${app_name} unless you manually back up and restore. You can not turn on Registration Lock while the PIN is disable.</string>
     <string name="registration_lock_hint">Require your ${app_name} PIN to be register your phone number with ${app_name} again</string>
     <string name="disable_pin">Disable PIN</string>
+    <string name="change_phone_number">Change phone number</string>
     <string name="transfer_account">Transfer Account</string>
+    <string name="transfer_account_hint">Transfer your account to a new Android device</string>
+    <string name="delete_account">Delete account</string>
+
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Apperareance Preferences -->
+    <string name="theme">Theme</string>
+    <string name="theme_preference">Theme Preferance</string>
+    <string-array name="theme">
+        <item>System default</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string name="chat_color_amp_wallpaper"><![CDATA[Chat color & wallpaper]]></string>
+    <string name="color_and_wallpaper_preferance">Color And Wallpaper Preferance</string>
+    <string name="font_size">Message font size</string>
+    <string name="font_size_preferance">Font Size Preferance</string>
+    <string-array name="fontSize">
+        <item>Small</item>
+        <item>Normal</item>
+        <item>Large</item>
+        <item>ExtraLarge</item>
+    </string-array>
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <string name="signature_title">Your signature</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
 </resources>

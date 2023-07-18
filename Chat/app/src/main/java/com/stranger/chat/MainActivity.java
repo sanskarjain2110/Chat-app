@@ -127,9 +127,8 @@ public class MainActivity extends AppCompatActivity {
             recyclerview.setHasFixedSize(true);
             recyclerview.setAdapter(notesAdapter);
             recyclerview.setLayoutManager(layoutManager);
-        } else {
-            return false;
-        }
+        } else return false;
+
         selectedMenuItemInBotomAppBar = item;
         return true;
     }

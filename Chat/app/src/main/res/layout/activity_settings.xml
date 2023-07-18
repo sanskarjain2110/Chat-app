@@ -112,7 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/privacy"
-        app:icon="@drawable/lock_48px" />
+        app:icon="@drawable/account_circle_48px" />
 
     <Button
         android:id="@+id/dataAndStorage"

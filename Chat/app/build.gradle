@@ -1,10 +1,10 @@
 plugins {
     id 'com.android.application'
-    id 'com.google.firebase.firebase-perf'
+//    id 'com.google.firebase.firebase-perf'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.gms.google-services'
 }
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.likethesalad.stem'
+//apply plugin: 'com.likethesalad.stem'
 
 android {
     compileSdk 33
@@ -35,20 +35,34 @@ android {
 
 dependencies {
 
-    implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
+    testImplementation 'junit:junit:4.13.2'
+    implementation 'com.google.guava:guava:31.1-jre'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
 
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.compose.animation:animation-graphics:1.4.3'
+    implementation 'androidx.preference:preference:1.2.0'
+
+//    implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
+//    implementation 'com.google.android.gms:play-services-auth:20.6.0'
+//
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
-    implementation 'com.google.firebase:firebase-auth:21.1.0' // authentecation
 
-    implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.firebase:firebase-analytics:21.2.1'
-    implementation 'com.google.firebase:firebase-crashlytics:18.3.6'
-    implementation 'com.google.firebase:firebase-perf:20.3.1'
-    implementation 'com.google.firebase:firebase-storage:20.1.0'
-    implementation 'com.google.firebase:firebase-database:20.1.0'
-    implementation 'com.google.firebase:firebase-common-ktx:20.3.2'
-    implementation 'com.google.firebase:firebase-firestore:24.4.5'
-    implementation 'com.google.firebase:firebase-messaging:23.1.2'
+    implementation 'com.google.firebase:firebase-core:21.1.1' // core
+    implementation 'com.google.firebase:firebase-auth:22.1.0' // authentecation
+    implementation 'com.google.firebase:firebase-firestore:24.7.0' // firestore
+    implementation 'com.google.firebase:firebase-analytics:21.3.0' // analytics
+    implementation 'com.google.firebase:firebase-crashlytics:18.4.0' // crashlytics
+    implementation 'com.google.firebase:firebase-storage:20.2.1' // storage
+
+    implementation 'com.google.firebase:firebase-perf:20.4.0'
+    implementation 'com.google.firebase:firebase-database:20.2.2'
+    implementation 'com.google.firebase:firebase-messaging:23.2.0'
 
     implementation 'com.firebaseui:firebase-ui-database:8.0.2'
     implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
@@ -60,26 +74,10 @@ dependencies {
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation 'androidx.security:security-crypto:1.1.0-alpha05'
 
-    implementation 'com.google.android.material:material:1.8.0'
-
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.compose.animation:animation-graphics:1.4.0'
-
-    testImplementation 'junit:junit:4.13.2'
-    implementation 'com.google.guava:guava:31.1-jre'
-    implementation 'com.google.android.gms:play-services-auth:20.4.1'
-
-    implementation 'androidx.preference:preference:1.2.0'
-    // for cropping
-    implementation 'com.github.yalantis:ucrop:2.2.2'
-    // image downloading
-    implementation 'com.squareup.picasso:picasso:2.71828'
-    // circular image
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'androidx.core:core-splashscreen:1.0.1' // splash screen
+    implementation 'com.google.android.material:material:1.9.0' // material components
+    implementation 'com.github.yalantis:ucrop:2.2.2' // image cropping
+    implementation 'com.squareup.picasso:picasso:2.71828' // image downloading and applying
+    implementation 'de.hdodenhof:circleimageview:3.1.0' // circular image
 }

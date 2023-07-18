@@ -1,0 +1,40 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:title="@string/app_pin"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:title="@string/change_your_pin"
+            app:iconSpaceReserved="false" />
+        <SwitchPreferenceCompat
+            android:summary="@string/pin_reminders_hint"
+            android:title="@string/pin_reminders"
+            app:iconSpaceReserved="false"
+            app:key="sync" />
+
+        <SwitchPreferenceCompat
+            android:summary="@string/registration_lock_hint"
+            android:title="@string/registration_lock"
+            app:iconSpaceReserved="false"
+            app:key="sync" />
+        <Preference
+            android:summary="@string/disable_pin_hint"
+            android:title="@string/disable_pin"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/account"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:title="@string/change_phone_number"
+            app:iconSpaceReserved="false" />
+        <Preference
+            android:summary="@string/transfer_account_hint"
+            android:title="@string/transfer_account"
+            app:iconSpaceReserved="false" />
+        <Preference
+            android:title="@string/delete_account"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

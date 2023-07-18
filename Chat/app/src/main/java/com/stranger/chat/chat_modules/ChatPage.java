@@ -3,6 +3,7 @@ package com.stranger.chat.chat_modules;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -114,13 +115,16 @@ public class ChatPage extends AppCompatActivity {
         });
 
         camera.setOnClickListener(view -> {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, 100);
+
         });
 
         audio.setOnClickListener(view -> {
         });
 
         menuImage.setOnClickListener(view -> {
-            ChatPage_BottomSheet chatPage_bottomSheet = new ChatPage_BottomSheet(this);
+            ChatPage_BottomSheet chatPage_bottomSheet = new ChatPage_BottomSheet();
             chatPage_bottomSheet.show(getSupportFragmentManager(), "menu");
         });
 
@@ -151,7 +155,9 @@ public class ChatPage extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == 101 && data != null) {
+        if (data == null || requestCode == 0) return;
+
+        if (resultCode == Activity.RESULT_OK && requestCode == 101) {
             Bundle args = new Bundle();
             args.putString("image", String.valueOf(data.getData()));
             args.putString("messageId", messageId);

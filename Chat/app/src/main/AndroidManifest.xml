@@ -27,11 +27,21 @@
         android:theme="@style/Theme.Chat"
         tools:targetApi="33">
         <activity
-            android:name=".Apperareance"
-            android:exported="false" />
+            android:name=".settings.SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" /> <!-- settings -->
+            android:exported="false" />
+
+        <!-- settings -->
+        <activity
+            android:name=".settings.Settings"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".settings.Profile"
             android:exported="false">
@@ -39,18 +49,11 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".settings.SettingsPages"
+            android:exported="false"/>
+        <!-- login -->
         <activity
-            android:name=".settings.Account"
-            android:exported="false" />
-        <activity
-            android:name=".settings.Settings"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity> <!-- login -->
-        <activity
-            android:name=".login_modules.StartScrean"
+            android:name=".login_modules.SplashScrean"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

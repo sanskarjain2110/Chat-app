@@ -57,40 +57,40 @@ public class Settings extends AppCompatActivity {
 
         userCardView.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Profile.class)));
 
-        account.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Account.class)));
+        account.setOnClickListener(v -> startActivity(intent(R.string.account, R.xml.account_preferences)));
 
         linkedDevices.setOnClickListener(v -> Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show());
 
-        apperareance.setOnClickListener(v -> new Intent(getApplicationContext(), Apperareance.class));
+        apperareance.setOnClickListener(v -> startActivity(intent(R.string.apperareance, R.xml.apperrance_preferences)));
 
-        chats.setOnClickListener(v -> {
-        });
+        chats.setOnClickListener(v -> Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show());
 
-        stories.setOnClickListener(v -> {
-        });
+        stories.setOnClickListener(v -> Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show());
 
-        notification.setOnClickListener(v -> {
-        });
+        notification.setOnClickListener(v -> Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show());
 
-        privacy.setOnClickListener(v -> {
-        });
+        privacy.setOnClickListener(v -> Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show());
 
-        dataAndStorage.setOnClickListener(v -> {
-        });
+        dataAndStorage.setOnClickListener(v -> Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show());
 
-        help.setOnClickListener(v -> {
-        });
+        help.setOnClickListener(v -> Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show());
 
-        inviteFriend.setOnClickListener(v -> {
-
-        });
+        inviteFriend.setOnClickListener(v -> Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show());
 
         logout.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
 
             startActivity(new Intent(getApplicationContext(), LogInPage.class));
             finish();
+            // ---> destroy oll the activity
         });
+    }
+
+    protected Intent intent(int title, int xml) {
+        Intent intent = new Intent(getApplicationContext(), SettingsPages.class);
+        intent.putExtra("title", getString(title));
+        intent.putExtra("xml", xml);
+        return intent;
     }
 
     @Override
@@ -109,4 +109,10 @@ public class Settings extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
+

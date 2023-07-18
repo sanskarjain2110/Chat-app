@@ -1,0 +1,27 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        android:defaultValue="System default"
+        android:entries="@array/theme"
+        android:entryValues="@array/theme"
+        android:key="@string/theme_preference"
+        android:title="@string/theme"
+        app:iconSpaceReserved="false"
+        app:useSimpleSummaryProvider="true" />
+
+    <Preference
+        android:fragment="com.stranger.chat.settings.fregment.AccountPreferences"
+        android:key="@string/color_and_wallpaper_preferance"
+        android:title="@string/chat_color_amp_wallpaper"
+        app:iconSpaceReserved="false" />
+
+    <ListPreference
+        android:defaultValue="Small"
+        android:entries="@array/fontSize"
+        android:entryValues="@array/fontSize"
+        android:key="@string/font_size_preferance"
+        android:title="@string/font_size"
+        app:iconSpaceReserved="false"
+        app:useSimpleSummaryProvider="true" />
+</PreferenceScreen>
