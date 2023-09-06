@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
 import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
-import com.stranger.chat.login_modules.LogInPage;
+import com.stranger.chat.login_modules.LoginScreen;
 
 // to be implement
 // linked divices
@@ -80,7 +80,7 @@ public class Settings extends AppCompatActivity {
         logout.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
 
-            startActivity(new Intent(getApplicationContext(), LogInPage.class));
+            startActivity(new Intent(getApplicationContext(), LoginScreen.class));
             finish();
             // ---> destroy oll the activity
         });

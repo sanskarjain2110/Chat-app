@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:menu="@menu/chat_page_menu"
-            app:navigationIcon="@drawable/arrow_back_40px" />
+            app:navigationIcon="@drawable/arrow_back_ios_24px" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -26,68 +26,66 @@
         android:layout_weight="1"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:elevation="20dp"
-        android:gravity="bottom"
-        android:padding="5dp"
-        app:cardCornerRadius="20dp"
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:elevation="0dp"
+        app:cardCornerRadius="0dp"
         app:cornerFamily="rounded">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingVertical="8dp"
             android:gravity="bottom">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/getMessage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="7.5dp"
+                android:minHeight="48dp"
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/send_message"
                 android:inputType="text|textNoSuggestions|textMultiLine" />
 
-            <ImageView
+            <Button
                 android:id="@+id/menuImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:contentDescription="@string/add"
-                android:src="@drawable/add_48px" />
+                app:icon="@drawable/add_24px" />
 
-            <ImageView
+            <Button
                 android:id="@+id/camera"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:contentDescription="@string/add"
-                android:src="@drawable/photo_camera_48px" />
+                android:contentDescription="@string/camera"
+                app:icon="@drawable/photo_camera_24px" />
 
-            <ImageView
+            <Button
                 android:id="@+id/audio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:contentDescription="@string/aduio"
-                android:src="@drawable/mic_48px" />
+                app:icon="@drawable/mic_48px" />
 
-            <ImageView
+            <Button
+
+                style="@style/Widget.Material3.Button.IconButton.Filled"
                 android:id="@+id/sentButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:contentDescription="@string/send"
-                android:src="@drawable/send_48px"
+                app:icon="@drawable/send_48px"
                 android:visibility="gone" />
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

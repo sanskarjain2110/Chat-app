@@ -12,28 +12,53 @@
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
             android:layout_width="match_parent"
-            android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
+            app:navigationIcon="@drawable/arrow_back_ios_24px"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:liftOnScroll="true">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profileImageView"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_gravity="center_horizontal|top"
-                android:layout_margin="20dp"
-                android:contentDescription="@string/profile_pic"
-                android:src="@drawable/account_circle_48px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profileImageView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal|top"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="@string/profile_pic"
+                    android:src="@drawable/account_circle_24px" />
+
+                <TextView
+                    android:id="@+id/username"
+                    style="@style/TextAppearance.Material3.ActionBar.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/username" />
+
+                <TextView
+                    android:id="@+id/phoneNumber"
+                    style="@style/TextAppearance.Material3.ActionBar.Subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/phone_number" />
+            </LinearLayout>
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:expandedTitleTextAppearance="@style/TextAppearance.Material3.ActionBar.Title"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/arrow_back_40px" />
+                app:expandedTitleTextAppearance="@style/TextAppearance.Material3.ActionBar.Title"
+                app:navigationIcon="@drawable/arrow_back_ios_24px" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -46,27 +71,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/username"
-                style="@style/TextAppearance.Material3.ActionBar.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/username" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/username"-->
+            <!--                style="@style/TextAppearance.Material3.ActionBar.Title"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="center"-->
+            <!--                android:text="@string/username" />-->
 
-            <TextView
-                android:id="@+id/phoneNumber"
-                style="@style/TextAppearance.Material3.ActionBar.Subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/phone_number" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/phoneNumber"-->
+            <!--                style="@style/TextAppearance.Material3.ActionBar.Subtitle"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="center"-->
+            <!--                android:text="@string/phone_number" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:padding="10dp">
+                android:paddingHorizontal="8dp">
 
                 <LinearLayout
                     android:id="@+id/video_call"
@@ -81,12 +106,13 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/video_call"
                         android:src="@drawable/videocam_48px"
+                        android:layout_marginTop="16dp"
                         android:tooltipText="@string/video_call" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="8dp"
                         android:text="@string/video_call" />
                 </LinearLayout>
 
@@ -103,12 +129,13 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/audio_call"
                         android:src="@drawable/call_48px"
+                        android:layout_marginTop="16dp"
                         android:tooltipText="@string/audio_call" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="8dp"
                         android:text="@string/audio_call" />
                 </LinearLayout>
 
@@ -125,12 +152,13 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/video_call"
                         android:src="@drawable/notifications_48px"
+                        android:layout_marginTop="16dp"
                         android:tooltipText="@string/notification" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="8dp"
                         android:text="@string/notification" />
                 </LinearLayout>
 
@@ -147,12 +175,13 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/video_call"
                         android:src="@drawable/search_48px"
+                        android:layout_marginTop="16dp"
                         android:tooltipText="@string/search" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="8dp"
                         android:text="@string/search" />
                 </LinearLayout>
             </LinearLayout>

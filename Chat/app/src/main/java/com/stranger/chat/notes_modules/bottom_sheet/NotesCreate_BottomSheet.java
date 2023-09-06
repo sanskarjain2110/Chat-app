@@ -1,7 +1,5 @@
 package com.stranger.chat.notes_modules.bottom_sheet;
 
-import static com.stranger.chat.fuctionality.Helper.timeStamp;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +16,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.firestore.CollectionReference;
 import com.stranger.chat.R;
+import com.stranger.chat.fuctionality.Text;
 import com.stranger.chat.notes_modules.NoteEditorActivity;
 import com.stranger.chat.notes_modules.ToDos;
 
@@ -67,7 +66,7 @@ public class NotesCreate_BottomSheet extends BottomSheetDialogFragment {
                 Map<String, Object> data = new HashMap<>();
                 data.put("title", listName);
                 data.put("noteId", noteId);
-                data.put("lastUpdated", timeStamp());
+                data.put("lastUpdated", new Text(context).timeStamp());
                 data.put("type", "notes");
                 notesCollectionReference.document(noteId).set(data).addOnSuccessListener(unused -> {
                     Intent intent = new Intent(context, ToDos.class);

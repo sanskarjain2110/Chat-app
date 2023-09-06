@@ -1,5 +1,7 @@
 package com.stranger.chat.chat_modules.adapter;
 
+import static com.stranger.chat.fuctionality.Text.getFormattedTimeDifference;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +24,7 @@ import com.stranger.chat.chat_modules.adapter.chatPage_ViewHolder.ImageViewHolde
 import com.stranger.chat.chat_modules.adapter.chatPage_ViewHolder.TextViewHolder;
 import com.stranger.chat.chat_modules.data.ChatPage_Tile_Data;
 import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
-import com.stranger.chat.fuctionality.Helper;
+import com.stranger.chat.fuctionality.Text;
 
 public class ChatPageAdapter extends FirestoreRecyclerAdapter<ChatPage_Tile_Data, RecyclerView.ViewHolder> {
     private static final int
@@ -37,16 +39,14 @@ public class ChatPageAdapter extends FirestoreRecyclerAdapter<ChatPage_Tile_Data
     SENDER_VIDEO = R.layout.message_sender_text_tile_sample,
             RECEIVER_VIDEO = R.layout.message_receiver_text_tile_sample;
 
-    CollectionReference reference;
-    Context context;
-    FragmentManager fragmentManager;
+    private final CollectionReference reference;
+    private final Context context;
     private final String currentUserId = FirebaseDatabaseConnection.currentUser.getUid();
 
     public ChatPageAdapter(FirestoreRecyclerOptions<ChatPage_Tile_Data> options,
-                           FragmentManager fragmentManager, Context context, CollectionReference reference) {
+                           Context context, CollectionReference reference) {
         super(options);
         this.context = context;
-        this.fragmentManager = fragmentManager;
         this.reference = reference;
     }
 
@@ -73,7 +73,7 @@ public class ChatPageAdapter extends FirestoreRecyclerAdapter<ChatPage_Tile_Data
         if (viewType == SENDER_TEXT || viewType == RECEIVER_TEXT) return new TextViewHolder(view);
         else if (viewType == SENDER_IMAGE || viewType == RECEIVER_IMAGE)
             return new ImageViewHolder(view);
-        else return new ImageViewHolder(view);
+        else return new TextViewHolder(view);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ChatPageAdapter extends FirestoreRecyclerAdapter<ChatPage_Tile_Data
             case RECEIVER_IMAGE:
                 ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
                 holderFunctionality(imageViewHolder.getMessageTextView(), imageViewHolder.getTimeStamp(), imageViewHolder.getTile(), model);
-                Picasso.get().load(model.getUri()).into(imageViewHolder.getImage());
+                Picasso.get().load(model.getUri()).placeholder(R.drawable.image_48px).into(imageViewHolder.getImage());
                 break;
             default:
                 break;
@@ -107,7 +107,7 @@ public class ChatPageAdapter extends FirestoreRecyclerAdapter<ChatPage_Tile_Data
             } else if (item.getItemId() == R.id.forward) {
                 Toast.makeText(context, "Not Implemented", Toast.LENGTH_SHORT).show();
             } else if (item.getItemId() == R.id.copy) {
-                Helper.copyString(context, model.getMessage());
+                new Text(context).copyString(model.getMessage());
             } else if (item.getItemId() == R.id.info) {
                 Toast.makeText(context, "Not Implemented", Toast.LENGTH_SHORT).show();
             } else if (item.getItemId() == R.id.delete)
@@ -128,7 +128,9 @@ public class ChatPageAdapter extends FirestoreRecyclerAdapter<ChatPage_Tile_Data
         else messageView.setVisibility(View.GONE);
 
         // time stamp
-        timeStampView.setText(model.getTimeStamp());
+        String time = getFormattedTimeDifference(model.getTimeStamp());
+        if (time != null) timeStampView.setText(time);
+        else timeStampView.setVisibility(View.GONE);
 
         // menu
         if (model.getSender().equals(currentUserId))

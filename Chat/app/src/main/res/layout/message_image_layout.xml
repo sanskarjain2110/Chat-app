@@ -4,26 +4,28 @@
     android:id="@+id/tile"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    app:cardCornerRadius="10dp"
+    android:layout_margin="4dp"
+     app:cardCornerRadius="8dp"
     app:cornerFamily="rounded">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5dp">
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="256dp"
+            android:layout_height="256dp"
+            android:scaleType="centerCrop"
             android:contentDescription="@string/image_sent"
             android:src="@drawable/image_48px" />
-        
+
         <TextView
             android:id="@+id/messageTextView"
             android:layout_width="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
             android:layout_height="wrap_content"
             android:text="@string/text"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
@@ -34,6 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:text="@string/timeStamp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
             android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -1,5 +1,9 @@
 package com.stranger.chat.chat_modules;
 
+import static com.stranger.chat.fuctionality.Keys.BUNDLE_DATA;
+import static com.stranger.chat.fuctionality.Keys.firebase.MESSAGE_ID;
+import static com.stranger.chat.fuctionality.Keys.firebase.USERNAME;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +11,8 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -25,7 +29,7 @@ import com.stranger.chat.chat_modules.adapter.ChatPageAdapter;
 import com.stranger.chat.chat_modules.bottom_sheet.ChatPage_BottomSheet;
 import com.stranger.chat.chat_modules.data.ChatPage_Tile_Data;
 import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
-import com.stranger.chat.fuctionality.Helper;
+import com.stranger.chat.fuctionality.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +39,7 @@ public class ChatPage extends AppCompatActivity {
     Toolbar topAppBar;
     RecyclerView chatRecyclerView;
     EditText textMessage;
-    ImageView camera, audio, menuImage, sentButton;
+    Button camera, audio, menuImage, sentButton;
 
     Bundle bundle;
     String messageId;
@@ -51,8 +55,8 @@ public class ChatPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_page);
 
-        bundle = getIntent().getBundleExtra("data");
-        messageId = bundle.getString("messageId");
+        bundle = getIntent().getBundleExtra(BUNDLE_DATA);
+        messageId = bundle.getString(MESSAGE_ID);
 
         topAppBar = findViewById(R.id.topAppBar);
 
@@ -67,25 +71,30 @@ public class ChatPage extends AppCompatActivity {
         reference = FirebaseDatabaseConnection.messageDataCollection(messageId);
         query = reference.orderBy("timeStamp").limitToLast(50);
 
-        topAppBar.setTitle(bundle.getString("reciverName"));
+        topAppBar.setTitle(bundle.getString(USERNAME));
         topAppBar.setNavigationOnClickListener(view -> finish());
+        topAppBar.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), ConversationSetting.class);
+            intent.putExtra(BUNDLE_DATA, bundle);
+            startActivity(intent);
+        });
         topAppBar.setOnMenuItemClickListener(item -> {
-            String text;
+            String text = null;
             if (item.getItemId() == R.id.video_call) text = "Video";
             else if (item.getItemId() == R.id.audio_call) text = "Audio";
             else if (item.getItemId() == R.id.disappearMessages) text = "Disappearing Message";
             else if (item.getItemId() == R.id.allMedia) text = "All media";
             else if (item.getItemId() == R.id.conversationSetting) {
-                text = "Conversation Setting";
-
                 Intent intent = new Intent(getApplicationContext(), ConversationSetting.class);
-                intent.putExtra("data", bundle);
+                intent.putExtra(BUNDLE_DATA, bundle);
                 startActivity(intent);
             } else if (item.getItemId() == R.id.search) text = "Search";
             else if (item.getItemId() == R.id.add_to_home_screen) text = "add to hame screen";
             else if (item.getItemId() == R.id.muteNotification) text = "Mute notification";
             else return false;
-            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+
+            if (text != null)
+                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
             return true;
         });
 
@@ -117,11 +126,10 @@ public class ChatPage extends AppCompatActivity {
         camera.setOnClickListener(view -> {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, 100);
-
         });
 
-        audio.setOnClickListener(view -> {
-        });
+        audio.setOnClickListener(view -> Toast.makeText(this,
+                "not implemented", Toast.LENGTH_SHORT).show());
 
         menuImage.setOnClickListener(view -> {
             ChatPage_BottomSheet chatPage_bottomSheet = new ChatPage_BottomSheet();
@@ -132,7 +140,7 @@ public class ChatPage extends AppCompatActivity {
             String text = textMessage.getText().toString().trim(),
                     dilogId = FirebaseDatabaseConnection.randomId();
             if (text.length() != 0) {
-                String time = (String) Helper.timeStamp();
+                String time = new Text(this).timeStamp();
                 Map<String, Object> pushMessage = new HashMap<>();
                 pushMessage.put("sender", FirebaseDatabaseConnection.currentUser.getUid());
                 pushMessage.put("dilogId", dilogId);
@@ -176,7 +184,7 @@ public class ChatPage extends AppCompatActivity {
 
         FirestoreRecyclerOptions<ChatPage_Tile_Data> options = new FirestoreRecyclerOptions.Builder<ChatPage_Tile_Data>().setQuery(query, ChatPage_Tile_Data.class).build();
 
-        chatPageAdapter = new ChatPageAdapter(options, getSupportFragmentManager(), this, reference);
+        chatPageAdapter = new ChatPageAdapter(options, this, reference);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         chatRecyclerView.setLayoutManager(linearLayoutManager);

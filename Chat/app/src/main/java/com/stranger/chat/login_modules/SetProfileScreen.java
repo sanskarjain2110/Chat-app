@@ -3,10 +3,11 @@ package com.stranger.chat.login_modules;
 import static android.content.ContentValues.TAG;
 import static android.text.TextUtils.isEmpty;
 import static android.widget.Toast.LENGTH_SHORT;
+import static com.stranger.chat.fuctionality.FirebaseDatabaseConnection.currentUser;
+import static com.stranger.chat.fuctionality.FirebaseDatabaseConnection.userDocument;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -16,92 +17,98 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.stranger.chat.MainActivity;
 import com.stranger.chat.R;
+import com.stranger.chat.fuctionality.Routes;
+import com.stranger.chat.fuctionality.Text;
 import com.yalantis.ucrop.UCrop;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Add_Profile_Detail extends AppCompatActivity {
+public class SetProfileScreen extends AppCompatActivity {
+    TextView tvTitle;
+    RelativeLayout pic;
 
     ImageView profilePic;
-    EditText nameField;
-    Button updateButton;
+    Button btAddPic;
+    EditText tfFirstName, tfSecondName;
+    Button btNext;
 
     Uri profilePicUri;
-
     // Use for buinding sign in data
     Map<String, String> details = new HashMap<>();
-
     SharedPreferences sharedPref;
 
-    FirebaseAuth mAuth;
-    FirebaseUser user;
+    String name, phonenumber, userId;
 
-    String name, phoneNumber, userId;
+    Intent selectImageIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_profile_details);
+        setContentView(R.layout.activity_set_profile_screen);
 
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        userId = user.getUid();
+        phonenumber = currentUser.getPhoneNumber();
+        name = phonenumber;
 
-        sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
-        phoneNumber = sharedPref.getString("host_phoneNumber", userId);
+        userId = currentUser.getUid();
+        if (isEmpty(userId)) new Routes(this, this).loginModuleRoutes();
 
-        profilePic = findViewById(R.id.addProfilePic);
-        nameField = findViewById(R.id.nameField);
+        selectImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-        updateButton = findViewById(R.id.updateButton);
+        tvTitle = findViewById(R.id.tvTitle);
+        profilePic = findViewById(R.id.profilePic);
+        pic = findViewById(R.id.pic);
+        btAddPic = findViewById(R.id.btAddPic);
+        tfFirstName = findViewById(R.id.tfFirstName);
+        tfSecondName = findViewById(R.id.tfLastName);
+        btNext = findViewById(R.id.btNext);
 
-        // setting name field as mobile number
-        nameField.setText(phoneNumber);
+        // Clickable Span
+        new Text(this).setClickableSpan(tvTitle, "Profiles are visible to people you message, contacts, and groups. ", "Learn more", null, false);
 
         // to open gallery and select image
-        profilePic.setOnClickListener(view -> {
-            Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(openGalleryIntent, 101);
-        });
+        pic.setOnClickListener(view -> startActivityForResult(selectImageIntent, 101));
+        btAddPic.setOnClickListener(view -> startActivityForResult(selectImageIntent, 101));
 
-        updateButton.setOnClickListener(view -> {
-            name = nameField.getText().toString().trim();
-            if (isEmpty(name)) {
-                Toast.makeText(getApplicationContext(), "Please fill fields", LENGTH_SHORT).show();
-            } else {
-                details.put("username", name.trim());
-                details.put("phoneNumber", phoneNumber);
-                details.put("userId", userId);
+        if (!isEmpty(name)) tfFirstName.setText(name);
 
-                //login data updated
-                FirebaseFirestore.getInstance().collection("users").document(userId).set(details);
+        // save details in firebase
+        btNext.setOnClickListener(view -> {
+            String firstName = tfFirstName.getText().toString().trim(), secondName = tfSecondName.getText().toString().trim();
 
-                //saving data to local database
-                SharedPreferences sharedPref = getSharedPreferences("localData", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("host_username", details.get("username"));
-                editor.apply();
+            if (isEmpty(firstName)) {
+                Toast.makeText(getApplicationContext(), "please fill required field", LENGTH_SHORT).show();
+                return;
+            } else name = String.format("%s %s", firstName, secondName);
 
-                // after updating the profile user will redirect to main activity
-                // we are calling main page befor Add_Profile_Detail class because we have to open it in background
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
-            }
+            if (!isEmpty(name)) details.put("username", name.trim());
+
+            if (!isEmpty(phonenumber)) details.put("phonenumber", phonenumber);
+            details.put("userId", userId);
+
+            userDocument(userId).set(details); // user data upload on firebase
+
+            //saving data to local database
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("host_username", details.get("username"));
+            editor.apply();
+
+            // after updating the profile user will redirect to main activity
+            // we are calling main page befor Add_Profile_Detail class because we have to open it in background
+            new Routes(this, this).loginModuleRoutes();
         });
     }
 
@@ -109,13 +116,12 @@ public class Add_Profile_Detail extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == 101 && data != null) {
+        if (data == null) return;
+
+        if (resultCode == Activity.RESULT_OK && requestCode == 101) {
             String destinationUriString = UUID.randomUUID().toString() + ".jpg";
-            UCrop.of(data.getData(), Uri.fromFile(new File(getCacheDir(), destinationUriString)))
-                    .withAspectRatio(1, 1)
-                    .withMaxResultSize(20000, 2000)
-                    .start(this);
-        } else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && data != null) {
+            UCrop.of(data.getData(), Uri.fromFile(new File(getCacheDir(), destinationUriString))).withAspectRatio(1, 1).withMaxResultSize(20000, 2000).start(this);
+        } else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             profilePicUri = UCrop.getOutput(data);
 
             // set image to widiget

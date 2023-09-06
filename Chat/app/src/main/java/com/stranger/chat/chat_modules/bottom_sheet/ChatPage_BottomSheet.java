@@ -6,7 +6,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
@@ -14,7 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.stranger.chat.R;
 
 public class ChatPage_BottomSheet extends BottomSheetDialogFragment {
-    TextView camera, gallery, contact, document, audio;
+    Button camera, gallery, contact, document, audio;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

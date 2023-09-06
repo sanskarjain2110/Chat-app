@@ -19,57 +19,56 @@
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:navigationIcon="@drawable/arrow_back_40px" />
+            app:navigationIcon="@drawable/arrow_back_ios_24px" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/card"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/appBar"
-        android:layout_margin="10dp"
+        android:layout_margin="8dp"
         android:contentDescription="@string/image_sent"
         android:src="@drawable/image_48px" />
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:elevation="20dp"
-        app:cardCornerRadius="20dp"
+        style="@style/Widget.Material3.CardView.Elevated"
+        app:cardCornerRadius="0dp"
         app:cornerFamily="rounded">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom"
+            android:padding="8dp"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/getMessage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
+                android:minHeight="48dp"
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/send_message"
                 android:inputType="text|textNoSuggestions|textMultiLine" />
 
-            <ImageView
+            <Button
                 android:id="@+id/send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
                 android:contentDescription="@string/send"
-                android:src="@drawable/send_48px" />
+                app:icon="@drawable/send_48px" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>

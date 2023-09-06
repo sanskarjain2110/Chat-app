@@ -1,7 +1,11 @@
 package com.stranger.chat.chat_modules;
 
+import static com.stranger.chat.fuctionality.Keys.BUNDLE_DATA;
+import static com.stranger.chat.fuctionality.Keys.firebase.PHONE_NUMBER;
+import static com.stranger.chat.fuctionality.Keys.firebase.PROFILE_PIC_URL;
+import static com.stranger.chat.fuctionality.Keys.firebase.USERNAME;
+
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,16 +28,13 @@ public class ConversationSetting extends AppCompatActivity {
     TextView username, phoneNumber;
 
     LinearLayout videoCall, audioCall, notification, search, socialMedia;
-
-    Button disappearingMessage, chatColorAndWallpaper, soundAndNotification, contactDetails, viewSafetyNumber, seeAll, block;
-
     @Override
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_setting);
 
-        Bundle bundle = getIntent().getBundleExtra("data");
+        Bundle bundle = getIntent().getBundleExtra(BUNDLE_DATA);
 
         appBar = findViewById(R.id.appBar);
         collapsingToolbar = findViewById(R.id.collapsingToolbar);
@@ -46,19 +47,17 @@ public class ConversationSetting extends AppCompatActivity {
         toolBar.setNavigationOnClickListener(v -> finish());
 
         appBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
-            if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-                // Toolbar is fully collapsed
+            if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) { // Toolbar is fully collapsed
                 collapsingToolbar.setTitleEnabled(true);
-                collapsingToolbar.setTitle(bundle.getString("reciverName"));
-            } else {
-                // Toolbar is partially or fully expanded
+                collapsingToolbar.setTitle(bundle.getString(USERNAME));
+            } else { // Toolbar is partially or fully expanded
                 collapsingToolbar.setTitleEnabled(false);
             }
         });
 
-        Picasso.get().load(bundle.getString("reciverProfilePic")).into(profileImageView);
-        username.setText(bundle.getString("reciverName"));
-        phoneNumber.setText(bundle.getString("reciverNumber"));
+        Picasso.get().load(bundle.getString(PROFILE_PIC_URL)).placeholder(R.drawable.account_circle_24px).into(profileImageView);
+        username.setText(bundle.getString(USERNAME));
+        phoneNumber.setText(bundle.getString(PHONE_NUMBER));
 
     }
 }

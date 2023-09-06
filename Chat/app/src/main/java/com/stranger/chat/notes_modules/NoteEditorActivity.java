@@ -1,7 +1,6 @@
 package com.stranger.chat.notes_modules;
 
 import static android.text.TextUtils.isEmpty;
-import static com.stranger.chat.fuctionality.Helper.timeStamp;
 import static java.util.Objects.isNull;
 
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.stranger.chat.R;
+import com.stranger.chat.fuctionality.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,7 +90,7 @@ public class NoteEditorActivity extends AppCompatActivity {
                     data.put("title", title);
                     data.put("noteId", noteId);
                     data.put("description", description);
-                    data.put("lastUpdated", timeStamp());
+                    data.put("lastUpdated", new Text(this).timeStamp());
                     data.put("type", "notes");
                     if (updateNotes) {
                         documentReference.update(data).addOnSuccessListener(unused -> finish());

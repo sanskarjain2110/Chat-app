@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
@@ -26,12 +25,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Chat"
         tools:targetApi="33">
+
+
+        <!--        start-->
+        <activity
+            android:name=".login_modules.SplashScrean"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!--        splash screen-->
+
+        <!--        end-->
         <activity
             android:name=".settings.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".MainActivity"
+            android:name=".HomeScreen"
             android:exported="false" />
 
         <!-- settings -->
@@ -53,19 +66,10 @@
             android:exported="false"/>
         <!-- login -->
         <activity
-            android:name=".login_modules.SplashScrean"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".login_modules.LogInPage"
+            android:name=".login_modules.LoginScreen"
             android:exported="true" />
         <activity
-            android:name=".login_modules.Add_Profile_Detail"
+            android:name=".login_modules.SetProfileScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

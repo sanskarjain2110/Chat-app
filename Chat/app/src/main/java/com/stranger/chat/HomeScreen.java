@@ -1,65 +1,67 @@
 package com.stranger.chat;
 
 import static com.stranger.chat.fuctionality.FirebaseDatabaseConnection.currentUser;
+import static com.stranger.chat.fuctionality.FirebaseDatabaseConnection.messageCollection;
+import static com.stranger.chat.fuctionality.FirebaseDatabaseConnection.notesCollectionReference;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
 import com.stranger.chat.chat_modules.AddPerson;
-import com.stranger.chat.chat_modules.adapter.ChatAdapter;
 import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
-import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
+import com.stranger.chat.chat_modules.home_screen.ChatAdapter;
 import com.stranger.chat.notes_modules.adapter.NotesAdapter;
 import com.stranger.chat.notes_modules.bottom_sheet.NotesCreate_BottomSheet;
 import com.stranger.chat.notes_modules.data.Note_Tile_Data;
 import com.stranger.chat.settings.Settings;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeScreen extends AppCompatActivity {
+
+    private int selectedMenuItemInBotomAppBar = R.id.chatNavigationButton; // use to see which item is selected in bottom app bar
 
     private final String currentUserId = currentUser.getUid();
-
-    private final CollectionReference notesCollectionReference = FirebaseDatabaseConnection.notesCollectionReference(currentUserId);
+    private final CollectionReference notesCollectionReference = notesCollectionReference(currentUserId);
     Query chatQuery, noteQuery;
 
     ChatAdapter chatAdapter;
     NotesAdapter notesAdapter;
 
-    Toolbar topAppBar;
+    MaterialToolbar topToolbar;
     RecyclerView recyclerview;
 
-    FloatingActionButton addButton;
+    FloatingActionButton addButton, camera;
     BottomNavigationView bottomNavigationBar;
-
-    int selectedMenuItemInBotomAppBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home_screen);
 
-        topAppBar = findViewById(R.id.topAppBar);
+        topToolbar = findViewById(R.id.topToolbar);
+
         recyclerview = findViewById(R.id.recyclerview);
 
         addButton = findViewById(R.id.addButton);
+        camera = findViewById(R.id.camera);
         bottomNavigationBar = findViewById(R.id.bottom_navigation);
 
         selectedMenuItemInBotomAppBar = R.id.chatNavigationButton;
 
-        topAppBar.setNavigationOnClickListener(item -> startActivity(new Intent(getApplicationContext(), Settings.class)));
-        topAppBar.setSubtitle("Hello!");
-        topAppBar.setOnMenuItemClickListener(item -> {
+        topToolbar.setNavigationOnClickListener(item -> startActivity(new Intent(getApplicationContext(), Settings.class)));
+        topToolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.settings) {
                 startActivity(new Intent(getApplicationContext(), Settings.class));
             } else {
@@ -74,9 +76,13 @@ public class MainActivity extends AppCompatActivity {
             } else if (selectedMenuItemInBotomAppBar == R.id.notesNavigationButton) {
                 NotesCreate_BottomSheet bottomSheet = new NotesCreate_BottomSheet(getApplicationContext(), notesCollectionReference);
                 bottomSheet.show(getSupportFragmentManager(), "ModalBottomSheet");
-            } else {
-                Toast.makeText(this, "error!!", Toast.LENGTH_SHORT).show();
-            }
+            } else Toast.makeText(this,
+                    "someting went wrong please contact to developer", Toast.LENGTH_SHORT).show();
+
+        });
+
+        camera.setOnClickListener(view -> {
+            // camera functionality
         });
 
         bottomNavigationBar.setOnItemSelectedListener(item -> navigationMenu(item.getItemId()));
@@ -108,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void chatView() {
-        chatQuery = FirebaseDatabaseConnection.messageCollection.whereArrayContains("usersId", currentUserId);
+        chatQuery = messageCollection.whereArrayContains("usersId", currentUserId); // order by will be added
 
         FirestoreRecyclerOptions<Chat_Tile_Data> options = new FirestoreRecyclerOptions.Builder<Chat_Tile_Data>()
                 .setQuery(chatQuery, Chat_Tile_Data.class).build();
@@ -121,12 +127,14 @@ public class MainActivity extends AppCompatActivity {
         if (item == R.id.chatNavigationButton) {
             recyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
             recyclerview.setAdapter(chatAdapter);
+            camera.setVisibility(View.VISIBLE);
         } else if (item == R.id.notesNavigationButton) {
             StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, 1);
 
             recyclerview.setHasFixedSize(true);
             recyclerview.setAdapter(notesAdapter);
             recyclerview.setLayoutManager(layoutManager);
+            camera.setVisibility(View.GONE);
         } else return false;
 
         selectedMenuItemInBotomAppBar = item;

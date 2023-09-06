@@ -12,7 +12,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:navigationIcon="@drawable/arrow_back_40px" />
+            app:navigationIcon="@drawable/arrow_back_ios_24px" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout

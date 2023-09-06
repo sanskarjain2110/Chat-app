@@ -1,4 +1,12 @@
-package com.stranger.chat.chat_modules.adapter;
+package com.stranger.chat.chat_modules.home_screen;
+
+import static com.stranger.chat.fuctionality.Keys.BUNDLE_DATA;
+import static com.stranger.chat.fuctionality.Keys.firebase.MESSAGE_ID;
+import static com.stranger.chat.fuctionality.Keys.firebase.PHONE_NUMBER;
+import static com.stranger.chat.fuctionality.Keys.firebase.PROFILE_PIC_URL;
+import static com.stranger.chat.fuctionality.Keys.firebase.USERNAME;
+import static com.stranger.chat.fuctionality.Keys.firebase.USER_ID;
+import static com.stranger.chat.fuctionality.Text.getFormattedTimeDifference;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -26,9 +35,12 @@ import com.stranger.chat.fuctionality.FirebaseDatabaseConnection;
 import java.util.Objects;
 
 public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAdapter.Chat_ViewHolder> {
-    Activity activity;
-    String currentUser, reciverUserId, reciverName, reciverNumber, reciverProfilePic;
-    FragmentManager fragmentManager;
+
+    String reciverUserId, reciverName, reciverNumber, reciverProfilePic;
+
+    private final Activity activity;
+    private final FragmentManager fragmentManager;
+    private final String currentUser;
 
     public ChatAdapter(@NonNull FirestoreRecyclerOptions<Chat_Tile_Data> options, Activity activity, String currentUser, FragmentManager fragmentManager) {
         super(options);
@@ -56,37 +68,35 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAd
         }
 
         FirebaseDatabaseConnection.userDocument(reciverUserId).addSnapshotListener((snapshot, error) -> {
-            if (error != null) {
-                return;
-            }
-            if (snapshot != null) {
-                reciverName = (String) snapshot.get("username");
-                reciverNumber = (String) snapshot.get("phoneNumber");
-                reciverProfilePic = (String) snapshot.get("profilePic");
-                holder.getUsernameField().setText(reciverName);
-                // download image from fireStorage
-                Picasso.get().load((String) snapshot.get("profilePic")).into(holder.getProfilePicField());
-            }
-        });
+            if (error != null || snapshot == null) return;
 
-        holder.getLastChatTimeField().setText(model.getLastSeen());
+            reciverName = (String) snapshot.get(USERNAME);
+            reciverNumber = (String) snapshot.get(PHONE_NUMBER);
+            reciverProfilePic = (String) snapshot.get(PROFILE_PIC_URL);
 
-        holder.getChatTile().setOnClickListener(view -> {
-            Bundle sendData = new Bundle();
-            sendData.putString("reciverUserId", reciverUserId);
-            sendData.putString("messageId", model.getMessageId());
-            sendData.putString("reciverName", reciverName);
-            sendData.putString("reciverNumber", reciverNumber);
-            sendData.putString("reciverProfilePic", reciverProfilePic);
+            holder.getUsernameField().setText(reciverName); // set reciver name
 
-            Intent intent = new Intent(activity, ChatPage.class);
-            intent.putExtra("data", sendData);
-            activity.startActivity(intent);
+            Picasso.get().load(reciverProfilePic).placeholder(R.drawable.account_circle_24px)
+                    .into(holder.getProfilePicField());// set reciver profile pic
+
+            holder.getLastChatTimeField().setText(getFormattedTimeDifference(model.getLastSeen())); // set date
+
+            holder.getChatTile().setOnClickListener(view -> {
+                Bundle sendData = new Bundle();
+                sendData.putString(USER_ID, reciverUserId);
+                sendData.putString(USERNAME, reciverName);
+                sendData.putString(PHONE_NUMBER, reciverNumber);
+                sendData.putString(PROFILE_PIC_URL, reciverProfilePic);
+                sendData.putString(MESSAGE_ID, model.getMessageId());
+
+                Intent intent = new Intent(activity, ChatPage.class);
+                intent.putExtra(BUNDLE_DATA, sendData);
+                activity.startActivity(intent);
+            });
         });
 
         holder.getChatTile().setOnLongClickListener(view -> {
-            Chat_BottomSheet chat_bottomSheet = new Chat_BottomSheet(model);
-            chat_bottomSheet.show(fragmentManager, "ModalBottomSheet");
+            new Chat_BottomSheet(model).show(fragmentManager, "ModalBottomSheet");
             return true;
         });
 

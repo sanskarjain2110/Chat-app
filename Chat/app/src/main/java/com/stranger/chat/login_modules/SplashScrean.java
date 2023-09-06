@@ -13,11 +13,9 @@ public class SplashScrean extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start_screen);
+        setContentView(R.layout.activity_splash_screen);
 
-        new Handler().postDelayed(() -> {
-            new Routes(this).loginModuleRoughts();
-            finish();
-        }, 3000);
+        new Handler().postDelayed(() -> new Routes(this, this).loginModuleRoutes(),
+                1000);
     }
 }
