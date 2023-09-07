@@ -61,7 +61,8 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
+        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
@@ -71,22 +72,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--            <TextView-->
-            <!--                android:id="@+id/username"-->
-            <!--                style="@style/TextAppearance.Material3.ActionBar.Title"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_gravity="center"-->
-            <!--                android:text="@string/username" />-->
-
-            <!--            <TextView-->
-            <!--                android:id="@+id/phoneNumber"-->
-            <!--                style="@style/TextAppearance.Material3.ActionBar.Subtitle"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_gravity="center"-->
-            <!--                android:text="@string/phone_number" />-->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,7 +79,6 @@
                 android:paddingHorizontal="8dp">
 
                 <LinearLayout
-                    android:id="@+id/video_call"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -102,6 +86,7 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/video_call"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/video_call"
@@ -117,7 +102,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/audio_call"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -125,6 +109,7 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/audio_call"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/audio_call"
@@ -140,7 +125,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/notification"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -148,6 +132,7 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/video_call"
@@ -163,7 +148,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/search"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -171,6 +155,7 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/search"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/video_call"
@@ -233,33 +218,37 @@
                 android:id="@+id/sharedMedia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="24dp"
-                    android:paddingTop="24dp"
-                    android:paddingEnd="24dp"
-                    android:paddingBottom="10dp"
+                    android:paddingVertical="8dp"
+                    android:paddingStart="16dp"
                     android:text="@string/shared_media"
                     android:textAppearance="@style/TextAppearance.Material3.ActionBar.Subtitle" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/media"
+                <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="0dp" />
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/media"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" />
+
+                </HorizontalScrollView>
 
                 <Button
                     android:id="@+id/seeAll"
                     style="@style/Widget.Material3.Button.TextButton.Settings"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="center"
                     android:layout_height="wrap_content"
-                    android:text="@string/see_all"
-                    android:textAppearance="@style/TextAppearance.Material3.ActionBar.Subtitle" />
+                    android:text="@string/view_all" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="wrap_content"
@@ -273,5 +262,5 @@
                 android:text="@string/block"
                 app:icon="@drawable/block_48px" />
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout>
