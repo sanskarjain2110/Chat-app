@@ -2,11 +2,16 @@
 <resources>
 
     <style name="Widget.Material3.Button.TextButton.Settings">
-        <item name="android:gravity">center|start</item>
+        <item name="android:gravity">center_vertical|start</item>
         <item name="iconPadding">24dp</item>
         <item name="iconSize">24dp</item>
         <item name="iconTint">?android:textColorPrimaryDisableOnly</item>
         <item name="android:textColor">?android:textColorPrimaryDisableOnly</item>
+    </style>
+
+    <style name="Widget.Material3.Button.TextButton.Settings.warning">
+        <item name="iconTint">@color/red</item>
+        <item name="android:textColor">@color/red</item>
     </style>
 
 </resources>

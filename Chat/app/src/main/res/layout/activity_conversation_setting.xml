@@ -61,10 +61,10 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
@@ -256,11 +256,11 @@
             </LinearLayout>
 
             <Button
-                style="@style/Widget.Material3.Button.TextButton.Settings"
+                style="@style/Widget.Material3.Button.TextButton.Settings.warning"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/block"
                 app:icon="@drawable/block_48px" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout>

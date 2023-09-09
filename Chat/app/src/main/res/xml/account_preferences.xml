@@ -6,7 +6,7 @@
         <Preference
             android:title="@string/change_your_pin"
             app:iconSpaceReserved="false" />
-        <SwitchPreferenceCompat
+        <SwitchPreference
             android:summary="@string/pin_reminders_hint"
             android:title="@string/pin_reminders"
             app:iconSpaceReserved="false"

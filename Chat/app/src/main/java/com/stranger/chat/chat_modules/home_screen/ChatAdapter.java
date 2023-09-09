@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -74,32 +73,34 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAd
             reciverNumber = (String) snapshot.get(PHONE_NUMBER);
             reciverProfilePic = (String) snapshot.get(PROFILE_PIC_URL);
 
+            Bundle sendData = new Bundle();
+            sendData.putString(USER_ID, reciverUserId);
+            sendData.putString(USERNAME, reciverName);
+            sendData.putString(PHONE_NUMBER, reciverNumber);
+            sendData.putString(PROFILE_PIC_URL, reciverProfilePic);
+            sendData.putString(MESSAGE_ID, model.getMessageId());
+            Chat_BottomSheet chatBottomSheet = new Chat_BottomSheet(sendData);
+
             holder.getUsernameField().setText(reciverName); // set reciver name
 
             Picasso.get().load(reciverProfilePic).placeholder(R.drawable.account_circle_24px)
                     .into(holder.getProfilePicField());// set reciver profile pic
+            holder.getProfilePicField().setOnClickListener(view -> chatBottomSheet
+                    .show(fragmentManager, "ModalBottomSheet"));
 
             holder.getLastChatTimeField().setText(getFormattedTimeDifference(model.getLastSeen())); // set date
 
             holder.getChatTile().setOnClickListener(view -> {
-                Bundle sendData = new Bundle();
-                sendData.putString(USER_ID, reciverUserId);
-                sendData.putString(USERNAME, reciverName);
-                sendData.putString(PHONE_NUMBER, reciverNumber);
-                sendData.putString(PROFILE_PIC_URL, reciverProfilePic);
-                sendData.putString(MESSAGE_ID, model.getMessageId());
-
                 Intent intent = new Intent(activity, ChatPage.class);
                 intent.putExtra(BUNDLE_DATA, sendData);
                 activity.startActivity(intent);
             });
-        });
 
-        holder.getChatTile().setOnLongClickListener(view -> {
-            new Chat_BottomSheet(model).show(fragmentManager, "ModalBottomSheet");
-            return true;
+            holder.getChatTile().setOnLongClickListener(view -> {
+                chatBottomSheet.show(fragmentManager, "ModalBottomSheet");
+                return true;
+            });
         });
-
     }
 
     public static class Chat_ViewHolder extends RecyclerView.ViewHolder {

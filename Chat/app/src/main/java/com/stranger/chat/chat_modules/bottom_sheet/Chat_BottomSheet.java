@@ -1,23 +1,28 @@
 package com.stranger.chat.chat_modules.bottom_sheet;
 
+import static com.stranger.chat.fuctionality.Keys.firebase.PHONE_NUMBER;
+import static com.stranger.chat.fuctionality.Keys.firebase.PROFILE_PIC_URL;
+import static com.stranger.chat.fuctionality.Keys.firebase.USERNAME;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.squareup.picasso.Picasso;
 import com.stranger.chat.R;
-import com.stranger.chat.chat_modules.data.Chat_Tile_Data;
 
 public class Chat_BottomSheet extends BottomSheetDialogFragment {
-    Chat_Tile_Data model;
+    Bundle model;
 
-    public Chat_BottomSheet(Chat_Tile_Data model) {
-
+    public Chat_BottomSheet(Bundle model) {
         this.model = model;
     }
 
@@ -25,9 +30,20 @@ public class Chat_BottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.chat_bottom_sheet, container, false);
 
+        ImageView profilePic = view.findViewById(R.id.profilePic);
+        TextView username = view.findViewById(R.id.username);
+        TextView phone_number = view.findViewById(R.id.phone_number);
         Button delete = view.findViewById(R.id.delete);
 
-        delete.setOnClickListener(v1 -> {
+        Picasso.get().load(model.getString(PROFILE_PIC_URL))
+                .placeholder(R.drawable.account_circle_24px)
+                .into(profilePic);
+        profilePic.setOnClickListener(v -> dismiss());// open conversatiion setting activity
+
+        username.setText(model.getString(USERNAME));
+        phone_number.setText(model.getString(PHONE_NUMBER));
+
+        delete.setOnClickListener(v -> {
             Toast.makeText(getActivity(), "Algorithm Shared", Toast.LENGTH_SHORT).show();
             dismiss();
         });

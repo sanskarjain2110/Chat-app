@@ -64,9 +64,7 @@ public class HomeScreen extends AppCompatActivity {
         topToolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.settings) {
                 startActivity(new Intent(getApplicationContext(), Settings.class));
-            } else {
-                return false;
-            }
+            } else return false;
             return true;
         });
 
