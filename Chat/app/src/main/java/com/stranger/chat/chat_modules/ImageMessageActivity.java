@@ -1,5 +1,8 @@
 package com.stranger.chat.chat_modules;
 
+import static com.stranger.chat.fuctionality.Keys.BUNDLE_DATA;
+import static com.stranger.chat.fuctionality.Keys.firebase.MESSAGE_ID;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -34,9 +37,9 @@ public class ImageMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_message);
 
-        bundle = getIntent().getBundleExtra("data");
+        bundle = getIntent().getBundleExtra(BUNDLE_DATA);
         String imageUri = bundle.getString("image");
-        String messageId = bundle.getString("messageId");
+        String messageId = bundle.getString(MESSAGE_ID);
 
         toolbar = findViewById(R.id.topAppBar);
         image = findViewById(R.id.image);

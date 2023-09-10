@@ -79,7 +79,8 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat_Tile_Data, ChatAd
             sendData.putString(PHONE_NUMBER, reciverNumber);
             sendData.putString(PROFILE_PIC_URL, reciverProfilePic);
             sendData.putString(MESSAGE_ID, model.getMessageId());
-            Chat_BottomSheet chatBottomSheet = new Chat_BottomSheet(sendData);
+
+            Chat_BottomSheet chatBottomSheet = new Chat_BottomSheet(sendData); //  chat bottom sheet
 
             holder.getUsernameField().setText(reciverName); // set reciver name
 

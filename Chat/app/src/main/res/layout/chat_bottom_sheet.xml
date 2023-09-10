@@ -38,6 +38,7 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             style="@style/Widget.Material3.FloatingActionButton.Secondary"
             android:layout_width="wrap_content"
+            android:id="@+id/message"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="16dp"

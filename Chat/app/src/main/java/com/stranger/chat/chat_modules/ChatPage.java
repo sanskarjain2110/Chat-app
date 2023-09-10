@@ -168,10 +168,10 @@ public class ChatPage extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK && requestCode == 101) {
             Bundle args = new Bundle();
             args.putString("image", String.valueOf(data.getData()));
-            args.putString("messageId", messageId);
+            args.putString(MESSAGE_ID, messageId);
 
             Intent intent = new Intent(getApplicationContext(), ImageMessageActivity.class);
-            intent.putExtra("data", args);
+            intent.putExtra(BUNDLE_DATA, args);
 
             startActivity(intent);
         } else {
