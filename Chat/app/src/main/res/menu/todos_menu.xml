@@ -6,7 +6,7 @@
         android:title="@string/delete_list" />
     <item
         android:id="@+id/editListName"
-        android:icon="@drawable/baseline_edit_24"
+        android:icon="@drawable/edit_48px"
         android:title="@string/edit_list_name" />
 
 </menu>

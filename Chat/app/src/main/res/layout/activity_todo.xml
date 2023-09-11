@@ -31,6 +31,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="20dp"
         android:text="@string/add_task"
-        app:icon="@drawable/add_48px" />
+        app:icon="@drawable/add_24px" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

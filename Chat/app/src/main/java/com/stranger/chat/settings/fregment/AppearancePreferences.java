@@ -8,11 +8,12 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.stranger.chat.R;
+import com.stranger.chat.fuctionality.Theme;
 
 public class AppearancePreferences extends PreferenceFragmentCompat {
 
     Context context;
-    public final int THEME_PREFERENCE = R.string.theme_preference;
+    public final int THEME_PREFERENCE = R.string.app_theme;
     public final int COLOR_AND_WALLPAPER_PREFERANCE = R.string.color_and_wallpaper_preferance;
     public final int FONT_SIZE_PREFERANCE = R.string.font_size_preferance;
 
@@ -28,11 +29,7 @@ public class AppearancePreferences extends PreferenceFragmentCompat {
         themePreference = findPreference(getString(THEME_PREFERENCE));
         fontSizePreferance = findPreference(getString(FONT_SIZE_PREFERANCE));
 
-        themePreference.setOnPreferenceChangeListener((preference, newValue) -> {
-            Toast.makeText(context, "" + newValue, Toast.LENGTH_SHORT).show();
-
-            return true;
-        });
+        themePreference.setOnPreferenceChangeListener((preference, newValue) -> Theme.setTheme(newValue));
 
         fontSizePreferance.setOnPreferenceChangeListener(((preference, newValue) -> {
             Toast.makeText(context, "" + newValue, Toast.LENGTH_SHORT).show();

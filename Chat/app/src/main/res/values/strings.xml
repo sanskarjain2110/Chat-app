@@ -141,12 +141,12 @@
 
     <!-- Apperareance Preferences -->
     <string name="theme">Theme</string>
-    <string name="theme_preference">Theme Preferance</string>
     <string-array name="theme">
         <item>System default</item>
         <item>Light</item>
         <item>Dark</item>
     </string-array>
+
     <string name="chat_color_amp_wallpaper"><![CDATA[Chat color & wallpaper]]></string>
     <string name="color_and_wallpaper_preferance">Color And Wallpaper Preferance</string>
     <string name="font_size">Message font size</string>
