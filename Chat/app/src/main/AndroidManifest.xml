@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<!--    <uses-permission-->
+<!--        android:name="android.permission.POST_NOTIFICATIONS"-->
+<!--        tools:node="remove" />-->
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -26,8 +29,24 @@
         android:theme="@style/Theme.Chat"
         tools:targetApi="33">
 
+        <service
+            android:name=".java.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+<!--        <service-->
+<!--            android:name=".java.MyFirebaseMessagingService"-->
+<!--            android:directBootAware="true"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
 
         <!--        start-->
+        <!--        splash screen-->
         <activity
             android:name=".login_modules.SplashScrean"
             android:exported="true">
@@ -36,13 +55,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!--        splash screen-->
+        </activity>
 
         <!--        end-->
-        <activity
-            android:name=".settings.SettingsActivity"
-            android:exported="false"
-            android:label="@string/title_activity_settings" />
         <activity
             android:name=".HomeScreen"
             android:exported="false" />
@@ -74,7 +89,9 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity> <!-- extra -->
+        </activity>
+
+        <!-- extra -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- chat -->
@@ -89,7 +106,9 @@
             android:exported="false" />
         <activity
             android:name=".chat_modules.ConversationSetting"
-            android:exported="false" /> <!-- notes -->
+            android:exported="false" />
+
+        <!-- notes -->
         <activity
             android:name=".notes_modules.NoteEditorActivity"
             android:exported="false">

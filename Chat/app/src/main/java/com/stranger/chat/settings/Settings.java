@@ -1,6 +1,7 @@
 package com.stranger.chat.settings;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,9 +26,8 @@ public class Settings extends AppCompatActivity {
     Toolbar topAppBar;
     LinearLayout userCardView;
     ImageView profilePic;
-    TextView username, phoneNumber;
-    Button account, linkedDevices, apperareance, chats, stories, notification, privacy,
-            dataAndStorage, help, inviteFriend, logout;
+    TextView username, phoneNumber, version;
+    Button account, linkedDevices, apperareance, chats, stories, notification, privacy, dataAndStorage, help, inviteFriend, logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,8 @@ public class Settings extends AppCompatActivity {
         inviteFriend = findViewById(R.id.inviteFriend);
         logout = findViewById(R.id.logout);
 
+        version = findViewById(R.id.version);
+
         topAppBar.setNavigationOnClickListener(v -> finish());
 
         userCardView.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Profile.class)));
@@ -76,6 +78,11 @@ public class Settings extends AppCompatActivity {
         help.setOnClickListener(v -> Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show());
 
         inviteFriend.setOnClickListener(v -> Toast.makeText(getApplicationContext(), R.string.not_implemented, Toast.LENGTH_SHORT).show());
+
+        try {
+            version.setText(this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+        }
 
         logout.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();

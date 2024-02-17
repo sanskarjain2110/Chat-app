@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.stranger.chat.R;
 import com.stranger.chat.chat_modules.adapter.ChatPageAdapter;
 import com.stranger.chat.chat_modules.bottom_sheet.ChatPage_BottomSheet;
@@ -155,8 +156,20 @@ public class ChatPage extends AppCompatActivity {
 
                     chatRecyclerView.scrollToPosition(chatPageAdapter.getItemCount() - 1);
                 });
+
+                FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) return;
+
+                    // Get new FCM registration token
+                    String token = task.getResult();
+
+                    // Log and toast
+                    String msg = text;
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                });
                 textMessage.setText("");
             }
+
         });
     }
 

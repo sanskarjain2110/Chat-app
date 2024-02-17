@@ -7,6 +7,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
+import com.google.firebase.FirebaseApp;
 import com.stranger.chat.R;
 import com.stranger.chat.fuctionality.Routes;
 import com.stranger.chat.fuctionality.Theme;
@@ -17,6 +18,7 @@ public class SplashScrean extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        FirebaseApp.initializeApp(this); // Initialize Firebase
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
