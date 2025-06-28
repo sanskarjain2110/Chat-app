@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace 'com.stranger.chat'
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.stranger.chat"
