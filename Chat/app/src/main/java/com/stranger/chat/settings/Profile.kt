@@ -112,12 +112,17 @@ class Profile : AppCompatActivity() {
     private var profilePicUri: Any? = null
 
     var image: ActivityResultLauncher<String> =
-        registerForActivityResult<String, Uri>(ActivityResultContracts.GetContent()) { result: Uri? ->
-            val destinationUriString = UUID.randomUUID().toString() + ".jpg"
-            UCrop.of(result!!, Uri.fromFile(File(cacheDir, destinationUriString)))
-                .withAspectRatio(1f, 1f).withMaxResultSize(20000, 2000).start(this)
+        registerForActivityResult(ActivityResultContracts.GetContent()) { result: Uri? ->
+            result?.let {
+                val destinationUri = Uri.fromFile(File(cacheDir, "${UUID.randomUUID()}.jpg"))
+                UCrop.of(it, destinationUri)
+                    .withAspectRatio(1f, 1f)
+                    .withMaxResultSize(2000, 2000)  // safe resolution
+                    .start(this)
+            } ?: run {
+                Toast.makeText(this, "Image selection canceled", Toast.LENGTH_SHORT).show()
+            }
         }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
